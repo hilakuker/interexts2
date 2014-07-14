@@ -1,0 +1,61 @@
+﻿@model Interext.Models.ProfileViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventsPageCss")
+    @Styles.Render("~/Content/profilePageCss")
+}
+
+<section class="profile">
+    <div class="profile-content">
+        <img src="@Model.ImageUrl" />
+        <div class="profile-info">
+            <h1 class="name">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
+            <table class="basic-info">
+                <tr>
+                    <td>
+                        Birth date
+                    </td>
+                    <td>@Model.BirthDate</td>
+                </tr>
+                <tr>
+                    <td>
+                        Gender
+                    </td>
+                    <td> @Html.Action("GetGender", "Account")</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fa fa-map-marker"></span>Location
+                    </td>
+                    <td>@Model.Address</td>
+                </tr>
+            </table>
+        </div>
+        <div class="interests">
+            <h2>Interests:</h2>
+            DIY, Sports, Reading
+        </div>
+        <div class="clear"></div>
+        @*@Html.DisplayFor(model => model.UserName)
+
+            @Html.DisplayFor(model => model.FirstName)
+
+            @Html.DisplayFor(model => model.LastName)
+
+            @Html.DisplayFor(model => model.Email)
+
+            @Html.DisplayFor(model => model.Gender)*@
+    </div>
+</section>
+@*<p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+<section class="events">
+    <h2>Your Events:</h2>
+    @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events) ;
+</section>

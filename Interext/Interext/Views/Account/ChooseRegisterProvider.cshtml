@@ -1,0 +1,15 @@
+﻿@model Interext.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<section id="loginForm" class="form-signin">
+    <h1 class="form-signin-heading">Register to INTEREXTS</h1>
+    <div class="social-links">
+        @Html.Partial("_ExternalLoginsListPartial", new Interext.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+        @Html.ActionLink("Sign in with Email", "Register", null, new { @class = "form-control zocial email" })
+    </div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</section>

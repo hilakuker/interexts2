@@ -1,0 +1,92 @@
+﻿@model Interext.Models.Event
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventPageCss")
+}
+
+
+
+@*<div id="single-page">*@
+<div>
+    <div id="content" class="right-sidebar">
+        <div class="event-page-content">
+            <article>
+                <div class="event-intro-wrapper" style="background-image: url('/Content/images/example-images/event1.jpg');">
+                    <div class="event-intro">
+                        <h1 class="event-title">
+                            Evening walks with dogs
+                        </h1>
+                        <div class="event-date">15.5</div>
+                        <div class="clear"></div>
+                        <div class="event-details">
+                            <span class="fa fa-map-marker"></span>Tel Aviv, Israel<br />
+                            <a href="~/Account/ShowProfile"><div class="createdby">Created by</div> <img src="/Content/images/example-images/profile-pic.jpg" /><div class="creator-name">Sash Pol</div></a>
+                            <div class="clear"></div>
+                        </div>
+                        <table class="event-restrictions">
+                            <tr><td colspan="2">Event for:</td></tr>
+                            <tr><td>Ages</td><td> 40 - 50</td></tr>
+                            <tr><td>Gender</td><td>Female</td></tr>
+                            <tr><td>Interests</td><td>Dogs, Arts</td></tr>
+                        </table>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    <p>Didn’t need no welfare states. Everybody pulled his weight. Gee our old Lasalle ran great. Those were the days. We’re gonna do it. On your mark get set and go now. Got a dream and we just know now we’re gonna make our dream come true. Come and dance on our floor. Take a step that is new. We’ve a loveable space that needs your face threes company too.</p>
+                    <p><span id="more-372"></span></p>
+                    <p>All of them had hair of gold like their mother the youngest one in curls!” It’s time to play the music. It’s time to light the lights. It’s time to meet the Muppets on the Muppet Show tonight. Straightnin’ the curves. Flatnin’ the hills Someday the mountain might get ‘em but the law never will. Today still wanted by the government they survive as soldiers of fortune. So this is the tale of our castaways they’re here for a long long time. They’ll have to make the best of things its an uphill climb.</p>
+                </div>
+            </article>
+            <div id="ozy-share-div" class="ozy-share-div-blog">
+                <span>Share This:&nbsp;</span>
+                <a href="http://www.facebook.com/share.php?u=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-facebook" style="display: inline-block;"><span class="symbol"></span></a>
+                <a href="https://twitter.com/share?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;text=Contrast%20is%20Your%20Next%20Level%20Theme" title="" class="tooltip pop share-icon share-icon-twitter" style="display: inline-block;"><span class="symbol"></span></a>
+                <a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;media=&amp;description=  Contrast is Your Next Level ThemeWordPress Photography Theme" title="" class="tooltip pop share-icon share-icon-pinterest" style="display: inline-block;"><span class="symbol"></span></a>
+                <a href="http://www.tumblr.com/share?v=3&amp;u=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-tumblr" style="display: inline-block;"><span class="symbol"></span></a>
+                <a href="https://plusone.google.com/_/+1/confirm?hl=en&amp;url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-googleplus" style="display: inline-block;"><span class="symbol"></span></a>
+                <a href="mailto:?subject=Contrast%20is%20Your%20Next%20Level%20Theme" title="" class="tooltip pop share-icon share-icon-email" style="display: inline-block;"><span class="symbol"></span></a>
+            </div><!--#share-buttons-->
+        </div>
+        <div class="clear"></div>
+        
+    </div><!--#content-->
+
+    <div id="sidebar" class="right-sidebar">
+        <ul>
+            <li>
+                <form>
+                    <input value="+Join" type="submit" class="join-event btn btn-special" />
+                </form>
+            </li>
+            @*<li class="widget">
+                    <h3>LOOKING FOR SOMETHING?</h3><form action="http://contrast.freevision.me/" method="get" class="wp-search-form">
+                        <i class="fa fa-search"></i>
+                        <input x-webkit-speech="" speech="" type="text" name="s" id="search" placeholder="Type and hit Enter">
+                    </form>
+                </li>*@
+            <li class="widget">
+                <h3>SIMILAR EVENTS</h3><div class="ozy-latest-posts">
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
+                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--sidebar-->
+    <div class="clear"></div>
+
+
+</div>
+
