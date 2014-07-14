@@ -1,0 +1,62 @@
+﻿section.profile {
+    padding: 30px;
+    font-family: "Raleway";
+    background-image: url(/Content/images/example-images/292380.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+    section.profile .profile-content {
+        background-color: rgba(256,256,256,0.8);
+    }
+
+    section.profile img, section.profile .profile-info, section.profile .interests {
+        float: left;
+    }
+
+    section.profile .profile-info, section.profile .interests {
+        margin-left: 30px;
+    }
+
+    section.profile h1, section.profile h2 {
+        font-weight: 300;
+        font-size: 40px;
+        line-height: 60px;
+        font-family: "Raleway";
+    }
+
+    section.profile h2 {
+        font-size: 30px;
+    }
+
+    section.profile .profile-info table.basic-info tr td:first-child {
+        padding-right: 20px;
+        height: 25px;
+        color: #999;
+    }
+
+    section.profile .profile-info table.basic-info .fa-map-marker {
+        margin-right: 5px;
+    }
+
+@media only screen and (max-width: 479px) {
+    section.profile .profile-info, section.profile .interests {
+        margin-left: 0px;
+    }
+
+    section.profile .profile-info {
+        margin-bottom: 20px;
+    }
+}
+
+
+section.events {
+}
+
+    section.events h2 {
+        font-weight: 300;
+        font-size: 30px;
+        line-height: 60px;
+        font-family: "Raleway";
+        color: #fff;
+    }

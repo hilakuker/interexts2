@@ -1,0 +1,121 @@
+﻿
+		@media only screen and (min-width: 1212px) {
+			.container{padding:0 36px;width:1140px;}
+			#content.left-sidebar,#content.right-sidebar,#content{width:792px;}
+			#sidebar{width:312px;}
+		}	
+		
+		/* Body Background Styling
+		/*-----------------------------------------------------------------------------------*/
+		body{background-color:#333333;background-repeat:inherit;}
+		#sidr{display:none;}
+	
+		/* Layout and Layout Styling
+		/*-----------------------------------------------------------------------------------*/
+		#main .container,.main-bg-color{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);}
+		#header{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);height:60px;}
+		#header #title{height:60px;}
+		#main>.container{margin-top:90px;}
+		#main.header-slider-active>.container,#main.footer-slider-active>.container{margin-top:0px;}
+		/*#main>.container>.template-clean-page{margin-top:60px;}*/
+		#footer,.bottom-spacer{height:40px;min-height:40px;}
+		#footer .container>div{height:40px;}
+		#footer>footer,#footer-language-switcher,#footer-language-switcher-option{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);line-height:40px;}
+		#footer-spacer{height:72px;}		
+		#footer-slider-spacer{height:40px;}
+		#revo-offset-container{height:100px;}
+		.ozy-header-slider{margin-top:60px;}
+			.folio-filter-box{top:80px;}
+		@media only screen and (max-width: 479px) {
+			#footer{height:80px;}			
+			#footer-spacer{height:80px;}
+			#main>.container{margin-top:60px;}
+		}
+		@media only screen and (max-width: 1024px) and (min-width: 480px) {
+			#footer-spacer{height:40px;}
+			#header #title{padding-right:80px;}
+			#header #title>a{line-height:60px;}
+			#main>.container{margin-top:60px;}
+			#footer{height:40px;}
+		}
+		
+		/* Forms
+		/*-----------------------------------------------------------------------------------*/
+		input:not([type=submit]):not([type=file]),textarea{background-color:rgba(255,255,255,1);}
+		input:not([type=submit]):not([type=file]):hover,textarea:hover,
+		input:not([type=submit]):not([type=file]):focus,textarea:focus{border-color:#007aff;}
+		.rsMinW .rsBullet span{background-color:rgb(255,255,255);}
+		.showbiz-button,.rsMinW .rsArrowIcn,#to-top-button,.load_more_blog,input[type=button],input[type=submit]{background-color:#333;color:rgb(255,255,255);border:1px solid rgba(0,0,0,1);}
+		.showbiz-button:hover,.rsMinW .rsArrowIcn:hover,#to-top-button:hover,.load_more_blog:hover,input[type=button]:hover,input[type=submit]:hover{background-color:rgb(255,255,255);color:rgb(0,0,0);border:1px solid rgba(240,240,240,1);}
+	
+		
+		/* Primary Menu Styling
+		/*-----------------------------------------------------------------------------------*/
+			
+		.mega-menu .sub-container,#slide-menu{background-color:rgb(0,0,0);background-color:rgba(0,0,0,1);}
+		.mega-menu li>a{font-family:"Raleway";font-weight:600;font-size:11px;line-height:1.5em;color:rgba(0,0,0,1);}
+	
+		#nav-primary>nav>div>ul h4{font-family:"Raleway";;}
+		.sub-menu li>h4,.sub-menu li>a{color:rgb(255,255,255);color:rgba(255,255,255,1);}		
+		#nav-primary>nav>div>ul ul li a:hover,#slide-menu:hover,#nav-primary>nav>div>ul ul>li.current_page_item>a,#nav-primary>nav>div>ul ul>li.current-menu-item>a{background-color:rgb(29,29,29);background-color:rgba(29,29,29,1);}
+		#nav-primary>nav>div>ul .row>li{border-color:rgb(255,255,255);border-color:rgba(255,255,255,.25); }
+				
+		.sf-menu>li>a,#nav-primary>nav>div>ul>li, #nav-primary>nav>div>ul>li>a{line-height:60px;height:60px;}
+		#slide-menu,#slide-menu>a>span{line-height:60px;height:60px;width:60px;}
+		#slide-menu>a>span{color:rgb(255,255,255);color:rgba(255,255,255,1);}
+		#nav-primary{right:60px;}
+		#nav-primary>nav>div>ul>li:hover>a,#nav-primary>nav>div>ul>li.current_page_item>a,#nav-primary>nav>div>ul>li.current-menu-parent>a,#nav-primary>nav>div>ul>li.mega-menu-hover>a,#logo *,#nav-primary>nav>div>ul>li.current_page_ancestor>a,.current_page_ancestor>a{color:#007aff;}		
+		#header.header-v2 #nav-primary{left:80px;}
+		
+		/* ShowBiz
+		/*-----------------------------------------------------------------------------------*/		
+		.showbiz-title, .showbiz-title a, .showbiz-title a:visited, .showbiz-title a:hover{font-family:"Raleway" !important;}	
+		.showbiz p{font-family:"Raleway" !important;font-weight:normal !important;font-size:14px !important;line-height:1.5em !important;}
+		
+		/* Page Styling and Typography
+		/*-----------------------------------------------------------------------------------*/
+		.content-color{color:#222222 !important;}
+		#content,#sidebar,#footer,#sidr *,input,select,textarea,.mediaDescriptionText,.hgFilterBox,.tooltipsy{font-family:"Raleway";font-weight:normal;font-size:14px;line-height:1.5em;color:#222222;}
+		#footer #social-icons a,#ozy-share-div>a>span,.page-pagination>a{color:#222222 !important;}
+		
+		#content h1,#sidebar h1,#footer h1,#content h2,#sidebar h2,#footer h2,#content h3,#sidebar h3,#footer h3,#content h4,#sidebar h4,#footer h4,#content h5,#sidebar h5,#footer h5,#content h6,#sidebar h6,#footer h6,.heading-font,.mediaDescriptionHeader,#logo,#tagline,.ozy-ajax-shoping-cart{font-family:"Raleway";color:#222222;}
+		#content h1,#sidebar h1,#footer h1,#sidr h1{font-weight:300;font-size:40px;line-height:60px;}
+		#sidebar .widget>h3 {font-weight:300;font-size:18px;line-height:60px;}
+		#content h2,#sidebar h2,#footer h2,#sidr h2{font-weight:300;font-size:30px;line-height:40px;;}		
+		#content h3,#sidebar h3,#footer h3,#sidr h3{font-weight:300;font-size:22px;line-height:32px;;}		
+		#content h4,#sidebar h4,#footer h4,#sidr h4{font-weight:300;font-size:18px;line-height:28px;;}		
+		#content h5,#sidebar h5,#footer h5,#sidr h5{font-weight:300;font-size:16px;line-height:26px;;}		
+		#content h6,#sidebar h6,#footer h6,#sidr h6{font-weight:300;font-size:14px;line-height:24px;;}
+		#sidebar .widget a:hover{color:#222222;}
+		
+		/* Blog Comments & Blog Stuff
+		/*-----------------------------------------------------------------------------------*/
+		.comment-body,#ozy-share-div>a{background-color:rgb(240,240,240);background-color:rgba(240,240,240,1);}
+		.mega-entry-innerwrap .post-format,.post-title>span{background-color:#007aff;background-color:#007aff;}		
+		
+		/* Sidebar Menu
+		/*-----------------------------------------------------------------------------------*/
+		#sidr {background-color:rgb(0,0,0);background-color:rgba(0,0,0,1);}
+		#sidr>h5{line-height:60px !important;}
+		#sidr *{color:rgb(255,255,255);color:rgba(255,255,255,1);}
+		#sidr input{border:1px solid rgb(255,255,255);border:1px solid rgba(255,255,255,1);}
+		
+		/* Shortcodes
+		/*-----------------------------------------------------------------------------------*/
+		.ozy-accordion>h6.ui-accordion-header>span,.ozy-tabs .ozy-nav .ui-tabs-selected a,.ozy-tabs .ozy-nav .ui-tabs-active a,.ozy-toggle span.ui-icon{background-color:#007aff;background-color:#007aff;}
+		.ozy-tabs .ozy-nav .ui-tabs-selected a,.ozy-tabs .ozy-nav .ui-tabs-active a{border-color:#007aff !important;border-color:#007aff !important;}	
+		.ozy-tabs .ozy-nav li a{color:#222222 !important;}		
+		.ozy-button.auto{ background-color:rgb(0,0,0);background-color:rgba(0,0,0,1); color:rgb(255,255,255);color:rgba(255,255,255,1); }
+		.ozy-button.auto:hover{ border-color:rgb(0,0,0);border-color:rgba(0,0,0,1);color:rgb(0,0,0) !important;color:rgba(0,0,0,1) !important; background-color:rgb(255,255,255);background-color:rgba(255,255,255,1); }		
+		.dropcap-square,.dropcap-circle,.ozy-icon.square,.ozy-icon.circle{background-color:#222222;}
+		.dropcap-clean,.dropcap-circle2,.ozy-icon.circle2{color:#222222;border-color:#222222;}
+		a:hover>.ozy-icon.square,a:hover>.ozy-icon.circle{background-color:transparent !important;color:#222222;}
+		a:hover>.ozy-icon.circle2{color:#222222;border-color:transparent !important;}
+		
+		/* Shared Border Color
+		/*-----------------------------------------------------------------------------------*/
+		#ozy-share-div.ozy-share-div-blog,#single-blog-tags>a,#ozy-related-posts-wrapper>h4,.portfolio-details-part-two,.page-content table td,#content table tr,.post-content table td,.ozy-toggle .ozy-toggle-title,.ozy-toggle-inner,.ozy-tabs .ozy-nav li a,.ozy-accordion>h6.ui-accordion-header,.ozy-accordion>div.ui-accordion-content,.page-title,input:not([type=submit]):not([type=file]),textarea,#sidebar .widget:first-child>h3,.chat-row .chat-text,blockquote,#sidebar .widget li,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child,.ozy-testimonials .rsContainer .rsSlide>div>div>.thumb,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child:before,.ozy-content-divider{border-color:rgb(240,240,240);border-color:rgba(240,240,240,1);}
+		
+		/* Conditional Page Template Styles
+		/*-----------------------------------------------------------------------------------*/
+			

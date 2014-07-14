@@ -1,0 +1,105 @@
+﻿body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-image: url(/Content/images/example-images/292380.jpg);
+    background-repeat: none;
+    background-position: center;
+    background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Raleway';
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    background-color: rgba(0,0,0,0.5);
+    box-shadow: 0 -5px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Raleway';
+}
+
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+        margin-bottom: 10px;
+        font-weight: 200;
+    }
+
+    .form-signin .form-signin-heading {
+        text-align: center;
+    }
+
+    .form-signin .checkbox {
+        font-weight: normal;
+    }
+
+    .form-signin .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+    .form-signin .form-internal-signin {
+        margin-top: 20px;
+    }
+    .form-signin .form-internal-signin.login input[type="text"]{
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        
+    }
+    .form-signin .form-internal-signin.login input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    .form-signin .social-links {
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+        padding: 20px 0;
+    }
+
+        .form-signin .btn, .form-signin .social-links .form-control.zocial, .form-signin .form-control {
+            font-family: 'Raleway';
+            font-weight: 200;
+        }
+
+    .form-signin .not-registered {
+        color: #fff;
+        text-decoration: underline;
+        display: block;
+    }
+
+    .form-signin .btn-primary {
+        margin-top: 20px;
+        background-color:#A8A8A8;
+        border-color: #7A7A7A;
+    }
+
+    .form-signin .btn-primary:hover {
+        background-color:#9C9C9C;
+        border-color: #545454;
+    }
+    .form-signin .form-internal-signin.register input
+    {
+        margin-bottom:5px;
+    }
+    .form-signin .form-control.first-name ,.form-signin .form-control.last-name{
+        width:49%;
+    }
+    .form-signin .form-control.first-name {
+        float:left;
+    }
+    .form-signin .form-control.last-name {
+        float:right;
+    }
