@@ -1,0 +1,71 @@
+﻿
+		@media only screen and (min-width: 1212px) {
+			.container{padding:0 36px;width:1140px;}
+			#content.left-sidebar,#content.right-sidebar,#content{width:792px;}
+			#sidebar{width:312px;}
+		}	
+		
+		/* Body Background Styling
+		/*-----------------------------------------------------------------------------------*/
+		#sidr{display:none;}
+	
+		/* Layout and Layout Styling
+		/*-----------------------------------------------------------------------------------*/
+		#main .container,.main-bg-color{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);}
+		#header{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);height:60px;}
+		#header #title{height:60px;}
+		#main>.container{margin-top:60px;}
+		#main.header-slider-active>.container,#main.footer-slider-active>.container{margin-top:0px;}
+		#footer,.bottom-spacer{height:40px;min-height:40px;}
+		#footer .container>div{height:40px;}
+		#footer>footer,#footer-language-switcher,#footer-language-switcher-option{background-color:rgb(255,255,255);background-color:rgba(255,255,255,1);line-height:40px;}
+		#footer-spacer{height:72px;}		
+		#footer-slider-spacer{height:40px;}
+		#revo-offset-container{height:100px;}
+		.ozy-header-slider{margin-top:60px;}
+			.folio-filter-box{top:80px;}
+		@media only screen and (max-width: 479px) {
+			#footer{height:80px;}			
+			#footer-spacer{height:80px;}
+			#main>.container{margin-top:60px;}
+		}
+		@media only screen and (max-width: 1024px) and (min-width: 480px) {
+			#footer-spacer{height:40px;}
+			#header #title{padding-right:80px;}
+			#header #title>a{line-height:60px;}
+			#main>.container{margin-top:60px;}
+			#footer{height:40px;}
+		}
+		
+		/* Forms
+		/*-----------------------------------------------------------------------------------*/
+		
+		#to-top-button,.load_more_blog,input[type=button]{background-color:#333;color:rgb(255,255,255);border:1px solid rgba(0,0,0,1);}
+		#to-top-button:hover,.load_more_blog:hover,input[type=button]:hover{background-color:rgb(255,255,255);color:rgb(0,0,0);border:1px solid rgba(240,240,240,1);}
+	
+        #slide-menu, #event-search{background-color:rgb(0,0,0);background-color:rgba(0,0,0,1);}
+        #slide-menu:hover, #event-search:hover{background-color:rgb(29,29,29);background-color:rgba(29,29,29,1);}
+        #slide-menu,#slide-menu>a>span, #event-search, #event-search>a>span{line-height:60px;height:60px;width:60px;}
+		#slide-menu>a>span, #event-search>a>span{color:rgb(255,255,255);color:rgba(255,255,255,1);}
+
+
+		/* Page Styling and Typography
+		/*-----------------------------------------------------------------------------------*/
+		#content,#sidebar,#footer,#sidr *,input,select,textarea,.mediaDescriptionText,.hgFilterBox,.tooltipsy{font-family:"Raleway";font-weight:normal;font-size:14px;}
+		#footer #social-icons a,#ozy-share-div>a>span,.page-pagination>a{color:#222222 !important;}
+		
+		#content h1,#sidebar h1,#footer h1,#content h2,#sidebar h2,#footer h2,#content h3,#sidebar h3,#footer h3,#content h4,#sidebar h4,#footer h4,#content h5,#sidebar h5,#footer h5,#content h6,#sidebar h6,#footer h6,.heading-font,.mediaDescriptionHeader,#logo,#tagline,.ozy-ajax-shoping-cart{font-family:"Raleway";color:#222222;}
+		#content h1,#sidebar h1,#footer h1,#sidr h1{font-weight:300;font-size:40px;line-height:60px;}
+		#sidebar .widget>h3 {font-weight:300;font-size:18px;line-height:60px;}
+		#content h2,#sidebar h2,#footer h2,#sidr h2{font-weight:300;font-size:30px;line-height:40px;}		
+		#content h3,#sidebar h3,#footer h3,#sidr h3{font-weight:300;font-size:22px;line-height:32px;}		
+		#content h4,#sidebar h4,#footer h4,#sidr h4{font-weight:300;font-size:18px;line-height:28px;}		
+		#content h5,#sidebar h5,#footer h5,#sidr h5{font-weight:300;font-size:16px;line-height:26px;}		
+		#content h6,#sidebar h6,#footer h6,#sidr h6{font-weight:300;font-size:14px;line-height:24px;}
+		
+		/* Blog Comments & Blog Stuff
+		/*-----------------------------------------------------------------------------------*/
+		#ozy-share-div>a{background-color:rgb(240,240,240);background-color:rgba(240,240,240,1);}
+		.event-box-innerwrap .post-format,.post-title>span{background-color:#007aff;background-color:#007aff;}		
+	
+			

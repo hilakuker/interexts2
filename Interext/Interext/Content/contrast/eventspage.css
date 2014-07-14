@@ -63,7 +63,7 @@
 		/*-----------------------------------------------------------------------------------*/
 		.content-color{color:#222222 !important;}
 		#content,#sidebar,#footer,#sidr *,input,select,textarea,.mediaDescriptionText,.hgFilterBox{font-family:"Raleway";font-weight:normal;font-size:14px;color:#222222;}
-		#content a,#sidebar a,#footer a,.alternate-text-color{color:#007aff;}
+
 		#footer #social-icons a,#ozy-share-div>a>span,.page-pagination>a{color:#222222 !important;}
 		
 		#content h1,#sidebar h1,#footer h1,#content h2,#sidebar h2,#footer h2,#content h3,#sidebar h3,#footer h3,#content h4,#sidebar h4,#footer h4,#content h5,#sidebar h5,#footer h5,#content h6,#sidebar h6,#footer h6,.heading-font,.mediaDescriptionHeader,#logo/*,#tagline*/,.ozy-ajax-shoping-cart{font-family:"Raleway";color:#222222;}
@@ -79,7 +79,7 @@
 		/* Blog Comments & Blog Stuff
 		/*-----------------------------------------------------------------------------------*/
 		.comment-body,#ozy-share-div>a{background-color:rgb(240,240,240);background-color:rgba(240,240,240,1);}
-		.mega-entry-innerwrap .post-format,.post-title>span{background-color:#007aff;background-color:#007aff;}		
+		.event-box-innerwrap .post-format,.post-title>span{background-color:#007aff;background-color:#007aff;}		
 		
 		/* Sidebar Menu
 		/*-----------------------------------------------------------------------------------*/

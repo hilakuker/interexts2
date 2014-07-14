@@ -1,83 +1,144 @@
 ﻿@model Interext.Models.EventViewModel
-
+@section CssStyles{
+    @Styles.Render("~/Content/eventPageCss")
+    @Styles.Render("~/Content/colorPickerCss")
+}
 @{
     ViewBag.Title = "Create";
 }
+<div id="content" class="right-sidebar">
+    <div class="event-page-content create-page">
+        <article>
+            @using (Html.BeginForm("Create", "Event", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="event-intro-wrapper">
+                    <div class="event-intro">
+                        <h1 class="event-title">Create a new event</h1>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="create-form">
 
-<h2>Create</h2>
+                    @Html.ValidationSummary(true)
+                    <div class="create-basic-info">
+
+                        @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
+                        @Html.ValidationMessageFor(m => m.Title)
+
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
+                        @Html.ValidationMessageFor(model => model.Description)
+
+                        <div class="input-with-image-wrapper">
+                            @Html.TextBoxFor(m => m.DateTimeOfTheEvent, new { @class = "form-control full-control", @placeholder = "Date of the event" })
+                            <span class="fa fa-calendar insert-image-button"></span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DateTimeOfTheEvent)
+
+                        <div class="input-with-image-wrapper">
+                            <input type="text" class="form-control full-control" id="Location" placeholder="Location" />
+                            <span class="fa fa-map-marker insert-image-button"></span>
+                        </div>
+
+                    </div>
+                    <div class="create-more-info">
+
+                        <span class="btn btn-dark fileinput-button">
+                            <span class="fa fa-picture-o"></span>
+                            <span>Upload image</span>
+                            <input type="file" name="ImageUrl" id="ImageUrl">
+                        </span>
+                        or
+                        <span class="btn btn-disabled fileinput-button">
+                            <span class="fa fa-picture-o"></span>
+                            <span>Choose from stock</span>
+                        </span>
+                        <br />
+
+                        <div id="colorSelector"><div style="background-color: #5959ab"></div></div>
+                        <div class="left choose-bg-color-text">
+                            Choose background color for text:
+                        </div>
+                        <div class="clear"></div>
+                        <div class="left choose-bg-alpha-text">
+                            Set opacity of the background:
+                        </div>
+                        <div id="slider" class="left"></div>
+                        <div class="clear"></div>
+                        <br />
+                        The side of the text:
+                        <select id="dpdTextSide">
+                            <option value="top">Top</option>
+                            <option value="right" selected="selected">Right</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                        </select>
+                        <br />
+                        Number of participants:
+                        <input id="txtNumOfParticipantsFrom" type="text" class="short-textbox" placeholder="From" />
+                        <input id="txtNumOfParticipantsTo" type="text" class="short-textbox" placeholder="To" />
+                        <br />
+                        Age of the participants:
+                        <input id="txtAgeOfParticipantsFrom" type="text" class="short-textbox" placeholder="From" />
+                        <input id="txtAgeOfParticipantsTo" type="text" class="short-textbox" placeholder="To" />
+                        <br />
+                        Gender of the participants:
+                        <select id="dpdGender">
+                            <option value="Both">Both</option>
+                            <option value="Male">Male</option>
+                            <option value="Female" selected="selected">Female</option>
+                        </select>
+
+                        @*   @Html.LabelFor(model => model.Interests, new { @class = "control-label col-md-2" })
+
+                            @foreach (Interext.Models.Interest item in ViewBag.AllInterests)
+                            {
+                                <input type="checkbox" name="Interests" value="@item.Id">@Html.DisplayFor(modelItem => item.Title)<br>
+                            }*@
+                        @*@Html.Action("ChooseInterests", "Interest", new { id = 0, fieldName= "Interest" });*@
 
 
-@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { @enctype = "multipart/form-data" })) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Hi Event</h4>
-        <hr />
-        @Html.ValidationSummary(true)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title)
-                @Html.ValidationMessageFor(model => model.Title)
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-        </div>
+                        <input type="submit" value="Create" class="btn btn-special" />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="file" name="ImageUrl" id="ImageUrl" />
-                @*@Html.EditorFor(model => model.ImageUrl)*@
-                @Html.ValidationMessageFor(model => model.ImageUrl)
-            </div>
-        </div>
-        <input id="searchTextField" type="text" size="50" placeholder="Where you live.." name="Address">
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateTimeOfTheEvent, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <script>
-                    $(function () {
-                        $("#DateTimeOfTheEvent").datepicker();
-                    });
-                </script>
-                <input type="text" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent">
-                @Html.ValidationMessageFor(model => model.DateTimeOfTheEvent)
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Interests, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @foreach (Interext.Models.Interest item in ViewBag.AllInterests)
-                {
-                    <input type="checkbox" name="Interests" value="@item.Id">@Html.DisplayFor(modelItem => item.Title)<br>
-                }
-                @*@Html.Action("ChooseInterests", "Interest", new { id = 0, fieldName= "Interest" });*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+                    </div>
+                </div>
+            }
+        </article>
     </div>
-}
+</div>
+<div id="sidebar" class="right-sidebar">
+    <ul>
+        <li class="widget">
+            <h3>YOUR EVENT DRAFT</h3>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+            <div class="event-box" data-src="/Content/images/example-images/event1.jpg" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
+                <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url(https://localhost:44301/Content/images/example-images/event1.jpg) 50% 49% / cover no-repeat;">
+                    <div>
+                        <a href="/Event/Details?Id=1" class="event-box-content right" style="background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.46);">
+                            <div class="event-date" id="draftDate">15.5</div>
+                            <div class="event-title" id="draftTitle">Evening walks with dogs</div>
+                            <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>Hadera, Israel</div>
+                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">2-5</span></div>
+                            <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">20-30</span></div>
+                            <div class="event-gender-container">Gender: <span id="draftGender">Female</span></div>
+                            <div class="event-by-person">Created by <img src="/Content/images/example-images/sash.jpg"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </li>
+    </ul>
 </div>
 
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/eventPageJs")
+    @Scripts.Render("~/bundles/colorPickerJs")
 }

@@ -1,0 +1,214 @@
+﻿/** 
+* Blog single
+*/
+#main > .container {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.event-page-content {
+    padding-top:36px;
+}
+    .event-page-content .event-intro-wrapper {
+        background-color:#68D999;
+        background-position:center;
+        background-size:cover;
+        
+        
+    }
+    .event-page-content .event-intro {
+        background-color:rgba(0,0,0,0.5);
+        padding:0 30px 30px 30px;
+        margin-left:52px;
+        color:#fff;
+    }
+#content .event-page-content h1.event-title {
+	
+	margin:0 0 22px 0;	
+	position: relative;
+    float:left;
+    color:#fff;
+}
+
+.event-page-content .event-date {
+    float:right;
+    font-size:50px;
+    font-weight:200;
+    line-height:60px;
+}
+
+.event-page-content .event-details {
+   
+    float:left;
+}
+    .event-page-content .event-details .fa-map-marker {
+        margin-right:5px;
+    }
+    .event-page-content .event-details img {
+        height:30px;
+        width:30px;
+        border:1px solid #fff;
+    }
+    .event-page-content .event-details a {
+        display:block;
+        margin-top:62px;
+    }
+    .event-page-content .event-details img {
+        display:block;
+        float:left;
+        margin:-5px 10px 0 10px ;
+       
+    }
+    .event-page-content .event-details .createdby {
+        float:left;
+        color:#fff;
+    }
+        .event-page-content .event-details .creator-name {
+            float:left;
+            color:#fff;
+        }
+
+.event-page-content table.event-restrictions {
+    float:right;
+}
+.event-page-content table.event-restrictions tr td:first-child {
+        padding-right: 20px;
+        height: 25px;
+        color: #bdbdbd;
+    }
+
+.event-page-content .event-desc {
+	margin-top: 0 !important;
+}
+.page-content,
+.event-desc  {
+	position: relative;
+}
+.event-page-content .event-desc, .event-page-content .create-form{
+	margin: 22px 0;
+	padding-left: 52px;
+}
+.event-page-content .create-form .create-basic-info {
+    float:left;
+    width:48%;
+}
+.event-page-content .create-form .create-more-info {
+    float:right;
+    width:48%;
+}
+.create-form .create-basic-info .full-control {
+    width:100%;
+    
+}
+#content .event-page-content.create-page .event-intro-wrapper .event-intro {
+    padding-bottom : 0px;
+    background-color:#333;
+}
+#content .event-page-content.create-page .event-intro-wrapper h1.event-title{
+    margin-bottom : 0px;
+}
+#content .event-page-content.create-page input[type="submit"] {
+    width:100%;
+    margin-top:43px;
+}
+.input-with-image-wrapper
+{
+    position: relative;
+}
+
+.insert-image-button {
+    display: inline-block;
+  width: 20px;
+  height: 20px;
+  position:absolute;
+  right: 11px;
+  top: 13px;
+
+color:#bfbfbf;
+font-size:20px;
+}
+.input-with-image-wrapper:hover .insert-image-button {
+    color:#68D999;
+}
+.fa.fa-calendar.insert-image-button {
+    right:11px;
+}
+.fa.fa-map-marker.insert-image-button {
+    right:7px;
+}
+.short-textbox {
+    width:60px;
+}
+.choose-bg-color-text {
+    margin:10px 0 0 10px;
+}
+.choose-bg-alpha-text {
+    margin-top:14px;
+}
+#slider {
+    margin:14px 0 0 8px;
+    width:140px;
+}
+#slider a {
+    left:80%;
+}
+
+#sidebar .join-event {
+    width:100%;
+}
+
+
+
+.post-audio,
+.post-video {
+	margin-bottom: 22px;
+}
+
+#ozy-share-div>span {
+	line-height: 33px;
+	display: block;
+	float: left;
+}
+#ozy-share-div>a {
+	font-size: 26px;
+	text-decoration: none;
+	border-radius: 3px;
+	background-color: #F0F0F0;
+    display: inline-block;
+    margin-left: 5px;
+	padding: 6px;
+	transition: all .2s;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;	
+}
+#ozy-share-div.ozy-share-div-blog {
+	border-top: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+	padding: 10px 0;
+	text-align: right;
+}
+#ozy-share-div>a>span {
+	opacity:0.5;
+		-moz-opacity:0.5;
+		-webkit-opacity:0.5;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+		filter: alpha(opacity=50);	
+}
+#ozy-share-div>a:hover {
+	background-color:transparent !important;
+}
+
+.chat-transcript {
+	margin-bottom: 24px;
+}
+.chat-row {
+	margin-bottom: 12px;
+}
+.chat-row .fn {
+	font-weight: 700;
+}
+.chat-row .chat-text {
+	border: 1px solid #dedede;
+	border-radius: 3px;	
+	padding: 12px;
+}

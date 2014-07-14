@@ -7,10 +7,10 @@
 }
 
 /************************************************
-	-	BASIC CAPTIONS AND COVERS PER mega-entry	-
+	-	BASIC CAPTIONS AND COVERS PER event-box	-
 ************************************************/
 
-.mega-covercaption					{	padding:5px 5px;
+.event-box-content					{	padding:5px 5px;
 										box-sizing:border-box;
 										-moz-box-sizing:border-box;
 										-webkit-box-sizing:border-box;
@@ -61,16 +61,16 @@
 .mega-title							{	 text-align: left; font-size:24px; line-height: 24px; color:#fff; font-weight:400; }
 .mega-title>a   					{    border: none !important; }
 .mega-date							{	 text-align: left; font-size:15px; color:#fff; font-weight:300; margin-top: 0px;}
-.mega-covercaption p				{	 text-align: left; font-size:13px; color:#fff; font-weight:400; margin-top:12px; }
-.mega-covercaption a.read-the-whole-story {	 color: #fff; text-decoration: none; }
-.mega-covercaption a:hover			{	 text-decoration: none; border-bottom: 0; }
+.event-box-content p				{	 text-align: left; font-size:13px; color:#fff; font-weight:400; margin-top:12px; }
+.event-box-content a.read-the-whole-story {	 color: #fff; text-decoration: none; }
+.event-box-content a:hover			{	 text-decoration: none; border-bottom: 0; }
 
-.page-template-page-megafolio-php .mega-withsocialbar.mega-covercaption { margin-bottom: 40px; }
+.page-template-page-megafolio-php .mega-withsocialbar.event-box-content { margin-bottom: 40px; }
 
-.mega-smallcaptions .mega-title		{
+.event-box-content .mega-title		{
 									font-size:18px; font-weight:700; text-transform: uppercase;
 									}
-.mega-smallcaptions .mega-date		{
+.event-box-content .mega-date		{
 									font-size:12px; font-weight:400; text-transform: uppercase; color:#fff;
 									}
 
@@ -78,8 +78,8 @@
 .mega-white .mega-title				{	color:#222222;}
 .mega-white .mega-date				{	color:#222222;}
 .mega-white p						{	color:#222222;}
-.mega-white.mega-covercaption a 		{	 color: #555; text-decoration: none; }
-.mega-white.mega-covercaption a:hover			{	 text-decoration: none; border-bottom: 0; }
+.mega-white.event-box-content a 		{	 color: #555; text-decoration: none; }
+.mega-white.event-box-content a:hover			{	 text-decoration: none; border-bottom: 0; }
 
 .mega-black .mega-title				{	color:#fff;}
 .mega-black .mega-date				{	color:#fff;}
@@ -125,7 +125,7 @@
 
 /** SET THE CAPTION SETTIGS UNDER LOWSIZE ENTRIES  **/
 
-.mega-lowsize .mega-covercaption p		{	display:none;}
+.mega-lowsize .event-box-content p		{	display:none;}
 
 .mega-lowsize .mega-title			{	font-size:18px;}
 
@@ -147,14 +147,14 @@
 							  -ms-transition: all 0.2s ease-out;
 							  left:0px !important;top:0px !important;bottom:auto !important
 						}
-.mega-entry-innerwrap:hover .mega-coverbuttons	{	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+.event-box-innerwrap:hover .mega-coverbuttons	{	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 													  filter: alpha(opacity=100);
 													  -moz-opacity: 1;
 													  -khtml-opacity: 1;
 													  opacity: 1;
 												}
 
-.mega-entry-innerwrap>div:first-child{ 
+.event-box-innerwrap>div:first-child{ 
 	width:100%;
 	height:100%;
 	background-color: transparent;
@@ -167,7 +167,7 @@
 			transition: all 0.3s ease-out;
 }
 
-.mega-entry-innerwrap:hover>div:first-child {
+.event-box-innerwrap:hover>div:first-child {
 	background-color: transparent;
 	background-color:rgba(0,0,0,0.2);
 }
@@ -199,7 +199,7 @@
 						}
 
 /*********************************************
-	-	SOCIAL BAR AT THE BOTTOM PER mega-entry	-
+	-	SOCIAL BAR AT THE BOTTOM PER event-box	-
 ***********************************************/
 
 .post-format { background-color: #0066ff; width:20px; text-align: center !important; }
@@ -221,15 +221,15 @@
 ******************************************************/
 
 
-	.mega-entry .mega-entry-innerwrap			{	border:5px solid #fff; }
-	.noborder .mega-entry .mega-entry-innerwrap	{	border:0px solid #fff;}
-	.noborder .mega-entry .mega-entry-innerwrap	{	border:0px solid #fff;}
+	.event-box .event-box-innerwrap			{	border:5px solid #fff; }
+	.noborder .event-box .event-box-innerwrap	{	border:0px solid #fff;}
+	.noborder .event-box .event-box-innerwrap	{	border:0px solid #fff;}
 
-	.light-bg-entries .mega-entry .mega-entry-innerwrap	{	background-color:#000 !important;}
-	.dark-bg-entries .mega-entry .mega-entry-innerwrap	{	background-color:rgb(0,0,0) !important; background-color:rgba(0,0,0,0.3) !important;}
+	.light-bg-entries .event-box .event-box-innerwrap	{	background-color:#000 !important;}
+	.dark-bg-entries .event-box .event-box-innerwrap	{	background-color:rgb(0,0,0) !important; background-color:rgba(0,0,0,0.3) !important;}
 
 
-	.mega-entry								{
+	.event-box								{
 
 											-moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;
 											position:absolute;
@@ -248,7 +248,7 @@
 
 
 
-	.mega-entry .mega-entry-innerwrap				{	width:100%;height:100%;position:relative;overflow:visible;z-index:2;
+	.event-box .event-box-innerwrap				{	width:100%;height:100%;position:relative;overflow:visible;z-index:2;
 											-moz-box-sizing: border-box; box-sizing: border-box; -webkit-box-sizing: border-box;
 											border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px;
 
@@ -262,30 +262,30 @@
 
 										}
 
-	.ie8 .mega-entry,
-	.ie8 .mega-entry .mega-entry-innerwrap,
-	.ie9 .mega-entry,
-	.ie9 .mega-entry .mega-entry-innerwrap	{	overflow:hidden;}
+	.ie8 .event-box,
+	.ie8 .event-box .event-box-innerwrap,
+	.ie9 .event-box,
+	.ie9 .event-box .event-box-innerwrap	{	overflow:hidden;}
 
-	.mega-entry-innerwrap.pagetop			{	-webkit-transform-origin: 50% 0% 0;
+	.event-box-innerwrap.pagetop			{	-webkit-transform-origin: 50% 0% 0;
 											-moz-transform-origin: 50% 0% 0;
 											transform-origin: 50% 0% 0;
 										}
 
-	.mega-entry-innerwrap.pagebottom			{	-webkit-transform-origin: 50% 100% 0;
+	.event-box-innerwrap.pagebottom			{	-webkit-transform-origin: 50% 100% 0;
 											-moz-transform-origin: 50% 100% 0;
 											transform-origin: 50% 100% 0;
 										}
 
-	.mega-entry-innerwrap.pagemiddle			{	-webkit-transform-origin: 50% 50% 0;
+	.event-box-innerwrap.pagemiddle			{	-webkit-transform-origin: 50% 50% 0;
 											-moz-transform-origin: 50% 50% 0;
 											transform-origin: 50% 50% 0;
 										}
 
-	.megafolio-container.norounded .mega-entry .mega-entry-innerwrap {
+	.event-boxes-container.norounded .event-box .event-box-innerwrap {
 										border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px;
 										}
-	.megafolio-container-splash.norounded .mega-entry .mega-entry-innerwrap {
+	.event-boxes-container-splash.norounded .event-box .event-box-innerwrap {
 										border-radius:0px; -moz-border-radius:0px; -webkit-border-radius:0px;
 										}
 
@@ -304,9 +304,9 @@
 
 	.ieimg	{	position:absolute; width:100%; top:0px; left:0px;z-index:0;}
 
-	.mega-mega-entry-added					{	visibility: hidden; }
-	/*.mega-mega-entry-added .mega-socialbar,*/
-	.mega-mega-entry-added .mega-covercaption	{	visibility: hidden}
+	.mega-event-box-added					{	visibility: hidden; }
+	/*.mega-event-box-added .mega-socialbar,*/
+	.mega-event-box-added .event-box-content	{	visibility: hidden}
 
 
 
@@ -577,9 +577,9 @@ li.filter							{	list-style:none;max-width:156px;background:#040404;line-height
 	-  EXAMPLES FOR COLORED BG OF ENTRIES in Example 10 -
 ************************************************************/
 
-.mega-entry.mega-bg-1 .mega-entry-innerwrap {	background-color:#f32390 !important;}
-.mega-entry.mega-bg-2 .mega-entry-innerwrap {	background-color:#d69b12 !important;}
-.mega-entry.mega-bg-3 .mega-entry-innerwrap {	background-color:#7bce8b !important;}
+.event-box.mega-bg-1 .event-box-innerwrap {	background-color:#f32390 !important;}
+.event-box.mega-bg-2 .event-box-innerwrap {	background-color:#d69b12 !important;}
+.event-box.mega-bg-3 .event-box-innerwrap {	background-color:#7bce8b !important;}
 
 .ozy-metro-icon {
 	display: block;
@@ -593,14 +593,14 @@ li.filter							{	list-style:none;max-width:156px;background:#040404;line-height
 	color: #ffffff;
 }
 
-.megafolio-gallery .mega-entry-innerwrap a {
+.megafolio-gallery .event-box-innerwrap a {
 	position: relative;
 	display: block;
 	width: 100%;
 	height: 100%;
 }
 
-.megafolio-gallery .mega-entry-innerwrap .fa {
+.megafolio-gallery .event-box-innerwrap .fa {
 	display: block;
 	position: absolute;
 	top: 50%;
@@ -630,7 +630,7 @@ li.filter							{	list-style:none;max-width:156px;background:#040404;line-height
 	transition: all .2s;	
 }
 
-.megafolio-gallery .mega-entry-innerwrap:hover .fa {
+.megafolio-gallery .event-box-innerwrap:hover .fa {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	-moz-opacity: 1;
@@ -639,5 +639,5 @@ li.filter							{	list-style:none;max-width:156px;background:#040404;line-height
 }
 
 /*fix for flickring on loading*/
-/*.mega-socialbar,.mega-covercaption,*/
+/*.mega-socialbar,.event-box-content,*/
 .load_more_blog{display:none;}

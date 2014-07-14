@@ -98,7 +98,7 @@
 							clearTimeout(container.data('resized'));
 
 							container.data('resized',setTimeout(function() {
-								reOrderOrdered(container,0,container.find('>.mega-entry.tp-ordered').length);
+								reOrderOrdered(container,0,container.find('>.event-box.tp-ordered').length);
 
 							},150));
 						});
@@ -108,7 +108,7 @@
 					******************************************************/
 
 					if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
-					    $(".mega-entry").click(function(){
+					    $(".event-box").click(function(){
 					        //we just need to attach a click event listener to provoke iPhone/iPod/iPad's hover event
 					        //strange
 					    });
@@ -139,7 +139,7 @@
 					// CATCH THE CONTAINER
 					var container=$(this);
 					var newentry=$(entry);
-					newentry.addClass("mega-entry-added");
+					newentry.addClass("event-box-added");
 					container.append(newentry);
 
 					var opt=container.data('opt');
@@ -236,13 +236,13 @@
 	////////////////////////////////////////////////////////
 	function prepairEntries(container,opt) {
 
-		container.find('>.mega-entry').each(function() {
+		container.find('>.event-box').each(function() {
 				var ent=$(this);
 				ent.removeClass('tp-layout-first-item').removeClass('tp-layout-last-item').removeClass('very-last-item');
-				ent.addClass("tp-notordered").addClass("mega-entry-added");
-				ent.wrapInner('<div class="mega-entry-innerwrap"><div></div></div>');
+				ent.addClass("tp-notordered").addClass("event-box-added");
+				ent.wrapInner('<div class="event-box-innerwrap"><div></div></div>');
 				//ent.find('.mega-socialbar').appendTo(ent)
-				var iw = ent.find('.mega-entry-innerwrap')
+				var iw = ent.find('.event-box-innerwrap')
 				/*if (opt.ie) {
 					iw.append('<img class="ieimg" src='+ent.data("src")+'>');
 				} else {*/
@@ -253,7 +253,7 @@
 				ent.find('.mega-show-more').each(function() {
 					var msm = $(this);
 
-					// SAVE THE ID OF THE mega-entry WHICH IS CORRESPONDING ON THE BUTTON
+					// SAVE THE ID OF THE event-box WHICH IS CORRESPONDING ON THE BUTTON
 					msm.data('entid',ent.attr('id'));
 
 					// HANDLING OF THE CLICK
@@ -277,15 +277,15 @@
 	////////////////////////////////////////////////////////
 	function prepairNewEntries(container,opt) {
 
-		container.find('>.mega-entry-added').each(function(i) {
+		container.find('>.event-box-added').each(function(i) {
 				var ent=$(this);
 				if (!ent.hasClass('tp-layout')) {
 
 						ent.removeClass('tp-layout-first-item').removeClass('tp-layout-last-item').removeClass('very-last-item');
 						ent.addClass("tp-notordered")
-						ent.wrapInner('<div class="mega-entry-innerwrap"></div>');
+						ent.wrapInner('<div class="event-box-innerwrap"></div>');
 						//ent.find('.mega-socialbar').appendTo(ent)
-						var iw = ent.find('.mega-entry-innerwrap')
+						var iw = ent.find('.event-box-innerwrap')
 						/*if (opt.ie) {
 							iw.append('<img class="ieimg" src='+ent.data("src")+'>');
 						} else {*/
@@ -296,7 +296,7 @@
 						ent.find('.mega-show-more').each(function() {
 							var msm = $(this);
 
-							// SAVE THE ID OF THE mega-entry WHICH IS CORRESPONDING ON THE BUTTON
+							// SAVE THE ID OF THE event-box WHICH IS CORRESPONDING ON THE BUTTON
 							msm.data('entid',ent.attr('id'));
 
 							// HANDLING OF THE CLICK
@@ -320,7 +320,7 @@
 	//	ADD NOT ORDERED TO THE ENTRIES   //
 	///////////////////////////////////////
 	function notOrdered(container) {
-		container.find('>.mega-entry.tp-layout').each(function() {
+		container.find('>.event-box.tp-layout').each(function() {
 			var ent=$(this);
 			ent.removeClass('tp-layout').addClass('tp-notordered');
 		});
@@ -344,7 +344,7 @@
 		
 		
 
-		container.find('>.mega-entry').each(function(i) {
+		container.find('>.event-box').each(function(i) {
 			var ent=$(this);
 
 			var rot = opt.filterChangeRotate;
@@ -379,28 +379,28 @@
 
 									if (opt.filterChangeAnimation=="fade") {
 										ent.transition({'scale':1, 'opacity':0,'rotate':0},opt.filterChangeSpeed);
-										ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
+										ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
 									}
 									else
 									if (opt.filterChangeAnimation=="scale") {
 										ent.transition({'scale':opt.filterChangeScale, 'opacity':0,'rotate':0},opt.filterChangeSpeed);
-										ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
+										ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
 									}
 									else
 									if (opt.filterChangeAnimation=="rotate") {
 										ent.transition({'scale':1, 'opacity':0,'rotate':rot},opt.filterChangeSpeed);
-										ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
+										ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
 									}
 									else
 									if (opt.filterChangeAnimation=="rotatescale") {
 										ent.transition({'scale':opt.filterChangeScale, 'opacity':0,'rotate':rot},opt.filterChangeSpeed);
-										ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
+										ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '0deg'},opt.filterChangeSpeed);
 									} else
 									if (opt.filterChangeAnimation=="pagetop" || opt.filterChangeAnimation=="pagebottom" || opt.filterChangeAnimation=="pagemiddle") {
 
-										ent.find('.mega-entry-innerwrap').removeClass("pagemiddle").removeClass("pagetop").removeClass("pagebottom").addClass(opt.filterChangeAnimation);
+										ent.find('.event-box-innerwrap').removeClass("pagemiddle").removeClass("pagetop").removeClass("pagebottom").addClass(opt.filterChangeAnimation);
 										ent.transition({'opacity':0},opt.filterChangeSpeed);
-										ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':0,perspective: '10000px',rotateX: '90deg'},opt.filterChangeSpeed);
+										ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':0,perspective: '10000px',rotateX: '90deg'},opt.filterChangeSpeed);
 									}
 
 								}
@@ -435,7 +435,7 @@
 		var outi=0;
 		var ini=0;
 
-		container.find('>.mega-entry').each(function(i) {
+		container.find('>.event-box').each(function(i) {
 			var ent=$(this);
 
 			var rot = opt.filterChangeRotate;
@@ -461,9 +461,9 @@
 					}
 					else
 					if (opt.filterChangeAnimation=="pagetop" || opt.filterChangeAnimation=="pagebottom" || opt.filterChangeAnimation=="pagemiddle") {
-							ent.find('.mega-entry-innerwrap').addClass(opt.filterChangeAnimation);
+							ent.find('.event-box-innerwrap').addClass(opt.filterChangeAnimation);
 							ent.transition({'opacity':0,duration:1,queue:false});
-							ent.find('.mega-entry-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '90deg',duration:1,queue:false});
+							ent.find('.event-box-innerwrap').transition({'scale':1, 'opacity':1,perspective: '10000px',rotateX: '90deg',duration:1,queue:false});
 					}
 
 				}
@@ -498,7 +498,7 @@
 
 
 		// SAVE THE ENTRIES IN AN ARRAY
-		var entries=container.find('>.mega-entry.tp-notordered');
+		var entries=container.find('>.event-box.tp-notordered');
 
 		// LET SEE HOW MANY LAYOUT ART WE HAVE 2-9 ARE THE PREMIUM GRIDS
 		var max_layout_art=12;
@@ -552,9 +552,9 @@
 
 			// tp-layout SHOWS THAT THE ITEM HAS ALREADY A LAYOUT
 			ent.addClass('tp-ordered tp-layout');
-			// SAVE THE LAYOUT TYPE IN EACH mega-entry
+			// SAVE THE LAYOUT TYPE IN EACH event-box
 			ent.data('layout',next_layout)
-			//SAVE THE CHILD INDEX IN THE mega-entry
+			//SAVE THE CHILD INDEX IN THE event-box
 			ent.data('child',i)
 			// MARK FIRST AND LAST ITEMS HERE
 			if (i==0) ent.addClass("tp-layout-first-item");
@@ -575,7 +575,7 @@
 		container.data('lastorder',lastorder);
 
 		//IF WE HAVE MORE ITEM TO ORDER, WE CAN CALL THE REKURSIVE FUNCTION AGAIN
-		if (container.find('>.mega-entry.tp-notordered').length>0)
+		if (container.find('>.event-box.tp-notordered').length>0)
 			reOrder(container,deep);
 		else
 			{
@@ -611,7 +611,7 @@
 
 
 		// SAVE THE ENTRIES IN AN ARRAY
-		var entries=container.find('>.mega-entry.tp-ordered');
+		var entries=container.find('>.event-box.tp-ordered');
 
 		// LET SEE HOW MANY LAYOUT ART WE HAVE 2-9 ARE THE PREMIUM GRIDS
 		var max_layout_art=12;
@@ -663,9 +663,9 @@
 
 			// tp-layout SHOWS THAT THE ITEM HAS ALREADY A LAYOUT
 			ent.addClass('tp-ordered tp-layout');
-			// SAVE THE LAYOUT TYPE IN EACH mega-entry
+			// SAVE THE LAYOUT TYPE IN EACH event-box
 			ent.data('layout',next_layout)
-			//SAVE THE CHILD INDEX IN THE mega-entry
+			//SAVE THE CHILD INDEX IN THE event-box
 			ent.data('child',i)
 			// MARK FIRST AND LAST ITEMS HERE
 			if (i==0) ent.addClass("tp-layout-first-item");
@@ -705,7 +705,7 @@
 	function findLastOrdered(container) {
 	   var lastitem;
 
-	   container.find('>.mega-entry.tp-layout.tp-ordered').each(function() {
+	   container.find('>.event-box.tp-layout.tp-ordered').each(function() {
 			lastitem=$(this);
 		});
 
@@ -813,12 +813,12 @@
 		var currentcolumn=0;
 		var layout=0;
 
-		var allelements=container.find('>.mega-entry.tp-layout').length;
+		var allelements=container.find('>.event-box.tp-layout').length;
 
 		// LET CREATE THE GIRDS
-		container.find('>.mega-entry.tp-layout').each(function(i) {
+		container.find('>.event-box.tp-layout').each(function(i) {
 			var ent=$(this);
-			var iw = ent.find('.mega-entry-innerwrap');
+			var iw = ent.find('.event-box-innerwrap');
 			layout=ent.data('layout');
 
 
@@ -1286,7 +1286,7 @@
 					timer_delay=(allelements-i)*opt.delay;
 			}*/
 
-			// PUT THE mega-entry IN THE RIGHT POSITION
+			// PUT THE event-box IN THE RIGHT POSITION
 			if (ie || ie9) {
 				ent.find('.mega-socialbar').animate({'width':w+'px'});
 				ent.animate({ 'scale':scal, 'opacity':opaa, width:w+"px", height:h+"px", left:xp+"px", top:yp+"px", 'paddingBottom':pv+"px", 'paddingRight':ph+"px"},{queue:false,duration:400});
@@ -1331,8 +1331,8 @@
 				setTimeout(function() {
 					ent.transition({ 'scale':scal, 'opacity':opaa,'rotate':rot, 'z-index':1,width:w, height:h, "top":yp+"px","left":xp+"px", 'paddingBottom':pv+"px", 'paddingRight':ph+"px",duration:opt.filterChangeSpeed,queue:false});
 					setTimeout(function() {
-						ent.find('.mega-entry-innerwrap').transition({'scale':eiscal, 'opacity':eiopaa,perspective: '10000px',rotateX: eirx,duration:opt.filterChangeSpeed,queue:false});
-						ent.removeClass('mega-entry-added');
+						ent.find('.event-box-innerwrap').transition({'scale':eiscal, 'opacity':eiopaa,perspective: '10000px',rotateX: eirx,duration:opt.filterChangeSpeed,queue:false});
+						ent.removeClass('event-box-added');
 					},50);
 					iw.transition({'background-position':'50% 49%', 'background-size':'cover',duration:opt.filterChangeSpeed,queue:false});
 				},timer_delay);

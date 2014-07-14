@@ -3,9 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Interexts</title>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,100,300,700" type="text/css">
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jquery-ui-style")
+    @Styles.Render("~/Content/shared-css")
+    @Styles.Render("~/Content/site-css")
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     @Scripts.Render("~/bundles/modernizr")
 
     @Scripts.Render("~/bundles/jquery")
@@ -14,37 +18,22 @@
     @RenderSection("scripts", required: false)
     @RenderSection("CssStyles", required: false)
 </head>
-<body class="page page-id-111 page-child parent-pageid-164 page-template page-template-page-megafolio-php">
-    <div class="none">
-        <p>
-            <a href="
-               ">Skip to Content</a>
-        </p>
-    </div>
-
-    <div id="main" class="">
-
-
-        <div id="header" class="header-v1">
+<body>
+    <div id="main">
+        <div id="header">
             <header>
                 <div class="container">
-                    <div id="title">
-                        <a href="http://contrast.freevision.me" style="font-size:50px; color:#000; font-weight:200; font-family:'Raleway'; text-decoration:none;">INTEREXTS</a>
-                    </div><!--#title-->
-
+                    <div id="logo" class="flipping-hover-area">
+                        <a href="~/">INTERE</a><a href="~/" class="flipping-text"><span data-title="X">X</span></a><a href="~/">TS</a>
+                    </div>
                     <div id="slide-menu"><a title="Side Menu" id="sidr-menu" href="#sidr"><span class="fa fa-reorder">&nbsp;</span></a></div><!--#side-menu-->
-                    @*@Html.Partial("_LoginPartial", new Interext.Models.BaseModel())*@
-                    @*@Html.Partial("_LoginPartial")*@
-                    @*@{Html.RenderAction("Index", "PartialView");}*@
-                @Html.Action("Index", "PartialView")
+                    @Html.Partial("_LoginPartial")
                     <div class="clear"></div>
-                </div><!--.container-->
+                </div>
             </header>
         </div>
-        <!--#header-->
         <div class="container">
             @*<div id="event-search"><a title="Event Search" id="event-search-menu" href="#event-search"><span class="fa fa-search">&nbsp;</span></a></div>*@
-            
             @RenderBody()
 
             <div class="clear">
