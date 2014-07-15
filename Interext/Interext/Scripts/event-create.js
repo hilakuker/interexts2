@@ -91,13 +91,18 @@ function initEvents() {
         var arrdate = date.split('/');
         $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]));
     });
-    $('#Location').on('input', function () {
+
+    $('.ui-autocomplete').on('click', '.ui-menu-item', function () {
+        $('.college').trigger('click');
+    });
+
+    $('#searchTextField').on('click', function () {
+        console.info("test")
         var locationIcon = $("#draftLocation").find("span");
         $("#draftLocation").text("");
         $("#draftLocation").append(locationIcon);
         $("#draftLocation").append($(this).val());
     });
-
     $('#ImageUrl').on('change', function () {
         var input = this;
         if (input.files && input.files[0]) {
