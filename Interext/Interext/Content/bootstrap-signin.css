@@ -31,7 +31,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .form-signin .form-signin-heading {
         text-align: center;
     }
-
+.form-signin .form-signin-heading .flipping-text {
+    color:#68D999;
+}
     .form-signin .checkbox {
         font-weight: normal;
     }

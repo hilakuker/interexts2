@@ -111,31 +111,7 @@
     width:100%;
     margin-top:43px;
 }
-.input-with-image-wrapper
-{
-    position: relative;
-}
 
-.insert-image-button {
-    display: inline-block;
-  width: 20px;
-  height: 20px;
-  position:absolute;
-  right: 11px;
-  top: 13px;
-
-color:#bfbfbf;
-font-size:20px;
-}
-.input-with-image-wrapper:hover .insert-image-button {
-    color:#68D999;
-}
-.fa.fa-calendar.insert-image-button {
-    right:11px;
-}
-.fa.fa-map-marker.insert-image-button {
-    right:7px;
-}
 .short-textbox {
     width:60px;
 }

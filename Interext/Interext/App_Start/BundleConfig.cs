@@ -39,7 +39,9 @@ namespace Interext
             bundles.Add(new ScriptBundle("~/bundles/contrastJs").Include(
                       "~/Scripts/contrast/contrast-global-plugins.js",
                       "~/Scripts/contrast/contrast.js",
-                      "~/Scripts/contrast/megafolio/js/megafolio-init.js"
+                      "~/Scripts/contrast/megafolio/js/megafolio-init.js",
+                      "~/Scripts/hoverIntent.js",
+                      "~/Scripts/main.js"
                       ));
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
                         "~/Scripts/event-create.js"));

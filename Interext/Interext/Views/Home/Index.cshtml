@@ -1,4 +1,10 @@
 ﻿@model IEnumerable<Interext.Models.Event>
+
+    @if (!Request.IsAuthenticated)
+    {
+        Response.Redirect("~/Account/Login?returnUrl="
+            + Request.Url.LocalPath);
+    }
 @{
     ViewBag.Title = "Home Page";
 }

@@ -7,7 +7,7 @@
 		
 		/* Body Background Styling
 		/*-----------------------------------------------------------------------------------*/
-		body{background-color:#333333;background-repeat:inherit;}
+		body{/*background-color:#333333;*/background-repeat:inherit;}
 		#sidr{display:none;}
 	
 		/* Layout and Layout Styling
@@ -38,9 +38,9 @@
 		
 		/* Forms
 		/*-----------------------------------------------------------------------------------*/
-		input:not([type=submit]):not([type=file]),textarea{background-color:rgba(255,255,255,1);}
+		/*input:not([type=submit]):not([type=file]),textarea{background-color:rgba(255,255,255,1);}
 		input:not([type=submit]):not([type=file]):hover,textarea:hover,
-		input:not([type=submit]):not([type=file]):focus,textarea:focus{border-color:#007aff;}
+		input:not([type=submit]):not([type=file]):focus,textarea:focus{border-color:#007aff;}*/
 		.rsMinW .rsBullet span{background-color:rgb(255,255,255);}
 		.rsMinW .rsArrowIcn,#to-top-button,.load_more_blog,input[type=button],input[type=submit]{background-color:rgb(0,0,0);color:rgb(255,255,255);border:1px solid rgba(0,0,0,1);}
 		.rsMinW .rsArrowIcn:hover,#to-top-button:hover,.load_more_blog:hover,input[type=button]:hover,input[type=submit]:hover{background-color:rgb(255,255,255);color:rgb(0,0,0);border:1px solid rgba(240,240,240,1);}

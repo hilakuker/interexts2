@@ -249,6 +249,8 @@
     <Content Include="Content\images\colorpicker\slider.png" />
     <Content Include="Content\images\d6f19693-413c-4ebb-a369-e6f93763a945\2.jpg" />
     <Content Include="Content\images\example-images\292380.jpg" />
+    <Content Include="Content\images\example-images\arrow_up.png" />
+    <Content Include="Content\images\example-images\dima.jpg" />
     <Content Include="Content\images\example-images\event1.jpg" />
     <Content Include="Content\images\example-images\event2.jpg" />
     <Content Include="Content\images\example-images\event3.jpg" />
@@ -592,7 +594,10 @@
     <Content Include="Scripts\contrast\megafolio\js\megafolio-init-old2.js" />
     <Content Include="Scripts\contrast\megafolio\js\megafolio-init.js" />
     <Content Include="Scripts\event-create.js" />
+    <Content Include="Scripts\google.js" />
+    <Content Include="Scripts\googleapi.js" />
     <Content Include="Scripts\googlemaps.js" />
+    <Content Include="Scripts\hoverIntent.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.mobile-1.4.2.min.map" />
@@ -605,6 +610,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

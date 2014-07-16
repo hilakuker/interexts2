@@ -8,10 +8,11 @@
     @*@Styles.Render("~/Content/css")*@
     @*@Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/bootstrap")*@
-    
     @Styles.Render("~/Content/jquery-ui-style")
-    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/shared-css")
     @Styles.Render("~/Content/signinPageCss")
+
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @RenderSection("scripts", required: false)
     @RenderSection("CssStyles", required: false)
