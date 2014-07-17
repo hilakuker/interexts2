@@ -2,25 +2,49 @@
 @model Interext.Models.ImageModel
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "topMenuForm" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @if (Model != null)
-            {
-                <a href="~/Account/ShowProfile"><img src="@Model.ImageUrl" /></a>
-            }
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @*@if (Model != null)
+                    {
+                        <a href="~/Account/ShowProfile"><img src="@Model.ImageUrl" /></a>
+                    }*@
+                <!--test-->
+                <img src="/Content/images/example-images/profile-pic.jpg" />
+                <div class="top-sub-menu">
+                    <div class="arrow"></div>
+                    <ul>
+                        <li><a href="~/Account/ShowProfile">View your profile</a></li>
+                        <li>
+                            <a href="javascript:document.getElementById('topMenuForm').submit()">Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <span class="fa fa-plus">&nbsp;</span>
+                <div class="top-sub-menu">
+                    <div class="arrow"></div>
+                    <ul>
+                        <li><a href="~/Event/Create">Create an event</a></li>
+                        <li>
+                            <a href="#">Create a group/place</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class="search-txt-container">Search for event <span class="fa fa-search">&nbsp;</span></div></li>
+</ul>
     }
 }
 else
 {
     @*<ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "ChooseRegisterProvider", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>*@
+            <li>@Html.ActionLink("Register", "ChooseRegisterProvider", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>*@
 }

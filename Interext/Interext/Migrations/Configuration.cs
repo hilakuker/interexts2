@@ -26,7 +26,7 @@ namespace Interext.Migrations
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
-                var user = new ApplicationUser { UserName = "sash" };
+                var user = new ApplicationUser { UserName = "sashgmailcom", Email="sash@gmail.com" };
 
                 userManager.Create(user, "123456");
                 roleManager.Create(new IdentityRole { Name = "admin" });
