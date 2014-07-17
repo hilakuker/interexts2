@@ -37,4 +37,11 @@
     $(function () {
         var autocomplete = new google.maps.places.Autocomplete(pac_input);
     });
+
+    $(document).ready(function () {
+        var jq = $.noConflict();
+        $(function () {
+            $("#BirthDate").datepicker();
+        });
+    });
 });

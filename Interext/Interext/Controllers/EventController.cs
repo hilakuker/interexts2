@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Interext.Models;
 using System.IO;
 using Interext.OtherCalsses;
+using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace Interext.Controllers
 {
@@ -45,7 +47,7 @@ namespace Interext.Controllers
             //model.AllInterests = db.Interests.ToList();
             //return View(model);
 
-            ViewBag.AllInterests = db.Interests.ToList();
+            //ViewBag.AllInterests = db.Interests.ToList();
             return View();
         }
 
@@ -54,60 +56,72 @@ namespace Interext.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,ImageUrl,DateTimeOfTheEvent")] Event @event, HttpPostedFileBase ImageUrl, string[] Interests)
-        //{
-        //public ActionResult Create(HttpPostedFileBase ImageUrl)
+        public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
             if (ModelState.IsValid)
             {
-                //Event dbEvent = new Event();
-                ImageSaver.SaveImage(ImageUrl, Server.MapPath("~/App_Data/uploads/events"), ImageUrl.FileName);
-                //if (ImageUrl != null)
-                //{
-                //    if (ImageUrl.ContentLength > 0)
-                //    {
-                //        var fileName = Path.GetFileName(ImageUrl.FileName);
-                //       // var uri = "~/App_Data/uploads/events" + @event.Id;
-                //        // need to create folder for each event, the name of the folder is the id of the event
-                //        var path = Path.Combine(Server.MapPath("~/App_Data/uploads/events"), fileName);
-                //        ImageUrl.SaveAs(path);
-                //        @event.ImageUrl = fileName;
-                //    }
-                //}
-                @event.DateTimeCreated = DateTime.Now;
-                //dbEvent.DateTimeOfTheEvent = @event.DateTimeOfTheEvent;
-                //dbEvent.Description = @event.Description;
-                //dbEvent.ImageUrl = @event.ImageUrl;
-
-
-
-                @event.Interests = new List<Interest>();
-
-
-
-
-                //dbEvent.Place = @event.Place;
-                //dbEvent.Title = @event.Title;
-                //dbEvent.UsersAttending = @event.UsersAttending;
-                //dbEvent.UsersInvited = @event.UsersInvited;
-
-                foreach (string interestID in Interests)
+                Event eventToCreate = new Event()
                 {
-                    int id = int.Parse(interestID);
-                    Interest interest = db.Interests.SingleOrDefault(x => x.Id == id);
-                    if (interest != null)
-                    {
-                        @event.Interests.Add(interest);
-                    }
-                }
-
-                db.Events.Add(@event);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    AgeOfParticipantsMax = model.AgeOfParticipantsMax,
+                    AgeOfParticipantsMin = model.AgeOfParticipantsMin,
+                    NumOfParticipantsMax = model.NumOfParticipantsMax,
+                    NumOfParticipantsMin = model.NumOfParticipantsMin,
+                    ImageUrl = model.ImageUrl,
+                    GenderParticipant = model.GenderParticipant,
+                    BackroundColor = model.BackroundColor,
+                    BackroundColorCapacity = model.BackroundColorCapacity,
+                    DateTimeCreated = DateTime.Now,
+                    Place = model.Place,
+                    Title = model.Title,
+                    Description = model.Description,
+                    SideOfText = model.SideOfText,
+                    DateTimeOfTheEvent = model.DateTimeCreated,
+                };
             }
-
-            return View(@event);
+            return View(model);
         }
+        //public ActionResult Create([Bind(Include = "Id,Title,Description,ImageUrl,DateTimeOfTheEvent")] Event @event, HttpPostedFileBase ImageUrl, string[] Interests)
+        ////{
+        ////public ActionResult Create(HttpPostedFileBase ImageUrl)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //Event dbEvent = new Event();
+        //        ImageSaver.SaveImage(ImageUrl, Server.MapPath("~/App_Data/uploads/events"), ImageUrl.FileName);
+        //        @event.DateTimeCreated = DateTime.Now;
+        //        //dbEvent.DateTimeOfTheEvent = @event.DateTimeOfTheEvent;
+        //        //dbEvent.Description = @event.Description;
+        //        //dbEvent.ImageUrl = @event.ImageUrl;
+
+
+
+        //        @event.Interests = new List<Interest>();
+
+
+
+
+        //        //dbEvent.Place = @event.Place;
+        //        //dbEvent.Title = @event.Title;
+        //        //dbEvent.UsersAttending = @event.UsersAttending;
+        //        //dbEvent.UsersInvited = @event.UsersInvited;
+
+        //        foreach (string interestID in Interests)
+        //        {
+        //            int id = int.Parse(interestID);
+        //            Interest interest = db.Interests.SingleOrDefault(x => x.Id == id);
+        //            if (interest != null)
+        //            {
+        //                @event.Interests.Add(interest);
+        //            }
+        //        }
+
+        //        db.Events.Add(@event);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(@event);
+        //}
 
         // GET: /Event/Edit/5
         public ActionResult Edit(int? id)
@@ -174,5 +188,19 @@ namespace Interext.Controllers
             }
             base.Dispose(disposing);
         }
+        public ActionResult GetUsers()
+        {
+            List<ChooseUsersViewModel> userList = new List<ChooseUsersViewModel>();
+            foreach (ApplicationUser user in db.Users.ToList())
+            {
+                userList.Add(new ChooseUsersViewModel()
+                {
+                    ImageUrl = user.ImageUrl,
+                    UserName = string.Format ("{0} {1}",user.FirstName, user.LastName), 
+                    Checked = false});
+            }
+            return View(userList);
+        }
+
     }
 }

@@ -6814,3 +6814,7 @@ td.visible-print {
     display: none !important;
   }
 }
+.small-user-pic {
+        height:10px;
+        width:10px;
+}
