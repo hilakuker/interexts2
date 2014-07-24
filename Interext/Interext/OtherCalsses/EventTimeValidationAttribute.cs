@@ -27,11 +27,14 @@ namespace Interext.OtherCalsses
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime eventDateTime = (DateTime) value;
-            // Check to see if the value is greater than the other property value
-            if (eventDateTime < DateTime.Now)
+            if (value != null)
             {
-                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                DateTime? eventDateTime = (DateTime)value;
+                // Check to see if the value is greater than the other property value
+                if (eventDateTime < DateTime.Now)
+                {
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                }
             }
             return null;
         }

@@ -460,7 +460,13 @@ namespace Interext.Controllers
             var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
             string gender = getGender(externalIdentity);
             var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
-            var birthDate = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:birthdate").Value;
+            string birthDate = string.Empty;
+            DateTime birthdate = DateTime.Now.Date;
+            if (externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:birthdate") != null)
+            {
+                birthDate = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:birthdate").Value;
+                birthdate = Convert.ToDateTime(birthDate);
+            }
             var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
             //var emailClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
             userToReturn = new ApplicationUser()
@@ -470,7 +476,8 @@ namespace Interext.Controllers
                 LastName = lastName,
                 Email = email,
                 Gender = gender,
-                ImageUrl = imageURL
+                ImageUrl = imageURL,
+                BirthDate = birthdate
             };
             return userToReturn;
         }

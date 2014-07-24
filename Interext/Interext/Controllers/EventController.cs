@@ -58,6 +58,7 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 Event eventToCreate = new Event()
@@ -77,6 +78,8 @@ namespace Interext.Controllers
                     SideOfText = model.SideOfText,
                     DateTimeOfTheEvent = model.DateTimeCreated,
                 };
+                db.Events.Add(eventToCreate);
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }

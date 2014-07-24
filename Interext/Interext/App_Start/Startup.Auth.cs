@@ -30,8 +30,10 @@ namespace Interext
             //   consumerSecret: "");
             var x = new FacebookAuthenticationOptions();
             x.Scope.Add("email");
-            x.AppId = "650693548342259";
-            x.AppSecret = "f63ea2f17a0874493962be19e5344834";
+            x.Scope.Add("user_birthday");
+            x.Scope.Add("user_interests");
+            x.AppId = "254814987975469";
+            x.AppSecret = "1dfee651b4fbaf3f4a512a4129b45242";
             x.Provider = new FacebookAuthenticationProvider()
             {
                 OnAuthenticated = async context =>

@@ -1,4 +1,6 @@
-﻿@model Interext.Models.EventViewModel
+﻿<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+@model Interext.Models.EventViewModel
 @section CssStyles{
     @Styles.Render("~/Content/eventPageCss")
     @Styles.Render("~/Content/colorPickerCss")
@@ -36,9 +38,11 @@
                         @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
                         <div class="input-with-image-wrapper">
 
-                            <input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />
+                        @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "searchTextField" })
 
-                            <span class="fa fa-map-marker insert-image-button"></span>
+                        @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
+
+                        <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
                     </div>
@@ -96,11 +100,12 @@
                             <option value="Female" selected="selected">Female</option>
                         </select>
 
-                        <ul>
+                        @*<ul>
                             <a href="#" id="popup" onclick="show_popup()">Invite Users</a>
-                            @*<li onclick="TINY.box.show({html:'content here',width:300,height:150})">Invite Users</li>*@
-                        </ul>
-                    </div>
+                            <li onclick="TINY.box.show({html:'content here',width:300,height:150})">Invite Users</li>
+                        </ul>*@
+                  <input type="submit" value="Create" class="btn btn-special" />
+              </div>
                 </div>
             }
         </article>
@@ -134,10 +139,12 @@
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/timePicker")
-@Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Content/jquery-ui-style")
+   @Scripts.Render("~/bundles/timePicker")
+ @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/eventPageJs")
     @Scripts.Render("~/bundles/colorPickerJs")
     @Scripts.Render("~/bundles/google")
 }
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>

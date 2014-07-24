@@ -16,8 +16,8 @@ function isPositiveInteger(s) {
     return true;
 }
 function pageInit() {
-    $("#DateTimeOfTheEvent").datetimepicker();
-  //  $("#DateTimeOfTheEvent").datepicker("option", "dateFormat", "dd/mm/yy");
+    $("#DateTimeOfTheEvent").datepicker();
+    $("#DateTimeOfTheEvent").datepicker("option", "dateFormat", "dd/mm/yy");
     $("#slider").slider({
         range: "min",
         value: 80,
@@ -126,6 +126,13 @@ function initEvents() {
         $("#draftLocation").append(locationIcon);
         $("#draftLocation").append($(this).val());
     });
+    $('#searchTextField').on('change', function () {
+        console.info("test")
+        var locationIcon = $("#draftLocation").find("span");
+        $("#draftLocation").text("");
+        $("#draftLocation").append(locationIcon);
+        $("#draftLocation").append($(this).val());
+    });
     $('#ImageUrl').on('change', function () {
         var input = this;
         if (input.files && input.files[0]) {
@@ -173,10 +180,10 @@ $(document).ready(function () {
         });
     });
 
-    $(document).ready(
-    function show_popup() {
-        TINY.box.show({ html: 'content here', width: 300, height: 150 })
-        return false
-    }
-    );
+    //$(document).ready(
+    //function show_popup() {
+    //    TINY.box.show({ html: 'content here', width: 300, height: 150 })
+    //    return false
+    //}
+    //);
 });
