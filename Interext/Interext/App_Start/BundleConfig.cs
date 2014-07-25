@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using Interext.App_Start;
+using System.Web;
 using System.Web.Optimization;
 
 namespace Interext
@@ -8,10 +9,14 @@ namespace Interext
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+<<<<<<< HEAD
             bundles.Add(new ScriptBundle("~/bundles/ajax").Include(
                 "~/Scripts/MicrosoftAjax.js",
                 "~/Scripts/MicrosoftMvcAjax.js",
                 ));
+=======
+            
+>>>>>>> origin/master
             bundles.Add(new ScriptBundle("~/bundles/google").Include(
   "~/Scripts/jquery-{version}.js",
   "~/Scripts/jquery-ui-{version}.js",
@@ -38,7 +43,8 @@ namespace Interext
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                      "~/Scripts/jquery-ui-{version}.js"));
+                      "~/Scripts/jquery-ui-{version}.js",
+                      "~/Scripts/jquery-ui-timepicker-addon"));
 
             bundles.Add(new ScriptBundle("~/bundles/contrastJs").Include(
                       "~/Scripts/contrast/contrast-global-plugins.js",
@@ -47,8 +53,13 @@ namespace Interext
                       "~/Scripts/hoverIntent.js",
                       "~/Scripts/main.js"
                       ));
+
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
                         "~/Scripts/event-create.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/timePicker").Include( 
+                        "~/Scripts/tinybox.js",
+                        "~/Scripts/timepicker.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
                         "~/Scripts/colorpicker/colorpicker.js",
@@ -69,7 +80,8 @@ namespace Interext
 
             bundles.Add(new StyleBundle("~/Content/jquery-ui-style").Include(
                 "~/Content/themes/base/jquery-ui.css",
-                "~/Content/themes/base/jquery.ui.datepicker.css"
+                "~/Content/themes/base/jquery.ui.datepicker.css",
+                "~/Content/themes/base/jquery-ui-timepicker-addon.js"
                      ));
 
             bundles.Add(new StyleBundle("~/Content/eventsPageCss").Include(
@@ -94,10 +106,6 @@ namespace Interext
             bundles.Add(new StyleBundle("~/Content/colorPickerCss").Include(
                             "~/Content/css/site/colorpicker.css"
                                  ));
-
-
-
-
         }
     }
 }

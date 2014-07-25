@@ -1,4 +1,6 @@
-﻿@model Interext.Models.EventViewModel
+﻿<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+@model Interext.Models.EventViewModel
 @section CssStyles{
     @Styles.Render("~/Content/eventPageCss")
     @Styles.Render("~/Content/colorPickerCss")
@@ -30,16 +32,17 @@
 
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
-
                         <div class="input-with-image-wrapper">
-                            @Html.TextBoxFor(m => m.DateTimeOfTheEvent, new { @class = "form-control full-control", @placeholder = "Date of the event" })
-                            <span class="fa fa-calendar insert-image-button"></span>
+                            <input type="text" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" class="form-control full-control" placeholder="Date of the event" />
                         </div>
-                        @Html.ValidationMessageFor(model => model.DateTimeOfTheEvent)
-
+                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
                         <div class="input-with-image-wrapper">
-                            <input type="text" class="form-control full-control" id="Location" placeholder="Location" />
-                            <span class="fa fa-map-marker insert-image-button"></span>
+
+                        @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "searchTextField" })
+
+                        @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
+
+                        <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
                     </div>
@@ -77,12 +80,27 @@
                         </select>
                         <br />
                         Number of participants:
+<<<<<<< HEAD
                         <input id="txtNumOfParticipantsFrom" type="text" class="short-field" placeholder="From" />
                         <input id="txtNumOfParticipantsTo" type="text" class="short-field" placeholder="To" />
                         <br />
                         Age of the participants:
                         <input id="txtAgeOfParticipantsFrom" type="text" class="short-field" placeholder="From" />
                         <input id="txtAgeOfParticipantsTo" type="text" class="short-field" placeholder="To" />
+=======
+                        @Html.TextBoxFor(m => m.NumOfParticipantsMin, new { @id = "txtNumOfParticipantsFrom", @class = "short-textbox", @placeholder = "Min" })
+                        @Html.TextBoxFor(m => m.NumOfParticipantsMax, new { @id = "txtNumOfParticipantsTo", @class = "short-textbox", @placeholder = "Max" })
+                        @*<input id="txtNumOfParticipantsFrom" type="text" class="short-textbox" placeholder="From" />
+                            <input id="txtNumOfParticipantsTo" type="text" class="short-textbox" placeholder="To" />*@
+                        <br />
+                        Age of the participants:
+                        @Html.TextBoxFor(m => m.NumOfParticipantsMin, new { @id = "txtAgeOfParticipantsFrom", @class = "short-textbox", @placeholder = "Min" })
+                        @Html.ValidationMessageFor(m => m.NumOfParticipantsMin)
+                        @Html.TextBoxFor(m => m.NumOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-textbox", @placeholder = "Max" })
+                        @Html.ValidationMessageFor(m => m.NumOfParticipantsMax)
+                        @*<input id="txtAgeOfParticipantsFrom" type="text" class="short-textbox" placeholder="From" />
+                            <input id="txtAgeOfParticipantsTo" type="text" class="short-textbox" placeholder="To" />*@
+>>>>>>> origin/master
                         <br />
                         Gender of the participants:
                         <select id="dpdGender">
@@ -91,26 +109,18 @@
                             <option value="Female" selected="selected">Female</option>
                         </select>
 
-                        @*   @Html.LabelFor(model => model.Interests, new { @class = "control-label col-md-2" })
-
-                            @foreach (Interext.Models.Interest item in ViewBag.AllInterests)
-                            {
-                                <input type="checkbox" name="Interests" value="@item.Id">@Html.DisplayFor(modelItem => item.Title)<br>
-                            }*@
-                        @*@Html.Action("ChooseInterests", "Interest", new { id = 0, fieldName= "Interest" });*@
-
-
-
-
-                        <input type="submit" value="Create" class="btn btn-special" />
-
-
-                    </div>
+                        @*<ul>
+                            <a href="#" id="popup" onclick="show_popup()">Invite Users</a>
+                            <li onclick="TINY.box.show({html:'content here',width:300,height:150})">Invite Users</li>
+                        </ul>*@
+                  <input type="submit" value="Create" class="btn btn-special" />
+              </div>
                 </div>
             }
         </article>
     </div>
 </div>
+
 <div id="sidebar" class="right-sidebar">
     <ul>
         <li class="widget">
@@ -132,15 +142,18 @@
                     </div>
                 </div>
             </div>
-
-
         </li>
     </ul>
 </div>
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+   @Scripts.Render("~/bundles/timePicker")
+ @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/eventPageJs")
     @Scripts.Render("~/bundles/colorPickerJs")
+    @Scripts.Render("~/bundles/google")
 }
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>

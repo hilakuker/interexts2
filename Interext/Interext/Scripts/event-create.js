@@ -3,6 +3,12 @@
         input = input[1];
     return input;
 }
+//function validatenumbers()
+//{
+//    if (
+//    $("#txtNumOfParticipantsFrom").val > $("#txtNumOfParticipantsTo").val)
+//}
+
 function isPositiveInteger(s) {
     var i = +s; // convert to a number
     if (i < 0) return false; // make sure it's positive
@@ -30,11 +36,11 @@ function pageInit() {
     });
 }
 
-function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer)
-{
-        $(fromElement).on('input', function () {
-            var fromNumber = $(this).val();
-            var toNumber = $(toElement).val();
+function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
+    $(fromElement).on('input', function () {
+        var fromNumber = $(this).val();
+        var toNumber = $(toElement).val();
+        if (validatenumbers(fromElement, toElement)) {
             $(rangeToShowContainer).css("display", "block");
             if (fromNumber == "") {
                 if (toNumber == "") {
@@ -55,10 +61,14 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
                     }
                 }
             }
-        });
-        $(toElement).on('input', function () {
-            var fromNumber = $(fromElement).val();
-            var toNumber = $(this).val();
+        }
+        else
+        { $(this).val("") }
+    });
+    $(toElement).on('input', function () {
+        var fromNumber = $(fromElement).val();
+        var toNumber = $(this).val();
+        if (validatenumbers(fromElement, toElement)) {
             $(rangeToShowContainer).css("display", "block");
             if (toNumber == "") {
                 if (fromNumber == "") {
@@ -79,7 +89,20 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
                     }
                 }
             }
-        });
+        }
+        else{ $(this).val("") }
+    });
+}
+
+function validatenumbers(minNumElementID, maxNumElementID) {
+    var validNum = true;
+    var minNumber = $(minNumElementID).val();
+    var maxNumber = $(maxNumElementID).val();
+    if (minNumber != "" && isPositiveInteger(minNumber) == false)
+    { validNum = false; }
+    else if (maxNumber != "" && isPositiveInteger(maxNumber) == false)
+    { validNum = false; }
+    return validNum;
 }
 
 function initEvents() {
@@ -103,16 +126,23 @@ function initEvents() {
         $("#draftLocation").append(locationIcon);
         $("#draftLocation").append($(this).val());
     });
+    $('#searchTextField').on('change', function () {
+        console.info("test")
+        var locationIcon = $("#draftLocation").find("span");
+        $("#draftLocation").text("");
+        $("#draftLocation").append(locationIcon);
+        $("#draftLocation").append($(this).val());
+    });
     $('#ImageUrl').on('change', function () {
         var input = this;
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $(".event-box-innerwrap").css("background-image", "url('" + e.target.result + "')");
-                
+
             }
             reader.readAsDataURL(input.files[0]);
-        }   
+        }
     });
 
     $('#dpdTextSide').on('change', function () {
@@ -129,11 +159,31 @@ function initEvents() {
         else {
             $("#draftGender").text(gender);
         }
-        
     });
 }
 $(document).ready(function () {
     pageInit();
     initEvents();
 
+    function showDialog(){
+        $("#frameDiv").html('<iframe id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" />').dialog("open");
+        $("#iframeinvitefriends").attr("src", "http://www.google.com");
+        return false;
+    }
+ 
+    $(document).ready(function() {
+        $("#frameDiv").dialog({
+            autoOpen: false,
+            modal: true,
+            height: 500,
+            width: 500
+        });
+    });
+
+    //$(document).ready(
+    //function show_popup() {
+    //    TINY.box.show({ html: 'content here', width: 300, height: 150 })
+    //    return false
+    //}
+    //);
 });

@@ -27,12 +27,16 @@ namespace Interext.Models
         public Place Place { get; set; } // the object Place with all the info .. like previous events .. if not specified then 
         //it is the place/location of the Group
 
-        public Group Group { get; set; } // the object Group with all the info .. like previous events .. the place/location 
-        //can be overriden by the specific location of the Event
-
         [Required]
         public DateTime DateTimeOfTheEvent { get; set; }
-
+        public string BackroundColor { get; set; }
+        public string BackroundColorCapacity { get; set; }
+        public string SideOfText { get; set; }
+        public int NumOfParticipantsMin { get; set; }
+        public int NumOfParticipantsMax { get; set; }
+        public int AgeOfParticipantsMin { get; set; }
+        public int AgeOfParticipantsMax { get; set; }
+        public string GenderParticipant { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public ICollection<UserProfile> UsersAttending { get; set; }
         public ICollection<UserProfile> UsersAwatingApproval { get; set; }

@@ -1,4 +1,6 @@
-﻿@model Interext.Models.RegisterViewModel
+﻿<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+@model Interext.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
 }
@@ -23,20 +25,12 @@
         @Html.ValidationMessageFor(m => m.Password)
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
         @Html.ValidationMessageFor(m => m.ConfirmPassword)
-
-        <script>
-            $(function () {
-                $("#BirthDate").datepicker();
-            });
-        </script>
         <input type="text" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth date" />
         @Html.ValidationMessageFor(m => m.BirthDate)
         <p></p>
         @*@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth date" })
             @Html.ValidationMessageFor(m => m.BirthDate)*@
-        <input id="searchTextField" type="text" size="50" placeholder="Where you live.." name="Address">
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    <input id="searchTextField" type="text" size="50" placeholder="Where you live.." name="Address" class="form-control">
         @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
         <span>Male</span>
         @Html.RadioButtonFor(m => m.Gender, "F")

@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
+src = 'https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places'
+$(function () {
     var pac_input = document.getElementById("searchTextField");
 
     (function pacSelectFirst(input) {
@@ -36,5 +38,12 @@
 
     $(function () {
         var autocomplete = new google.maps.places.Autocomplete(pac_input);
+    });
+
+    $(document).ready(function () {
+        var jq = $.noConflict();
+        $(function () {
+            $("#BirthDate").datepicker();
+        });
     });
 });
