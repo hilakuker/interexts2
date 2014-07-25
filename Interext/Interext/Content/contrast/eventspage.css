@@ -41,9 +41,9 @@
 		/*input:not([type=submit]):not([type=file]),textarea{background-color:rgba(255,255,255,1);}
 		input:not([type=submit]):not([type=file]):hover,textarea:hover,
 		input:not([type=submit]):not([type=file]):focus,textarea:focus{border-color:#007aff;}*/
-		.rsMinW .rsBullet span{background-color:rgb(255,255,255);}
-		.rsMinW .rsArrowIcn,#to-top-button,.load_more_blog,input[type=button],input[type=submit]{background-color:rgb(0,0,0);color:rgb(255,255,255);border:1px solid rgba(0,0,0,1);}
-		.rsMinW .rsArrowIcn:hover,#to-top-button:hover,.load_more_blog:hover,input[type=button]:hover,input[type=submit]:hover{background-color:rgb(255,255,255);color:rgb(0,0,0);border:1px solid rgba(240,240,240,1);}
+		/*.rsMinW .rsBullet span{background-color:rgb(255,255,255);}*/
+		/*.rsMinW .rsArrowIcn,*/#to-top-button,.load_more_blog/*,input[type=button],input[type=submit]*/{background-color:rgb(0,0,0);color:rgb(255,255,255);border:1px solid rgba(0,0,0,1);}
+		/*.rsMinW .rsArrowIcn:hover,*/#to-top-button:hover,.load_more_blog:hover/*,input[type=button]:hover,input[type=submit]:hover*/{background-color:rgb(255,255,255);color:rgb(0,0,0);border:1px solid rgba(240,240,240,1);}
 	
 		
 		/* Primary Menu Styling
@@ -62,7 +62,7 @@
 		/* Page Styling and Typography
 		/*-----------------------------------------------------------------------------------*/
 		.content-color{color:#222222 !important;}
-		#content,#sidebar,#footer,#sidr *,input,select,textarea,.mediaDescriptionText,.hgFilterBox{font-family:"Raleway";font-weight:normal;font-size:14px;color:#222222;}
+		#content,#sidebar,#footer,#sidr *,input,select,textarea,.mediaDescriptionText,.hgFilterBox{font-family:"Raleway";font-weight:normal;font-size:14px;/*color:#222222;*/}
 
 		#footer #social-icons a,#ozy-share-div>a>span,.page-pagination>a{color:#222222 !important;}
 		
@@ -102,7 +102,7 @@
 		
 		/* Shared Border Color
 		/*-----------------------------------------------------------------------------------*/
-		#ozy-share-div.ozy-share-div-blog,#single-blog-tags>a,.page-content table td,#content table tr,.post-content table td,.ozy-toggle .ozy-toggle-title,.ozy-toggle-inner,.ozy-tabs .ozy-nav li a,.ozy-accordion>h6.ui-accordion-header,.ozy-accordion>div.ui-accordion-content,.page-title,input:not([type=submit]):not([type=file]),textarea,#sidebar .widget:first-child>h3,.chat-row .chat-text,blockquote,#sidebar .widget li,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child,.ozy-testimonials .rsContainer .rsSlide>div>div>.thumb,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child:before,.ozy-content-divider{border-color:rgb(240,240,240);border-color:rgba(240,240,240,1);}
+		/*#ozy-share-div.ozy-share-div-blog,#single-blog-tags>a,.page-content table td,#content table tr,.post-content table td,.ozy-toggle .ozy-toggle-title,.ozy-toggle-inner,.ozy-tabs .ozy-nav li a,.ozy-accordion>h6.ui-accordion-header,.ozy-accordion>div.ui-accordion-content,.page-title,input:not([type=submit]):not([type=file]),textarea,#sidebar .widget:first-child>h3,.chat-row .chat-text,blockquote,#sidebar .widget li,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child,.ozy-testimonials .rsContainer .rsSlide>div>div>.thumb,.ozy-testimonials .rsContainer .rsSlide>div>div:first-child:before,.ozy-content-divider{border-color:rgb(240,240,240);border-color:rgba(240,240,240,1);}*/
 		
 		/* Conditional Page Template Styles
 		/*-----------------------------------------------------------------------------------*/
