@@ -18,11 +18,11 @@ namespace Interext.Controllers
         public ActionResult Index()
         {
             //return View();
-            //var model = _db.Events.Take(10);
-                
+            //var model = _db.Events.ToList();
+
             //if (Request.IsAjaxRequest())
             //{
-            //    return PartialView("_Restaurants", model);
+            //    return PartialView("_EventsWall", model);
             //}
 
             //return View(model);

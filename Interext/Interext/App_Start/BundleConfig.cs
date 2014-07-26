@@ -9,14 +9,8 @@ namespace Interext
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-<<<<<<< HEAD
-            bundles.Add(new ScriptBundle("~/bundles/ajax").Include(
-                "~/Scripts/MicrosoftAjax.js",
-                "~/Scripts/MicrosoftMvcAjax.js",
-                ));
-=======
-            
->>>>>>> origin/master
+            //SCRIPTS
+
             bundles.Add(new ScriptBundle("~/bundles/google").Include(
   "~/Scripts/jquery-{version}.js",
   "~/Scripts/jquery-ui-{version}.js",
@@ -27,24 +21,29 @@ namespace Interext
   "~/Scripts/respond.js",
   "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jquery-main").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery-ui-timepicker-addon.js",
+                        "~/Scripts/jquery-unobtrusive*",
+                         "~/Scripts/jquery.validate*"
+                        ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+            //            "~/Scripts/jquery.validate*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            //          "~/Scripts/bootstrap.js",
+            //          "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                      "~/Scripts/jquery-ui-{version}.js",
-                      "~/Scripts/jquery-ui-timepicker-addon"));
+            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+            //          "~/Scripts/jquery-ui-{version}.js",
+            //          "~/Scripts/jquery-ui-timepicker-addon"));
 
             bundles.Add(new ScriptBundle("~/bundles/contrastJs").Include(
                       "~/Scripts/contrast/contrast-global-plugins.js",
@@ -65,6 +64,8 @@ namespace Interext
                         "~/Scripts/colorpicker/colorpicker.js",
                         "~/Scripts/colorpicker/layout.js"
                         ));
+
+            //STYLES
 
             bundles.Add(new StyleBundle("~/Content/shared-css").Include(
                 "~/Content/css/shared/main.css",

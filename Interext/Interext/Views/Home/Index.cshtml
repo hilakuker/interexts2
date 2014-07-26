@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Interext.Models.Event>
 
-    @if (!Request.IsAuthenticated)
-    {
-        Response.Redirect("~/Account/Login?returnUrl="
-            + Request.Url.LocalPath);
-    }
+@if (!Request.IsAuthenticated)
+{
+    Response.Redirect("~/Account/Login?returnUrl="
+        + Request.Url.LocalPath);
+}
 @{
     ViewBag.Title = "Home Page";
 }
@@ -13,48 +13,96 @@
 @section CssStyles{
     @Styles.Render("~/Content/eventsPageCss")
 }
+@section SectionBeforeTheMainContent
+{
+    <div class="container event-search-container">
+        @*@using (Ajax.BeginForm("SearchEvents", "Event", null, new AjaxOptions { HttpMethod = "post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "eventsWall" }, new { id = "searchEventsForm" }))*@
+         @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "eventsWall" }, new { id = "searchEventsForm" }))
+    {
+    <input type="submit" class="btn btn-special search-btn" value="Search" />
+    <div class="btn btn-dark close-btn fa fa-times">&nbsp;</div>
+    @Html.AntiForgeryToken()
+    <h2>Search for event</h2>
+    <div class="section">
+        <div class="input-with-image-wrapper">
+            <input type="text" class="form-control full-control" id="FreeText" placeholder="Free text" />
+            <span class="fa fa-pencil insert-image-button"></span>
+        </div>
+        <div class="input-with-image-wrapper">
+            <input type="text" class="form-control full-control" id="Location" placeholder="Location" />
+            <span class="fa fa-map-marker insert-image-button"></span>
+        </div>
+        <div class="field-row">
+            <div class="left label">
+                Radius around the location
+            </div>
+            <select class="right">
+                <option>
+                    The exact location
+                </option>
+                <option>2 km</option>
+                <option>5 km</option>
+                <option>10 km</option>
+                <option>15 km</option>
+                <option>20 km</option>
+                <option>50 km</option>
+                <option>100 km</option>
+                <option>200 km</option>
+            </select>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="section field-row">
+        <div class="open-popup-container">
+            <div class="btn btn-dark open-popup">Choose interests</div>
+            <div class="data-for-popup">
+                <ul class="interests-list">
+                    <li><input type="checkbox" value="Books">Books</li>
+                    <li>
+                        <input type="checkbox" value="Sports">Sports<br />
+                        <ul>
+                            <li><input type="checkbox" value="Jogging">Jogging</li>
+                            <li><input type="checkbox" value="Bicycle">Bicycle</li>
+                            <li><input type="checkbox" value="Boxing">Boxing</li>
+                        </ul>
+                    </li>
+                    <li><input type="checkbox" value="Cooking">Cooking</li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="label">
+            Date of the event:
+        </div>
+        <div class="input-with-image-wrapper medium-field left">
+            <input type="text" class="form-control full-control" id="DateOfTheEventFrom" placeholder="From" />
+            <span class="fa fa-calendar insert-image-button"></span>
+        </div>
+        <div class="input-with-image-wrapper medium-field left">
+            <input type="text" class="form-control full-control" id="DateOfTheEventTo" placeholder="Till" />
+            <span class="fa fa-calendar insert-image-button"></span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <div class="section">
+        Age of the participants:
+        <input id="txtAgeOfParticipantsFrom" type="text" class="short-field" placeholder="From" />
+        <input id="txtAgeOfParticipantsTo" type="text" class="short-field" placeholder="To" />
+        <br />
+        Gender of the participants:
+        <select id="dpdGender">
+            <option value="Both">Both</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+    <div class="clear"></div>
+    }
+    </div>
+
+}
+
 
 @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
 
-
-
-@*@Html.Action("action", "controller", parameters)*@
-
-
-@*@foreach (var item in Model)
-{
-    <div>
-        <h4>@item.Title</h4>
-        <div>@item.Description</div>
-    </div>
-}*@
-
-
-
-    @*<div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </div>
-    </div>*@
