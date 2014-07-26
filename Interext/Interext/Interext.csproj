@@ -191,6 +191,9 @@
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\ImageModel.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="OtherCalsses\EventTimeValidationAttribute.cs" />
     <Compile Include="OtherCalsses\BirthdateValidationAttribute.cs" />
     <Compile Include="OtherCalsses\ImageSaver.cs" />
@@ -199,6 +202,14 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ASPNETDB.MDF" />
+    <Content Include="App_Data\aspnetdb_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Interext.mdf" />
+    <Content Include="App_Data\Interext_log.ldf">
+      <DependentUpon>Interext.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\uploads\user_profiles\1c5da580-aa22-4f96-b31d-b14ab80a77fb\2.jpg" />
     <Content Include="Content\bootstrap-signin.css" />
     <Content Include="Content\bootstrap.css" />

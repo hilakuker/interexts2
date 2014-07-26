@@ -18,7 +18,7 @@ namespace Interext.Controllers
         public ActionResult Index()
         {
             //return View();
-            //var model = _db.Events.ToList();
+            var model = _db.Events.ToList();
 
             //if (Request.IsAjaxRequest())
             //{

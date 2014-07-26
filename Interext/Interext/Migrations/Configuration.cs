@@ -20,18 +20,18 @@ namespace Interext.Migrations
         {
             //  This method will be called after migrating to the latest version.
 
-            if (!context.Users.Any(u => u.UserName == "sash"))
-            {
-                var roleStore = new RoleStore<IdentityRole>(context);
-                var roleManager = new RoleManager<IdentityRole>(roleStore);
-                var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new UserManager<ApplicationUser>(userStore);
-                var user = new ApplicationUser { UserName = "sashgmailcom", Email="sash@gmail.com" };
+            //if (!context.Users.Any(u => u.UserName == "sash"))
+            //{
+            //    var roleStore = new RoleStore<IdentityRole>(context);
+            //    var roleManager = new RoleManager<IdentityRole>(roleStore);
+            //    var userStore = new UserStore<ApplicationUser>(context);
+            //    var userManager = new UserManager<ApplicationUser>(userStore);
+            //    var user = new ApplicationUser { UserName = "sashgmailcom", Email="sash@gmail.com" };
 
-                userManager.Create(user, "123456");
-                roleManager.Create(new IdentityRole { Name = "admin" });
-                userManager.AddToRole(user.Id, "admin");
-            }
+            //    userManager.Create(user, "123456");
+            //    roleManager.Create(new IdentityRole { Name = "admin" });
+            //    userManager.AddToRole(user.Id, "admin");
+            //}
         }
     }
 }
