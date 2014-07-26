@@ -16,8 +16,7 @@ function isPositiveInteger(s) {
     return true;
 }
 function pageInit() {
-    $("#DateTimeOfTheEvent").datepicker();
-    $("#DateTimeOfTheEvent").datepicker("option", "dateFormat", "dd/mm/yy");
+    $("#DateTimeOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
     $("#slider").slider({
         range: "min",
         value: 80,

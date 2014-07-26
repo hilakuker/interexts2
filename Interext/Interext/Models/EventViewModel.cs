@@ -15,7 +15,7 @@ namespace Interext.Models
         public string ImageUrl { get; set; }
 
         [Display(Name = "Place")]
-        public Place Place { get; set; }
+        public string Place { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Date is required")]

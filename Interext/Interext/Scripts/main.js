@@ -22,10 +22,9 @@
         $("#searchEventsForm").parent().stop(true, true).slideUp('slow');
     });
 
-    $("#DateOfTheEventFrom").datepicker();
-    $("#DateOfTheEventFrom").datepicker("option", "dateFormat", "dd/mm/yy");
-    $("#DateOfTheEventTo").datepicker();
-    $("#DateOfTheEventTo").datepicker("option", "dateFormat", "dd/mm/yy");
+    $("#DateOfTheEventFrom").datepicker({ dateFormat: "dd/mm/yy"});
+    $("#DateOfTheEventTo").datepicker({ dateFormat: "dd/mm/yy"});
+   
 
     $(".search-txt-container input[type='text']").on('input', function () {
         $("#FreeText").val($(this).val());

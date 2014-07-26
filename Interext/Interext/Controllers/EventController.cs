@@ -70,7 +70,7 @@ namespace Interext.Controllers
                     ImageUrl = model.ImageUrl,
                     GenderParticipant = model.GenderParticipant,
                     BackroundColor = model.BackroundColor,
-                    BackroundColorCapacity = model.BackroundColorCapacity,
+                    BackroundColorOpacity = model.BackroundColorCapacity,
                     DateTimeCreated = DateTime.Now,
                     Place = model.Place,
                     Title = model.Title,
@@ -79,6 +79,7 @@ namespace Interext.Controllers
                     DateTimeOfTheEvent = model.DateTimeCreated,
                 };
                 db.Events.Add(eventToCreate);
+                db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
             return View(model);

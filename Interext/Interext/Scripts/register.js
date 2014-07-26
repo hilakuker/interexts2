@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
-    $("#BirthDate").datepicker();
+    $("#BirthDate").datepicker({ dateFormat: "dd/mm/yy", maxDate: 0 });
 
 });

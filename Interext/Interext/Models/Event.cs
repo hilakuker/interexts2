@@ -24,19 +24,22 @@ namespace Interext.Models
 
         //the options for the events or groups are only these that u are member of
 
-        public Place Place { get; set; } // the object Place with all the info .. like previous events .. if not specified then 
+        public string Place { get; set; } // the object Place with all the info .. like previous events .. if not specified then 
         //it is the place/location of the Group
 
         [Required]
+        [Column(TypeName = "datetime2")]
         public DateTime DateTimeOfTheEvent { get; set; }
         public string BackroundColor { get; set; }
-        public string BackroundColorCapacity { get; set; }
+        public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
         public int NumOfParticipantsMin { get; set; }
         public int NumOfParticipantsMax { get; set; }
         public int AgeOfParticipantsMin { get; set; }
         public int AgeOfParticipantsMax { get; set; }
         public string GenderParticipant { get; set; }
+
+        [Column(TypeName = "datetime2")]
         public DateTime DateTimeCreated { get; set; }
         public ICollection<UserProfile> UsersAttending { get; set; }
         public ICollection<UserProfile> UsersAwatingApproval { get; set; }
