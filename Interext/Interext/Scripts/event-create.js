@@ -165,25 +165,4 @@ $(document).ready(function () {
     pageInit();
     initEvents();
 
-    function showDialog(){
-        $("#frameDiv").html('<iframe id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" />').dialog("open");
-        $("#iframeinvitefriends").attr("src", "http://www.google.com");
-        return false;
-    }
- 
-    $(document).ready(function() {
-        $("#frameDiv").dialog({
-            autoOpen: false,
-            modal: true,
-            height: 500,
-            width: 500
-        });
-    });
-
-    //$(document).ready(
-    //function show_popup() {
-    //    TINY.box.show({ html: 'content here', width: 300, height: 150 })
-    //    return false
-    //}
-    //);
 });

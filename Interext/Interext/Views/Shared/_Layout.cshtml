@@ -12,9 +12,9 @@
     @Scripts.Render("~/bundles/jquery-main")
     @Scripts.Render("~/bundles/modernizr")
 
-    @*@Scripts.Render("~/bundles/bootstrap")*@
-    @*@Scripts.Render("~/bundles/jqueryui")*@
-    @*@Scripts.Render("~/bundles/ajax")*@
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+
+    @Scripts.Render("~/bundles/googlemaps")
 
     @RenderSection("scripts", required: false)
     @RenderSection("CssStyles", required: false)

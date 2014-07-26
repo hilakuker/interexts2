@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,100,300,700" type="text/css">
-    @*@Styles.Render("~/Content/css")*@
-    @*@Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/bootstrap")*@
+
     @Styles.Render("~/Content/jquery-ui-style")
     @Styles.Render("~/Content/shared-css")
     @Styles.Render("~/Content/signinPageCss")
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery-main")
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    @Scripts.Render("~/bundles/googlemaps")
+    @RenderSection("Scripts", required: false)
     @RenderSection("CssStyles", required: false)
 </head>
 <body>

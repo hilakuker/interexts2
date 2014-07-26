@@ -11,39 +11,21 @@ namespace Interext
         {
             //SCRIPTS
 
-            bundles.Add(new ScriptBundle("~/bundles/google").Include(
-  "~/Scripts/jquery-{version}.js",
-  "~/Scripts/jquery-ui-{version}.js",
-  "~/Scripts/jquery-{version}.js",
-  "~/Scripts/jquery.unobtrusive*",
-  "~/Scripts/googlemaps.js",
-  "~/Scripts/bootstrap.js",
-  "~/Scripts/respond.js",
-  "~/Scripts/jquery.validate*"));
-
             bundles.Add(new ScriptBundle("~/bundles/jquery-main").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
-                        "~/Scripts/jquery-ui-timepicker-addon.js",
                         "~/Scripts/jquery-unobtrusive*",
                          "~/Scripts/jquery.validate*"
                         ));
 
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-            //            "~/Scripts/jquery.validate*"));
+            bundles.Add(new ScriptBundle("~/bundles/googlemaps").Include(
+              "~/Scripts/googlemaps.js"
+              ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
-
-            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-            //          "~/Scripts/bootstrap.js",
-            //          "~/Scripts/respond.js"));
-
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-            //          "~/Scripts/jquery-ui-{version}.js",
-            //          "~/Scripts/jquery-ui-timepicker-addon"));
 
             bundles.Add(new ScriptBundle("~/bundles/contrastJs").Include(
                       "~/Scripts/contrast/contrast-global-plugins.js",
@@ -56,15 +38,15 @@ namespace Interext
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
                         "~/Scripts/event-create.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/timePicker").Include( 
-                        "~/Scripts/tinybox.js",
-                        "~/Scripts/timepicker.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
                         "~/Scripts/colorpicker/colorpicker.js",
                         "~/Scripts/colorpicker/layout.js"
                         ));
 
+            bundles.Add(new ScriptBundle("~/bundles/register").Include(
+                        "~/Scripts/register.js"
+                        ));
             //STYLES
 
             bundles.Add(new StyleBundle("~/Content/shared-css").Include(
