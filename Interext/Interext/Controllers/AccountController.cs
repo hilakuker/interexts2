@@ -116,7 +116,11 @@ namespace Interext.Controllers
         public string GetImageUrl()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
-            return user.ImageUrl;
+            if (user != null)
+            {
+                return user.ImageUrl;
+            }
+            return "";
         }
         //
         // GET: /Account/Register

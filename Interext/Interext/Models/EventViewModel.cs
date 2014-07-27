@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Interext.Models
 {
-    public class EventViewModel : ImageModel
+    public class EventViewModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

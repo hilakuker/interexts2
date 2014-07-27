@@ -107,7 +107,7 @@ namespace Interext.Models
         public string Address { get; set; }
     }
 
-    public class ProfileViewModel : ImageModel
+    public class ProfileViewModel
     {
         //[Required]
         [Display(Name = "Username")]
