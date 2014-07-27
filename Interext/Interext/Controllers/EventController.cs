@@ -47,27 +47,7 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
-
-            EventViewModel eventToShow = new EventViewModel()
-            {
-                CreatorUserId = @event.CreatorUserId,
-                AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
-                AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
-                NumOfParticipantsMax = @event.NumOfParticipantsMax,
-                NumOfParticipantsMin = @event.NumOfParticipantsMin,
-                ImageUrl = @event.ImageUrl,
-                GenderParticipant = @event.GenderParticipant,
-                BackroundColor = @event.BackroundColor,
-                BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateTimeCreated = @event.DateTimeCreated,
-                Place = @event.Place,
-                Title = @event.Title,
-                Description = @event.Description,
-                SideOfText = @event.SideOfText,
-                DateTimeOfTheEvent = @event.DateTimeOfTheEvent
-            };
-
-            return View(eventToShow);
+            return View(@event);
         }
 
         // GET: /Event/Create
@@ -101,13 +81,13 @@ namespace Interext.Controllers
                     ImageUrl = model.ImageUrl,
                     GenderParticipant = model.GenderParticipant,
                     BackroundColor = model.BackroundColor,
-                    BackroundColorOpacity = model.BackroundColorOpacity,
+                    BackroundColorOpacity = model.BackroundColorCapacity,
                     DateTimeCreated = DateTime.Now,
                     Place = model.Place,
                     Title = model.Title,
                     Description = model.Description,
                     SideOfText = model.SideOfText,
-                    DateTimeOfTheEvent = model.DateTimeOfTheEvent
+                    DateTimeOfTheEvent = model.DateTimeOfTheEvent,
                 };
                 db.Events.Add(eventToCreate);
                 db.SaveChanges();
