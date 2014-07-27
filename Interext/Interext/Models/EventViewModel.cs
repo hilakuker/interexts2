@@ -7,12 +7,13 @@ using System.Web;
 
 namespace Interext.Models
 {
-    public class EventViewModel:ImageModel
+    public class EventViewModel : ImageModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public string CreatorUserId { get; set; }
 
         [Display(Name = "Place")]
         public string Place { get; set; }
@@ -27,7 +28,7 @@ namespace Interext.Models
         public ICollection<UserProfile> UsersInvited { get; set; }
         public ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
-        public string BackroundColorCapacity { get; set; }
+        public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         public int? NumOfParticipantsMin { get; set; }
@@ -41,7 +42,8 @@ namespace Interext.Models
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [MinMaxValidation("AgeOfParticipantsMin", AllowEquality = true)]
         public int? AgeOfParticipantsMax { get; set; }
-        public string GenderParticipant { get; set; }  public ICollection<Interest> AllInterests { get; set; }
+        public string GenderParticipant { get; set; }
+        public ICollection<Interest> AllInterests { get; set; }
     }
 
 
