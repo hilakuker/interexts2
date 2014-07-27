@@ -691,6 +691,8 @@
     <Folder Include="App_Data\uploads\events\" />
     <Folder Include="Content\css\intro\" />
     <Folder Include="Content\css\jquery.ui\" />
+    <Folder Include="Content\images\events\" />
+    <Folder Include="Content\images\users\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\PartialView\" />
   </ItemGroup>

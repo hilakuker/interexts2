@@ -70,7 +70,7 @@
                         <div class="clear"></div>
                         <br />
                         The side of the text:
-                        <select id="dpdTextSide">
+                        <select id="dpdTextSide" name="SideOfText">
                             <option value="top">Top</option>
                             <option value="right" selected="selected">Right</option>
                             <option value="bottom">Bottom</option>
@@ -88,7 +88,7 @@
                         @Html.ValidationMessageFor(m => m.NumOfParticipantsMax)
                         <br />
                         Gender of the participants:
-                        <select id="dpdGender">
+                        <select id="dpdGender" name="GenderParticipant">
                             <option value="Both">Both</option>
                             <option value="Male">Male</option>
                             <option value="Female" selected="selected">Female</option>

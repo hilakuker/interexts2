@@ -34,5 +34,28 @@ namespace Interext.OtherCalsses
                 }
             }
         }
+
+
+        internal static string SaveUser(string userId, HttpPostedFileBase ImageUrl, HttpServerUtilityBase Server)
+        {
+
+            string pathForToSave = Path.Combine(Server.MapPath("~/Content/images/users"), userId);
+            string fileName = Path.GetFileName(ImageUrl.FileName);
+            string pathForPicture = string.Format(@"/Content/images/users/{0}/{1}", userId, fileName);
+            ImageSaver.SaveImage(ImageUrl, pathForToSave, fileName);
+            Server.MapPath(pathForPicture);
+            return pathForPicture;
+        }
+
+        internal static string SaveEvent(int eventId, HttpPostedFileBase ImageUrl, HttpServerUtilityBase Server)
+        {
+
+            string pathForToSave = Path.Combine(Server.MapPath("~/Content/images/events"), eventId.ToString());
+            string fileName = Path.GetFileName(ImageUrl.FileName);
+            string pathForPicture = string.Format(@"/Content/images/events/{0}/{1}", eventId, fileName);
+            ImageSaver.SaveImage(ImageUrl, pathForToSave, fileName);
+            Server.MapPath(pathForPicture);
+            return pathForPicture;
+        }
     }
 }

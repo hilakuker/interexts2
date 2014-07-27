@@ -11,14 +11,24 @@ using System.IO;
 using Interext.OtherCalsses;
 using System.Threading.Tasks;
 using System.Web.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Interext.Controllers
 {
     public class EventController : Controller
     {
         //private InterextDB db = new InterextDB();
+
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: /Event/
+
+        private UserManager<ApplicationUser> UserManager { get; set; }
+        public EventController()
+        {
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.db));
+        }
+       
         public ActionResult Index()
         {
             List<Event> f = db.Events.ToList();
@@ -58,11 +68,12 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
+                var user = UserManager.FindById(User.Identity.GetUserId()); 
                 Event eventToCreate = new Event()
                 {
+                    CreatorUserId = user.Id,
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
                     NumOfParticipantsMax = model.NumOfParticipantsMax,
@@ -76,13 +87,23 @@ namespace Interext.Controllers
                     Title = model.Title,
                     Description = model.Description,
                     SideOfText = model.SideOfText,
-                    DateTimeOfTheEvent = model.DateTimeCreated,
+                    DateTimeOfTheEvent = model.DateTimeOfTheEvent,
                 };
                 db.Events.Add(eventToCreate);
+                db.SaveChanges();
+                saveImage(ref eventToCreate, ImageUrl);
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
             return View(model);
+        }
+
+        private void saveImage(ref Event eventToCreate, HttpPostedFileBase ImageUrl)
+        {
+            if (ImageUrl != null)
+            {
+                eventToCreate.ImageUrl = ImageSaver.SaveEvent(eventToCreate.Id, ImageUrl, Server);
+            }
         }
         //public ActionResult Create([Bind(Include = "Id,Title,Description,ImageUrl,DateTimeOfTheEvent")] Event @event, HttpPostedFileBase ImageUrl, string[] Interests)
         ////{

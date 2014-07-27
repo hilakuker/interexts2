@@ -163,13 +163,9 @@ namespace Interext.Controllers
         {
             if (ImageUrl != null)
             {
-                string pathForToSave = Path.Combine(Server.MapPath("~/Content/images"), user.Id);
-                string fileName = Path.GetFileName(ImageUrl.FileName);
-                string pathForPicture = string.Format(@"/Content/images/{0}/{1}", user.Id, fileName);
-                user.ImageUrl = pathForPicture;
-                ImageSaver.SaveImage(ImageUrl, pathForToSave, fileName);
-                Server.MapPath(pathForPicture);
+               user.ImageUrl =  ImageSaver.SaveUser(user.Id, ImageUrl, Server);
             }
+
         }
 
         public string GenerateUserName(string email)

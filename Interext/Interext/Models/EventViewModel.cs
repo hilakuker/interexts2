@@ -29,18 +29,18 @@ namespace Interext.Models
         public string BackroundColor { get; set; }
         public string BackroundColorCapacity { get; set; }
         public string SideOfText { get; set; }
-        [RegularExpression (@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
-        [MinMaxValidation("NumOfParticipantsMax", AllowEquality = true)]
-        public int NumOfParticipantsMin { get; set; }
+        [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
+        public int? NumOfParticipantsMin { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
-        public int NumOfParticipantsMax { get; set; }
+        [MinMaxValidation("NumOfParticipantsMin", AllowEquality = true)]
+        public int? NumOfParticipantsMax { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
-        [MinMaxValidation("AgeOfParticipantsMax", AllowEquality = true)]
-        public int AgeOfParticipantsMin { get; set; }
+        public int? AgeOfParticipantsMin { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
-        public int AgeOfParticipantsMax { get; set; }
+        [MinMaxValidation("AgeOfParticipantsMin", AllowEquality = true)]
+        public int? AgeOfParticipantsMax { get; set; }
         public string GenderParticipant { get; set; }  public ICollection<Interest> AllInterests { get; set; }
     }
 

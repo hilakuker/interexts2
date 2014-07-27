@@ -1,5 +1,7 @@
-﻿$(function () {
-    var pac_input = document.getElementById("locationSearchTextField");
+﻿var autocomplete;
+var pac_input;
+$(function () {
+
     if (pac_input != null) {
         (function pacSelectFirst(input) {
             // store the original event binding function
@@ -12,6 +14,7 @@
                 if (type == "keydown") {
                     var orig_listener = listener;
                     listener = function (event) {
+                        console.info(pac_input.nodeValue)
                         var suggestion_selected = $(".pac-item-selected").length > 0;
                         if (event.which == 13 && !suggestion_selected) {
                             var simulated_downarrow = $.Event("keydown", { keyCode: 40, which: 40 })
@@ -34,9 +37,19 @@
         })(pac_input);
 
 
-        $(function () {
-
-            var autocomplete = new google.maps.places.Autocomplete(pac_input);
-        });
     }
 });
+
+
+$(document).ready(function () {
+    pac_input = document.getElementById("locationSearchTextField");
+    autocomplete = new google.maps.places.Autocomplete(pac_input);
+
+});
+
+function initplacechangecevent(functiontorun) {
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        place = autocomplete.getPlace();
+        functiontorun(place.formatted_address);
+    });
+}
