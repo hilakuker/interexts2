@@ -113,7 +113,11 @@ namespace Interext.Controllers
         {
             return View();
         }
-
+        public string GetImageUrl()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            return user.ImageUrl;
+        }
         //
         // GET: /Account/Register
         [AllowAnonymous]

@@ -8,12 +8,7 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @if (Model != null)
-                    {
-                        <a href="~/Account/ShowProfile"><img src="@Model.ImageUrl" /></a>
-                    }
-                <!--test-->
-                @*<img src="/Content/images/example-images/profile-pic.jpg" />*@
+                <img src="@Html.Action("GetImageUrl","Account")" />
                 <div class="top-sub-menu">
                     <div class="arrow"></div>
                     <ul>
