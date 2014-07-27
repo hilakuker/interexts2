@@ -14,7 +14,8 @@ $(document).ready(function () {
             var rgba = $(".event-box-content").css("background-color");
             var rgbaArr = rgba.split(")")[0].split(",");
             var alpha = rgbaArr[rgbaArr.length - 1];
-            $(".event-box-content").css("background-color", "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," +alpha+ ")");
+            $(".event-box-content").css("background-color", "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alpha + ")");
+            $("#BackroundColor").val('#' + hex);
         }
     });
 });

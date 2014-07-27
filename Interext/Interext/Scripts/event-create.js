@@ -31,16 +31,17 @@ function pageInit() {
             var alpha = ui.value / 100;
             console.log(r + "," + g + "," + b + "," + alpha);
             $(".event-box-content").css("background-color", "rgba(" + r + "," + g + "," + b + "," + alpha + ")");
+            $("#BackroundColorOpacity").val(alpha);
         }
     });
-    initplacechangecevent(placeselecter);
+    initplacechangecevent(placeSelecter);
 }
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
     $(fromElement).on('input', function () {
         var fromNumber = $(this).val();
         var toNumber = $(toElement).val();
-        if (validatenumbers(fromElement, toElement)) {
+        if (validateNumbers(fromElement, toElement)) {
             $(rangeToShowContainer).css("display", "block");
             if (fromNumber == "") {
                 if (toNumber == "") {
@@ -68,7 +69,7 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
     $(toElement).on('input', function () {
         var fromNumber = $(fromElement).val();
         var toNumber = $(this).val();
-        if (validatenumbers(fromElement, toElement)) {
+        if (validateNumbers(fromElement, toElement)) {
             $(rangeToShowContainer).css("display", "block");
             if (toNumber == "") {
                 if (fromNumber == "") {
@@ -93,14 +94,14 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
         else{ $(this).val("") }
     });
 }
-function placeselecter(place) {
+function placeSelecter(place) {
             var locationIcon = $("#draftLocation").find("span");
             $("#draftLocation").text("");
             $("#draftLocation").append(locationIcon);
             $("#draftLocation").append(place);
 };
 
-function validatenumbers(minNumElementID, maxNumElementID) {
+function validateNumbers(minNumElementID, maxNumElementID) {
     var validNum = true;
     var minNumber = $(minNumElementID).val();
     var maxNumber = $(maxNumElementID).val();
@@ -110,28 +111,27 @@ function validatenumbers(minNumElementID, maxNumElementID) {
     { validNum = false; }
     return validNum;
 }
-function updatedrafttitle()
+function updateDraftTitle()
 {
-    //$("#draftTitle").text($(this).val());
-    var titledom = $('#Title');
+    var titledom = $("#Title");
     var val = $(titledom).val();
     if ($(titledom).val() != "") {
         $("#draftTitle").text(val);
     }
 }
 
-function updateeventdatedraft() {
-    var itemtoupdate = $('#DateTimeOfTheEvent');
+function updateEventDateDraft() {
+    var itemtoupdate = $("#DateTimeOfTheEvent");
     var date = $(itemtoupdate).val();
-    if (date != "") {
+    if (date != "" && date != undefined) {
         var arrdate = date.split('/');
         var datetext = ("#draftTitle").text;
         $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]));
     }
 }
 
-function updateimagedraft() {
-    var input = $('#ImageUrl');
+function updateImageDraft(input) {
+   // var input = $('#ImageUrl');
     if (input != null) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -143,7 +143,7 @@ function updateimagedraft() {
     }
 }
 
-function updatesideofthetextdraft() {
+function updateSideOfTheTextDraft() {
     var textsidedom = $('#dpdTextSide');
     var side = $(textsidedom).val();
     if (side != "") {
@@ -151,8 +151,9 @@ function updatesideofthetextdraft() {
     }
 }
 
-function updatedraftgender() {
-    var gender = $('#dpdGender').val();
+function updateDraftGender() {
+    var dpdGender = $('#dpdGender');
+    var gender = $(dpdGender).val();
     if (gender != null) {
         if (gender == "Both") {
             $(".event-gender-container").css("display", "none");
@@ -165,31 +166,31 @@ function updatedraftgender() {
 
 function initEvents() {
     $('#Title').on('input', function () {
-        updatedrafttitle();
+        updateDraftTitle();
     });
     $('#DateTimeOfTheEvent').on('change', function () {
-        updateeventdatedraft();
+        updateEventDateDraft();
     });
 
     $('#ImageUrl').on('change', function () {
-        updateimagedraft();
+        updateImageDraft(this);
     });
 
     $('#dpdTextSide').on('change', function () {
-        updatesideofthetextdraft();
+        updateSideOfTheTextDraft();
     });
     RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants", ".event-num-of-participants-container");
     RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants", ".event-age-of-participants-container");
     $('#dpdGender').on('change', function () {
-        updatedraftgender();
+        updateDraftGender();
     });
 }
 $(document).ready(function () {
     pageInit();
     initEvents();
-    updateeventdatedraft();
-    updatedrafttitle();
-    updateimagedraft();
-    updatesideofthetextdraft();
-    updatedraftgender();
+    updateEventDateDraft();
+    updateDraftTitle();
+   // updateImageDraft();
+    updateSideOfTheTextDraft();
+    updateDraftGender();
 });
