@@ -211,6 +211,7 @@
       <DependentUpon>Interext.mdf</DependentUpon>
     </Content>
     <Content Include="App_Data\uploads\user_profiles\1c5da580-aa22-4f96-b31d-b14ab80a77fb\2.jpg" />
+    <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\bootstrap-signin.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />

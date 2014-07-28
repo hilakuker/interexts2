@@ -13,20 +13,21 @@ namespace Interext.Controllers
         private ApplicationDbContext _db = new ApplicationDbContext();
         public HomeController()
         {
-                
+
         }
         public ActionResult Index()
         {
             //return View();
             var model = _db.Events.ToList();
 
-            //if (Request.IsAjaxRequest())
-            //{
-            //    return PartialView("_EventsWall", model);
-            //}
+            if (Request.IsAjaxRequest())
+            {
+                model = _db.Events.Take(1).ToList();
+                return PartialView("_EventsWall", model);
+            }
 
             //return View(model);
-            return View();
+            return View(model);
         }
 
         public ActionResult About()
