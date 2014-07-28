@@ -15,7 +15,7 @@ $(document).ready(function () {
             var rgbaArr = rgba.split(")")[0].split(",");
             var alpha = rgbaArr[rgbaArr.length - 1];
             $(".event-box-content").css("background-color", "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alpha + ")");
-            $("#BackroundColor").val('#' + hex);
+            $("#BackroundColor").val(rgb.r + "," + rgb.g + "," + rgb.b);
         }
     });
 });

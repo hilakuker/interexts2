@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.Validation;
 
 namespace Interext.Controllers
 {
@@ -50,7 +51,7 @@ namespace Interext.Controllers
 
             EventViewModel eventToShow = new EventViewModel()
             {
-                CreatorUserId = @event.CreatorUserId,
+                CreatorUser = @event.CreatorUser,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 NumOfParticipantsMax = @event.NumOfParticipantsMax,
@@ -63,11 +64,18 @@ namespace Interext.Controllers
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
-                SideOfText = @event.SideOfText,
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent
             };
-
             return View(eventToShow);
+        }
+
+        private void setSideOfText(Event @event, ref EventViewModel eventToShow)
+        {
+            eventToShow.SideOfTextOptions = new Dictionary<string, bool>();
+            eventToShow.SideOfTextOptions.Add("Right", String.Equals("Right",@event.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Left", String.Equals("Left",@event.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Top", String.Equals("Top", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
         // GET: /Event/Create
@@ -93,7 +101,7 @@ namespace Interext.Controllers
                 var user = UserManager.FindById(User.Identity.GetUserId()); 
                 Event eventToCreate = new Event()
                 {
-                    CreatorUserId = user.Id,
+                    CreatorUser = user,
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
                     NumOfParticipantsMax = model.NumOfParticipantsMax,
@@ -180,25 +188,81 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
-            return View(@event);
+            EventViewModel model = new EventViewModel()
+            {
+                Id = @event.Id,
+                AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
+                AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
+                BackroundColor = @event.BackroundColor,
+                BackroundColorOpacity = @event.BackroundColorOpacity,
+                DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
+                CreatorUser = @event.CreatorUser,
+                DateTimeCreated = @event.DateTimeCreated,
+                Description = @event.Description,
+                GenderParticipant = @event.GenderParticipant,
+                ImageUrl = @event.ImageUrl,
+                NumOfParticipantsMax = @event.NumOfParticipantsMax,
+                NumOfParticipantsMin = @event.NumOfParticipantsMin,
+                Place = @event.Place,
+                SideOfText = @event.Place,
+                Title = @event.Title
+            };
+            setSideOfText(@event, ref model);
+            setGenderOptions(@event, ref model);
+            return View(model);
         }
+
 
         // POST: /Event/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       //[Route("Event/edit?id={id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,ImageUrl,DateTimeOfTheEvent,DateTimeCreated")] Event @event)
+        public ActionResult Edit(EventViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var user = UserManager.FindById(User.Identity.GetUserId()); 
+
+                Event @event = db.Events.Find(model.Id);
+                @event.CreatorUser = user;
+                @event.Title = model.Title;
+                @event.SideOfText = model.SideOfText;
+                @event.Place = model.Place;
+                if (model.ImageUrl != null)
+                {
+                    @event.ImageUrl = model.ImageUrl;
+                }
+                @event.NumOfParticipantsMax = model.NumOfParticipantsMax;
+                @event.NumOfParticipantsMin = model.NumOfParticipantsMin;
+                @event.AgeOfParticipantsMax = model.AgeOfParticipantsMax;
+                @event.AgeOfParticipantsMin = model.AgeOfParticipantsMin;
+                @event.BackroundColor = model.BackroundColor.Replace("rgb(","");
+                @event.BackroundColor = @event.BackroundColor.Replace(")", "");
+                @event.DateTimeOfTheEvent = model.DateTimeOfTheEvent;
+                @event.Description = model.Description;
+                @event.GenderParticipant = model.GenderParticipant;
                 db.Entry(@event).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                }
                 return RedirectToAction("Index");
             }
-            return View(@event);
+            return View(model);
         }
 
+        private void setGenderOptions(Event @event, ref EventViewModel model)
+        {
+            model.GenderParticipantOptions = new Dictionary<string, bool>();
+            model.GenderParticipantOptions.Add("Female", String.Equals("Female", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Male", String.Equals("Male", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Both", String.Equals("Both", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+        }
         // GET: /Event/Delete/5
         public ActionResult Delete(int? id)
         {

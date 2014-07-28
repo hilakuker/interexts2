@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using System.Web;
+using System.Web.WebPages.Html;
 
 namespace Interext.Models
 {
@@ -13,7 +15,7 @@ namespace Interext.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
-        public string CreatorUserId { get; set; }
+        public ApplicationUser CreatorUser { get; set; }
 
         [Display(Name = "Place")]
         public string Place { get; set; }
@@ -28,9 +30,13 @@ namespace Interext.Models
         public ICollection<UserProfile> UsersInvited { get; set; }
         public ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
+
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
+
+        public Dictionary<string, bool> SideOfTextOptions { get; set; }
+
         public int? NumOfParticipantsMin { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
@@ -43,6 +49,9 @@ namespace Interext.Models
         [MinMaxValidation("AgeOfParticipantsMin", AllowEquality = true)]
         public int? AgeOfParticipantsMax { get; set; }
         public string GenderParticipant { get; set; }
+
+        public Dictionary<string, bool> GenderParticipantOptions { get; set; }
+
         public ICollection<Interest> AllInterests { get; set; }
     }
 

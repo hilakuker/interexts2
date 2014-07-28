@@ -64,6 +64,9 @@
 
 .event-box-content .event-by-person img {
     vertical-align: middle;
+    height:30px;
+    width:30px;
+    border: 1px solid #fff;
 }
 
 .event-box-innerwrap > div:first-child {

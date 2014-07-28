@@ -16,7 +16,7 @@ namespace Interext.Models
         [Required]
         public string Title { get; set; }
         [Required]
-        public string CreatorUserId { get; set; }
+        public virtual ApplicationUser CreatorUser { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Required]
