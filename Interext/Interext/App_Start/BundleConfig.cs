@@ -14,7 +14,7 @@ namespace Interext
             bundles.Add(new ScriptBundle("~/bundles/jquery-main").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
-                        "~/Scripts/jquery-unobtrusive*",
+                        "~/Scripts/jquery.unobtrusive-ajax.js",
                          "~/Scripts/jquery.validate*"
                         ));
 

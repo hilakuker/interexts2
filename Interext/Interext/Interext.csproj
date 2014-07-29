@@ -211,6 +211,8 @@
       <DependentUpon>Interext.mdf</DependentUpon>
     </Content>
     <Content Include="App_Data\uploads\user_profiles\1c5da580-aa22-4f96-b31d-b14ab80a77fb\2.jpg" />
+    <Content Include="bin\Interext.dll" />
+    <Content Include="bin\Interext.pdb" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\bootstrap-signin.css" />
     <Content Include="Content\bootstrap.css" />
@@ -687,6 +689,8 @@
     <Content Include="Views\Account\ChooseRegisterProvider.cshtml" />
     <Content Include="Views\Account\ShowProfile.cshtml" />
     <Content Include="Views\Event\GetUsers.cshtml" />
+    <Content Include="Views\Home\SearchForEvents.cshtml" />
+    <Content Include="Views\Event\_EventsWallWithTempData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />

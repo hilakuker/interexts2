@@ -18,17 +18,18 @@ namespace Interext.Controllers
         public ActionResult Index()
         {
             //return View();
-            var model = _db.Events.ToList();
+            List<Event> model = _db.Events.ToList();
 
             if (Request.IsAjaxRequest())
             {
-                model = _db.Events.Take(1).ToList();
-                return PartialView("_EventsWall", model);
+                model = _db.Events.Take(1).ToList(); // temp
+                return PartialView("~/Views/Event/_EventsWall.cshtml", model);
             }
 
             //return View(model);
             return View(model);
         }
+
 
         public ActionResult About()
         {
