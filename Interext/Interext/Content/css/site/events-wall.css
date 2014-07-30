@@ -62,7 +62,7 @@
     margin-right: 10px;
 }
 
-.event-box-content .event-by-person img {
+#content .event-box-content .event-by-person img, #sidebar .event-box-content .event-by-person img {
     vertical-align: middle;
     height:30px;
     width:30px;

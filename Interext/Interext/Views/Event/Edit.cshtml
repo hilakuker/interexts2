@@ -128,14 +128,17 @@
             <div class="event-box" data-src="@Model.ImageUrl" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url('@Model.ImageUrl') 50% 49% / cover no-repeat;">
                     <div>
-                        <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(0,0,0);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
-                            <div class="event-date" id="draftDate">15.5</div>
-                            <div class="event-title" id="draftTitle">Evening walks with dogs</div>
+                        <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
+                            <div class="event-date" id="draftDate">@Model.DateTimeOfTheEvent.Day.@Model.DateTimeOfTheEvent.Month</div>
+                            <div class="event-title" id="draftTitle">@Model.Title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
-                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin-@Model.NumOfParticipantsMax</span></div>
-                            <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin-@Model.AgeOfParticipantsMax</span></div>
-                            <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
-                            <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl"></div>
+                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>
+                            <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null){<span>-</span>@Model.AgeOfParticipantsMax}else{<span>+</span>}</span></div>
+                            @if (Model.GenderParticipant != "Both")
+                            {
+                                <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
+                            }
+                            <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl" /></div>
                         </a>
                     </div>
                 </div>
