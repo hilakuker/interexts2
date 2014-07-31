@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -29,6 +30,24 @@ namespace Interext.Controllers
             //return View(model);
             return View(model);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(string FreeText)
+        {
+            List<Event> model=null;
+            if (ModelState.IsValid)
+            {
+                //if (Request.IsAjaxRequest())
+                //{
+                    model = _db.Events.Where(x=>x.Title.ToLower().Contains(FreeText.ToLower())).ToList(); // temp
+                    return PartialView("~/Views/Event/_EventsWall.cshtml", model);
+                //}   
+            }
+            return View(model);
+        }
+
 
 
         public ActionResult About()
