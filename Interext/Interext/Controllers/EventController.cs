@@ -118,7 +118,14 @@ namespace Interext.Controllers
                     DateTimeOfTheEvent = model.DateTimeOfTheEvent
                 };
                 db.Events.Add(eventToCreate);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                   var a= ex.EntityValidationErrors;
+                }
                 saveImage(ref eventToCreate, ImageUrl);
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");

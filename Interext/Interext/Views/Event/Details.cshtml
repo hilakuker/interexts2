@@ -17,28 +17,28 @@
                 <div class="event-intro-wrapper" style="background-image: url('/Content/images/example-images/event1.jpg');">
                     <div class="event-intro">
                         <h1 class="event-title">
-                            Evening walks with dogs
+                            @Model.Title
                         </h1>
-                        <div class="event-date">15.5</div>
+                        <div class="event-date">@Model.DateTimeOfTheEvent.Date</div>
                         <div class="clear"></div>
                         <div class="event-details">
-                            <span class="fa fa-map-marker"></span>Tel Aviv, Israel<br />
+                            <span class="fa fa-map-marker"></span>@Model.Place<br />
                             <a href="~/Account/ShowProfile"><div class="createdby">Created by</div> <img src="/Content/images/example-images/profile-pic.jpg" /><div class="creator-name">Sash Pol</div></a>
                             <div class="clear"></div>
                         </div>
                         <table class="event-restrictions">
                             <tr><td colspan="2">Event for:</td></tr>
-                            <tr><td>Ages</td><td> 40 - 50</td></tr>
-                            <tr><td>Gender</td><td>Female</td></tr>
+                            <tr><td>Ages</td><td>@Model.AgeOfParticipantsMin - @Model.AgeOfParticipantsMax</td></tr>
+                            <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>
                             <tr><td>Interests</td><td>Dogs, Arts</td></tr>
                         </table>
                         <div class="clear"></div>
                     </div>
                 </div>
                 <div class="event-desc">
-                    <p>Didn’t need no welfare states. Everybody pulled his weight. Gee our old Lasalle ran great. Those were the days. We’re gonna do it. On your mark get set and go now. Got a dream and we just know now we’re gonna make our dream come true. Come and dance on our floor. Take a step that is new. We’ve a loveable space that needs your face threes company too.</p>
+                    <p>@Model.Description</p>
                     <p><span id="more-372"></span></p>
-                    <p>All of them had hair of gold like their mother the youngest one in curls!” It’s time to play the music. It’s time to light the lights. It’s time to meet the Muppets on the Muppet Show tonight. Straightnin’ the curves. Flatnin’ the hills Someday the mountain might get ‘em but the law never will. Today still wanted by the government they survive as soldiers of fortune. So this is the tale of our castaways they’re here for a long long time. They’ll have to make the best of things its an uphill climb.</p>
+                    <p>@Model.Description</p>
                 </div>
             </article>
             <div id="ozy-share-div" class="ozy-share-div-blog">
