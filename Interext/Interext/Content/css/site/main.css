@@ -1515,3 +1515,11 @@ section article.popup .close {
 .interests-list li ul {
     margin-left: 20px;
 }
+
+.no-events {
+    margin: auto;
+    width: 220px;
+}
+.no-events a {
+    color:#68D999;
+}
