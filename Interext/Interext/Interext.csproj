@@ -614,6 +614,7 @@
     <Content Include="Scripts\contrast\megafolio\js\megafolio-init-old2.js" />
     <Content Include="Scripts\contrast\megafolio\js\megafolio-init.js" />
     <Content Include="Scripts\event-create.js" />
+    <Content Include="Scripts\event-details.js" />
     <Content Include="Scripts\google.js" />
     <Content Include="Scripts\googleapi.js" />
     <Content Include="Scripts\googlemaps.js" />

@@ -14,6 +14,7 @@ using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Validation;
+using System.Text;
 
 namespace Interext.Controllers
 {
@@ -60,13 +61,21 @@ namespace Interext.Controllers
                 GenderParticipant = @event.GenderParticipant,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateTimeCreated = @event.DateTimeCreated,
+                DateOfTheEventNoYear = setDisplayDateFormat(@event.DateTimeCreated),
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent
             };
             return View(eventToShow);
+        }
+
+        private string setDisplayDateFormat(DateTime dateTime)
+        {
+            string date = dateTime.Date.ToString();
+            string[] dateSplit = date.Split('/');
+            string rightDateFormat = string.Format("{0}.{1}", dateSplit[0], dateSplit[1]);
+            return rightDateFormat;
         }
 
         private void setSideOfText(Event @event, ref EventViewModel eventToShow)
@@ -184,6 +193,7 @@ namespace Interext.Controllers
         //}
 
         // GET: /Event/Edit/5
+
         public ActionResult Edit(int? id)
         {
             if (id == null)

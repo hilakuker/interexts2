@@ -25,6 +25,7 @@ namespace Interext.Models
         [EventTimeValidation("DateTimeOfTheEvent")]
 
         public DateTime DateTimeOfTheEvent { get; set; }
+        public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public ICollection<UserProfile> UsersAttending { get; set; }
         public ICollection<UserProfile> UsersInvited { get; set; }
