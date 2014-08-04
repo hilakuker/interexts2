@@ -57,16 +57,31 @@
                     <div class="btn btn-dark open-popup">Choose interests</div>
                     <div class="data-for-popup">
                         <ul class="interests-list">
-                            <li><input type="checkbox" value="Books">Books</li>
+                            <li>
+                                
+                                <div class="main-category">
+                                    <input type="checkbox" value="Books" name="Books">
+                                    <div class="image" style="background-image:url('/Content/images/interests/books.jpg')"></div>
+                                    <div class="title">Books</div>
+                                </div>
+                            </li>
                             <li>
                                 <input type="checkbox" value="Sports">Sports<br />
                                 <ul>
                                     <li><input type="checkbox" value="Jogging">Jogging</li>
                                     <li><input type="checkbox" value="Bicycle">Bicycle</li>
-                                    <li><input type="checkbox" value="Boxing">Boxing</li>
+                                    <li><input type="checkbox" value="Basketball">Basketball</li>
+                                    <li><input type="checkbox" value="Tennis">Tennis</li>
+                                    <li><input type="checkbox" value="Football">Football</li>
                                 </ul>
                             </li>
                             <li><input type="checkbox" value="Cooking">Cooking</li>
+                            <li><input type="checkbox" value="Nature">Nature<br/>
+                                <ul>
+                                    <li><input type="checkbox" value="Tracking">Tracking</li>
+                                    <li><input type="checkbox" value="Mauntain Climbing">Mauntain Climbing</li>
+                                </ul>
+                            </li>
 
                         </ul>
                     </div>
@@ -102,11 +117,11 @@
 
 }
 
-@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);
+@*@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);*@
 
-@*<div id="content" class="no-sidebar">
+<div id="content" class="no-sidebar">
     <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
         @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
     </div>
         <div class="bottom-spacer clear"></div>
-    </div>*@
+    </div>

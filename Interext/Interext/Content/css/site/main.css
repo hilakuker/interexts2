@@ -1509,12 +1509,7 @@ section article.popup .close {
     font-size:20px;
     cursor:pointer;
 }
-.interests-list {
-    margin-left: 20px;
-}
-.interests-list li ul {
-    margin-left: 20px;
-}
+
 
 .no-events {
     margin: auto;
