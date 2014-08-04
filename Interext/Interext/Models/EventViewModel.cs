@@ -19,12 +19,16 @@ namespace Interext.Models
 
         [Display(Name = "Place")]
         public string Place { get; set; }
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Date is required")]
-        [EventTimeValidation("DateTimeOfTheEvent")]
+        [EventTimeValidation("DateOfTheEvent")]
 
-        public DateTime DateTimeOfTheEvent { get; set; }
+        public DateTime DateOfTheEvent { get; set; }
+        public string HourTimeOfTheEvent { get; set; }
+        public string MinuteTimeOfTheEvent { get; set; }
         public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public ICollection<UserProfile> UsersAttending { get; set; }

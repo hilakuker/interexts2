@@ -32,12 +32,16 @@
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
                         <div class="input-with-image-wrapper">
-                            <input type="text" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateTimeOfTheEvent" />
+                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
+                            <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" value="@Model.HourTimeOfTheEvent"/>
+                            <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" value="@Model.MinuteTimeOfTheEvent" />
                         </div>
-                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
+                        @Html.ValidationMessageFor(m => m.DateOfTheEvent)
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
+                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
+                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
 
                             @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
 
@@ -129,7 +133,7 @@
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url('@Model.ImageUrl') 50% 49% / cover no-repeat;">
                     <div>
                         <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
-                            <div class="event-date" id="draftDate">@Model.DateTimeOfTheEvent.Day.@Model.DateTimeOfTheEvent.Month</div>
+                            <div class="event-date" id="draftDate">@Model.DateOfTheEvent.Day.@Model.DateOfTheEvent.Month @Model.HourTimeOfTheEvent:@Model.MinuteTimeOfTheEvent</div>
                             <div class="event-title" id="draftTitle">@Model.Title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
                             <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>

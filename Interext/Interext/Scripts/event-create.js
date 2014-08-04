@@ -39,67 +39,56 @@ function pageInit() {
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
     $(fromElement).on('input', function () {
-        var fromNumber = $(this).val();
-        var toNumber = $(toElement).val();
-        if (validateNumbers(fromElement, toElement)) {
-            $(rangeToShowContainer).css("display", "block");
-            if (fromNumber == "") {
-                if (toNumber == "") {
-                    $(rangeToShowElement).text("");
-                    $(rangeToShowContainer).css("display", "none");
-                }
-                else {
-                    $(rangeToShowElement).text("1-" + toNumber);
-                }
-            }
-            else {
-                if (isPositiveInteger(fromNumber)) {
-                    if (toNumber == "") {
-                        $(rangeToShowElement).text(fromNumber + "+");
-                    }
-                    else {
-                        $(rangeToShowElement).text(fromNumber + "-" + toNumber);
-                    }
-                }
-            }
-        }
-        else
-        { $(this).val("") }
+        validateFromToInput($(this), fromElement, toElement);
     });
     $(toElement).on('input', function () {
+        $(this).val($(this).val().replace(" ", ""));
+        validateFromToInput($(this), fromElement, toElement);
+    });
+
+    function validateFromToInput(thisElement, fromElement, toElement) {
+        $(thisElement).val($(thisElement).val().replace(" ", ""));
         var fromNumber = $(fromElement).val();
-        var toNumber = $(this).val();
+        var toNumber = $(toElement).val();
         if (validateNumbers(fromElement, toElement)) {
-            $(rangeToShowContainer).css("display", "block");
-            if (toNumber == "") {
-                if (fromNumber == "") {
-                    $(rangeToShowElement).text("");
-                    $(rangeToShowContainer).css("display", "none");
-                }
-                else {
-                    $(rangeToShowElement).text(fromNumber + "+")
-                }
+            setDraft(fromNumber, toNumber);
+        }
+        else { $(thisElement).val("") }
+    }
+     
+    function setDraft(fromNumber, toNumber)
+    {
+        $(rangeToShowContainer).css("display", "block");
+        if (toNumber == "") {
+            if (fromNumber == "") {
+                $(rangeToShowContainer).css("display", "none");
             }
             else {
-                if (isPositiveInteger(toNumber)) {
-                    if (fromNumber == "") {
-                        $(rangeToShowElement).text("1-" + toNumber);
-                    }
-                    else {
-                        $(rangeToShowElement).text(fromNumber + "-" + toNumber);
-                    }
+                $(rangeToShowElement).text(fromNumber + "+")
+            }
+        }
+        else {
+            if (isPositiveInteger(toNumber)) {
+                if (fromNumber == "") {
+                    $(rangeToShowElement).text("1-" + toNumber);
+                }
+                else {
+                    $(rangeToShowElement).text(fromNumber + "-" + toNumber);
                 }
             }
         }
-        else{ $(this).val("") }
-    });
+    }
 }
-function placeSelecter(place) {
-            var locationIcon = $("#draftLocation").find("span");
-            $("#draftLocation").text("");
-            $("#draftLocation").append(locationIcon);
-            $("#draftLocation").append(place);
+function placeSelecter(place, geoLng, geoLat) {
+    var locationIcon = $("#draftLocation").find("span");
+    $("#draftLocation").text("");
+    $("#draftLocation").append(locationIcon);
+    $("#draftLocation").append(place);
+    $('#PlaceLongitude').val(geoLng);
+    $('#PlaceLatitude').val(geoLat);
 };
+
+
 
 function validateNumbers(minNumElementID, maxNumElementID) {
     var validNum = true;
@@ -111,8 +100,7 @@ function validateNumbers(minNumElementID, maxNumElementID) {
     { validNum = false; }
     return validNum;
 }
-function updateDraftTitle()
-{
+function updateDraftTitle() {
     var titledom = $("#Title");
     var val = $(titledom).val();
     if ($(titledom).val() != "") {
@@ -122,16 +110,19 @@ function updateDraftTitle()
 
 function updateEventDateDraft() {
     var itemtoupdate = $("#DateTimeOfTheEvent");
+    var hour = $("#HourTimeOfTheEvent").val();
+    var minute = $("#MinuteTimeOfTheEvent").val();
+
     var date = $(itemtoupdate).val();
     if (date != "" && date != undefined) {
         var arrdate = date.split('/');
         var datetext = ("#draftTitle").text;
-        $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]));
+        $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]) + " "+ hour + ":" + minute);
     }
 }
 
 function updateImageDraft(input) {
-   // var input = $('#ImageUrl');
+    // var input = $('#ImageUrl');
     if (input != null) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -179,8 +170,35 @@ function initEvents() {
     $('#dpdTextSide').on('change', function () {
         updateSideOfTheTextDraft();
     });
-    RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants", ".event-num-of-participants-container");
-    RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants", ".event-age-of-participants-container");
+
+    $('#HourTimeOfTheEvent').on('input', function () {
+                $(this).val($(this).val().replace(" ", ""));
+        var hour = $(this).val();
+        if (isPositiveInteger(hour) === false || hour>23)
+        {
+            $(this).val("");
+        }
+        else 
+        {
+            updateEventDateDraft();
+        }
+    });
+
+    $('#MinuteTimeOfTheEvent').on('input', function () {
+                $(this).val($(this).val().replace(" ", ""));
+        var minute = $(this).val();
+        if (isPositiveInteger(minute) === false || minute > 59) {
+            $(this).val("");
+        }
+        else {
+            updateEventDateDraft();
+        }
+    });
+
+    RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
+        ".event-num-of-participants-container");
+    RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants",
+        ".event-age-of-participants-container");
     $('#dpdGender').on('change', function () {
         updateDraftGender();
     });
@@ -190,7 +208,6 @@ $(document).ready(function () {
     initEvents();
     updateEventDateDraft();
     updateDraftTitle();
-   // updateImageDraft();
     updateSideOfTheTextDraft();
     updateDraftGender();
 });

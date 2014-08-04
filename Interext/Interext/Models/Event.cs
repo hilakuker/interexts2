@@ -28,10 +28,12 @@ namespace Interext.Models
 
         public string Place { get; set; } // the object Place with all the info .. like previous events .. if not specified then 
         //it is the place/location of the Group
-
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
         [Required]
         [Column(TypeName = "datetime2")]
-        public DateTime DateTimeOfTheEvent { get; set; }
+        public DateTime DateOfTheEvent { get; set; }
+        public string TimeOfTheEvent { get; set; }
         public string BackroundColor { get; set; }
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }

@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {   /*sliding down the submenu*/
+﻿$(document).ready(function () {
+    initplacechangecevent(setLatLng);
+    /*sliding down the submenu*/
     $('.top-sub-menu').each(function () {
         var res;     /*when hover on the menu_item_title */
         $(this).parent().eq(0).hoverIntent(function () {
@@ -60,5 +62,9 @@
             });
         });
     });
-        
+    function setLatLng(place, geoLng, geoLat)
+    {
+        $('#PlaceLongitude').val(geoLng);
+        $('#PlaceLatitude').val(geoLat);
+    }
 });
