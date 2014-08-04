@@ -35,16 +35,25 @@ namespace Interext.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(string FreeText, string locationSearchTextField, string DateOfTheEventFrom,
-            string DateOfTheEventTo, string AgeOfParticipant, string Gender)
+            string DateOfTheEventTo, string AgeOfParticipant, string Gender, string radiusOfTheLocation,
+            double PlaceLongitude, double PlaceLatitude)
         {
             List<Event> model = null;
-
+            bool searchAccordingToRadius = false;
             bool isFreeText = !String.IsNullOrEmpty(FreeText);
             bool isLocation = !String.IsNullOrEmpty(locationSearchTextField);
             bool isFromDate = false;
             bool isToDate = false;
             bool isParticipantAge = false;
+                double radius = 0;
+            
 
+            if (radiusOfTheLocation != "The exact location")
+            {
+                searchAccordingToRadius = true;
+                string temp = radiusOfTheLocation.Replace("km", "");
+                radius = double.Parse(temp);
+            }
             DateTime DateFrom = DateTime.MinValue;
             if (!String.IsNullOrEmpty(DateOfTheEventFrom))
             {
@@ -69,8 +78,11 @@ namespace Interext.Controllers
                 //{
                 model = _db.Events.Where(x => (isFreeText ? x.Title.ToLower().Contains(FreeText.ToLower()) || x.Description.ToLower().Contains(FreeText.ToLower()) : true)
                     && (isLocation ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
-                    && (isFromDate ? (x.DateTimeOfTheEvent >= DateFrom) : true)
-                    && (isToDate ? (x.DateTimeOfTheEvent <= DateTo) : true)
+                    && (isLocation && searchAccordingToRadius ? 
+                    (Math.Sqrt(((Math.Pow((x.PlaceLatitude-PlaceLatitude), 2) + Math.Pow((x.PlaceLongitude - PlaceLongitude), 2)))) < radius)
+                    : true)
+                    && (isFromDate ? (x.DateOfTheEvent >= DateFrom) : true)
+                    && (isToDate ? (x.DateOfTheEvent <= DateTo) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue? x.AgeOfParticipantsMax >= participantAge: true) : true)
                     && x.GenderParticipant == Gender
@@ -81,18 +93,14 @@ namespace Interext.Controllers
             return View(model);
         }
 
-        private void checkRenge(int x, int y, int a, int b)
+        private void checkRange(int x, int y, int a, int b)
         {
-            
             int min = x;
             int max = y;
             if (a < x)
                 min = a;
             if (b > y)
                 max = b;
-
-           
-
         }
 
         public ActionResult About()

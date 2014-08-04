@@ -50,6 +50,8 @@ $(document).ready(function () {
 function initplacechangecevent(functiontorun) {
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         place = autocomplete.getPlace();
-        functiontorun(place.formatted_address);
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+        functiontorun(place.formatted_address, lng, lat);
     });
 }

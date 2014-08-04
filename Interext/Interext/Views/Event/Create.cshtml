@@ -31,12 +31,16 @@
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
                         <div class="input-with-image-wrapper">
-                            <input type="text" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" class="form-control full-control" placeholder="Date of the event" />
+                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" />
+                            <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" />
+                            <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" />
                         </div>
-                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
+                        @Html.ValidationMessageFor(m => m.DateOfTheEvent)
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
+                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
+                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
 
                             @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
 
@@ -58,7 +62,8 @@
                         </span>
                         <br />
 
-                        <div id="colorSelector"><div style="background-color: #000"></div>
+                        <div id="colorSelector">
+                            <div style="background-color: #000"></div>
                         </div>
                         <div class="left choose-bg-color-text">
                             Choose background color for text:
@@ -71,7 +76,7 @@
                         <div id="slider" class="left"></div>
                         <input type="hidden" id="BackroundColorOpacity" name="BackroundColorOpacity" value="0.8" />
                         <div class="clear"></div>
-                        
+
                         <br />
                         The side of the text:
                         <select id="dpdTextSide" name="SideOfText">

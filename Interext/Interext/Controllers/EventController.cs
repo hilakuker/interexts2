@@ -61,20 +61,19 @@ namespace Interext.Controllers
                 GenderParticipant = @event.GenderParticipant,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateOfTheEventNoYear = setDisplayDateFormat(@event.DateTimeCreated),
+                DateOfTheEventNoYear = setDisplayDateFormat(@event.DateTimeCreated, @event.TimeOfTheEvent),
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
-                DateTimeOfTheEvent = @event.DateTimeOfTheEvent
             };
             return View(eventToShow);
         }
 
-        private string setDisplayDateFormat(DateTime dateTime)
+        private string setDisplayDateFormat(DateTime dateTime, string time)
         {
             string date = dateTime.Date.ToString();
             string[] dateSplit = date.Split('/');
-            string rightDateFormat = string.Format("{0}.{1}", dateSplit[0], dateSplit[1]);
+            string rightDateFormat = string.Format("{0}.{1} {2}", dateSplit[0], dateSplit[1], time);
             return rightDateFormat;
         }
 
@@ -107,9 +106,11 @@ namespace Interext.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId()); 
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                string timeOfTheEvent = string.Format("{0}:{1}", model.HourTimeOfTheEvent, model.MinuteTimeOfTheEvent);
                 Event eventToCreate = new Event()
                 {
+                    TimeOfTheEvent = timeOfTheEvent,
                     CreatorUser = user,
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
@@ -124,7 +125,9 @@ namespace Interext.Controllers
                     Title = model.Title,
                     Description = model.Description,
                     SideOfText = model.SideOfText,
-                    DateTimeOfTheEvent = model.DateTimeOfTheEvent
+                    DateOfTheEvent = model.DateOfTheEvent,
+                    PlaceLatitude = model.PlaceLatitude,
+                    PlaceLongitude = model.PlaceLongitude
                 };
                 db.Events.Add(eventToCreate);
                 try
@@ -205,6 +208,9 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
+            string[] dateTimeSplit = @event.TimeOfTheEvent.Split(':');
+            string hour = dateTimeSplit[0];
+            string minute = dateTimeSplit[1];
             EventViewModel model = new EventViewModel()
             {
                 Id = @event.Id,
@@ -212,7 +218,9 @@ namespace Interext.Controllers
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
+                DateOfTheEvent = @event.DateOfTheEvent,
+                HourTimeOfTheEvent = hour,
+                MinuteTimeOfTheEvent = minute,
                 CreatorUser = @event.CreatorUser,
                 DateTimeCreated = @event.DateTimeCreated,
                 Description = @event.Description,
@@ -257,10 +265,13 @@ namespace Interext.Controllers
                 @event.AgeOfParticipantsMin = model.AgeOfParticipantsMin;
                 @event.BackroundColor = model.BackroundColor.Replace("rgb(","");
                 @event.BackroundColor = @event.BackroundColor.Replace(")", "");
-                @event.DateTimeOfTheEvent = model.DateTimeOfTheEvent;
+                @event.DateOfTheEvent = model.DateOfTheEvent;
+                @event.TimeOfTheEvent = string.Format("{0}:{1}", model.HourTimeOfTheEvent, model.MinuteTimeOfTheEvent);
                 @event.Description = model.Description;
                 @event.GenderParticipant = model.GenderParticipant;
                 db.Entry(@event).State = EntityState.Modified;
+                @event.PlaceLatitude = model.PlaceLatitude;
+                @event.PlaceLongitude = model.PlaceLongitude;
                 try
                 {
                     db.SaveChanges();
@@ -268,7 +279,7 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }
