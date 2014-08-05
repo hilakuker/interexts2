@@ -23,7 +23,10 @@
         @Html.ValidationMessageFor(m => m.Password)
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
         @Html.ValidationMessageFor(m => m.ConfirmPassword)
-        <input type="text" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
+        <input type="hidden" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
+        @Html.TextBoxFor(m => m.BirthDateDay, new { @placeholder = "Birthdate day", @id = "BirthDateDay" })
+        @Html.TextBoxFor(m => m.BirthDateMonth, new { @placeholder = "Birthdate month", @id = "BirthDateMonth" })
+        @Html.TextBoxFor(m => m.BirthDateYear, new { @placeholder = "Birthdate year", @id = "BirthDateYear" })
         @Html.ValidationMessageFor(m => m.BirthDate)
         <p></p>
         @*@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth date" })

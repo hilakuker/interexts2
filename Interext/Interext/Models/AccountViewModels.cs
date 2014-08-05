@@ -96,6 +96,10 @@ namespace Interext.Models
         [BirthdateValidation]
         public DateTime BirthDate { get; set; }
 
+        public string BirthDateDay { get; set; }
+        public string BirthDateMonth { get; set; }
+        public string BirthDateYear { get; set; }
+
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 

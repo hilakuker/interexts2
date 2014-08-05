@@ -30,10 +30,12 @@ namespace Interext.Models
         //it is the place/location of the Group
         public double PlaceLongitude { get; set; }
         public double PlaceLatitude { get; set; }
+
         [Required]
         [Column(TypeName = "datetime2")]
-        public DateTime DateOfTheEvent { get; set; }
-        public string TimeOfTheEvent { get; set; }
+        public DateTime DateTimeOfTheEvent { get; set; }
+
+        [Required]
         public string BackroundColor { get; set; }
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }

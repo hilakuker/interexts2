@@ -12,7 +12,7 @@
 {
     <div class="event-box" data-src="@Html.DisplayFor(modelItem => item.ImageUrl)" data-width="1144" data-height="791">
         <a href="/Event/Details?Id=@Html.DisplayFor(modelItem => item.Id)" class="event-box-content @Html.DisplayFor(modelItem => item.SideOfText)" style="background-color: rgb(@Html.DisplayFor(modelItem => item.BackroundColor)); background-color: rgba(@Html.DisplayFor(modelItem => item.BackroundColor),@Html.DisplayFor(modelItem => item.BackroundColorOpacity));">
-            <div class="event-date">@Html.DisplayFor(modelItem => item.DateOfTheEvent.Day).@Html.DisplayFor(modelItem => item.DateOfTheEvent.Month)</div>
+            @*<div class="event-date">@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Day).@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Month)</div>*@
             <div class="event-title">@Html.DisplayFor(modelItem => item.Title)</div>
             <div class="event-location"><span class="fa fa-map-marker"></span>@Html.DisplayFor(modelItem => item.Place)</div>
             <div class="event-num-of-participants-container">
