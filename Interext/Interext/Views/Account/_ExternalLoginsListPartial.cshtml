@@ -21,10 +21,6 @@
             @Html.AntiForgeryToken()
                 foreach (AuthenticationDescription p in loginProviders)
                 {
-                    if (p.AuthenticationType == "Google")
-                    {
-                        <button type="submit" class="form-control zocial googleplus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">Sign in with @p.AuthenticationType</button>
-                    }
                     if (p.AuthenticationType == "Facebook")
                     {
                         <button type="submit" class="form-control zocial facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">Sign in with @p.AuthenticationType</button>

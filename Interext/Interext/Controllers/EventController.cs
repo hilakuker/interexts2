@@ -20,10 +20,8 @@ namespace Interext.Controllers
 {
     public class EventController : Controller
     {
-        //private InterextDB db = new InterextDB();
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: /Event/
 
         private UserManager<ApplicationUser> UserManager { get; set; }
         public EventController()
@@ -102,17 +100,11 @@ namespace Interext.Controllers
         // GET: /Event/Create
         public ActionResult Create()
         {
-            //var model = new EventViewModel();
-            //model.AllInterests = db.Interests.ToList();
-            //return View(model);
-
-            //ViewBag.AllInterests = db.Interests.ToList();
             return View();
         }
 
         // POST: /Event/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl)
@@ -163,57 +155,13 @@ namespace Interext.Controllers
                 eventToCreate.ImageUrl = ImageSaver.SaveEvent(eventToCreate.Id, ImageUrl, Server);
             }
         }
-        //public ActionResult Create([Bind(Include = "Id,Title,Description,ImageUrl,DateTimeOfTheEvent")] Event @event, HttpPostedFileBase ImageUrl, string[] Interests)
-        ////{
-        ////public ActionResult Create(HttpPostedFileBase ImageUrl)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //Event dbEvent = new Event();
-        //        ImageSaver.SaveImage(ImageUrl, Server.MapPath("~/App_Data/uploads/events"), ImageUrl.FileName);
-        //        @event.DateTimeCreated = DateTime.Now;
-        //        //dbEvent.DateTimeOfTheEvent = @event.DateTimeOfTheEvent;
-        //        //dbEvent.Description = @event.Description;
-        //        //dbEvent.ImageUrl = @event.ImageUrl;
 
-
-
-        //        @event.Interests = new List<Interest>();
-
-
-
-
-        //        //dbEvent.Place = @event.Place;
-        //        //dbEvent.Title = @event.Title;
-        //        //dbEvent.UsersAttending = @event.UsersAttending;
-        //        //dbEvent.UsersInvited = @event.UsersInvited;
-
-        //        foreach (string interestID in Interests)
-        //        {
-        //            int id = int.Parse(interestID);
-        //            Interest interest = db.Interests.SingleOrDefault(x => x.Id == id);
-        //            if (interest != null)
-        //            {
-        //                @event.Interests.Add(interest);
-        //            }
-        //        }
-
-        //        db.Events.Add(@event);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(@event);
-        //}
-
-        // GET: /Event/Edit/5
         public string CheckIfUserCanEditEvent(EventViewModel model)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Id == model.CreatorUser.Id)
             {
                 return string.Format("<a href=\"/Event/Edit?id="+ Request.QueryString["id"] +"\">Edit event<a/>");
-                //return string.Format("@ActionLink({0},{1},{2})", "\"Edit Event\"", "\"Edit\"", "\"Event\"");
             }
             else
             {
@@ -262,10 +210,7 @@ namespace Interext.Controllers
 
 
         // POST: /Event/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-       //[Route("Event/edit?id={id:int}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
