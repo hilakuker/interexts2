@@ -60,15 +60,18 @@
                     <div class="data-for-popup">
                         <ul class="interests-list">
                             <li>
-                                
                                 <div class="main-category">
-                                    <input type="checkbox" value="Books" name="Books">
+                                    <input type="checkbox" value="Books" name="Books" class="allCategoryInterests">
                                     <div class="image" style="background-image:url('/Content/images/interests/books.jpg')"></div>
                                     <div class="title">Books</div>
                                 </div>
                             </li>
                             <li>
-                                <input type="checkbox" value="Sports">Sports<br />
+                                <div class="main-category">
+                                    <input type="checkbox" value="Sports" name="Sports" class="allCategoryInterests">
+                                    <div class="image" style="background-image: url('/Content/images/interests/sports.jpg')"></div>
+                                    <div class="title">Sports</div>
+                                </div>
                                 <ul>
                                     <li><input type="checkbox" value="Jogging">Jogging</li>
                                     <li><input type="checkbox" value="Bicycle">Bicycle</li>
@@ -77,8 +80,19 @@
                                     <li><input type="checkbox" value="Football">Football</li>
                                 </ul>
                             </li>
-                            <li><input type="checkbox" value="Cooking">Cooking</li>
-                            <li><input type="checkbox" value="Nature">Nature<br/>
+                            <li>
+                                <div class="main-category">
+                                    <input type="checkbox" value="Cooking" name="Cooking" class="allCategoryInterests">
+                                    <div class="image" style="background-image: url('/Content/images/interests/cooking.jpg')"></div>
+                                    <div class="title">Cooking</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="main-category">
+                                    <input type="checkbox" value="Nature" name="Nature" class="allCategoryInterests">
+                                    <div class="image" style="background-image: url('/Content/images/interests/nature.jpg')"></div>
+                                    <div class="title">Nature</div>
+                                </div>
                                 <ul>
                                     <li><input type="checkbox" value="Tracking">Tracking</li>
                                     <li><input type="checkbox" value="Mauntain Climbing">Mauntain Climbing</li>
@@ -125,5 +139,5 @@
     <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
         @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
     </div>
-        <div class="bottom-spacer clear"></div>
-    </div>
+    <div class="bottom-spacer clear"></div>
+</div>

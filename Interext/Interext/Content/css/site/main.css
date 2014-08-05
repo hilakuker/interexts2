@@ -1501,6 +1501,7 @@ section.hidden-popup-container {
         border-radius: 3px;
         padding: 5px 7px;
         margin: 10% auto;
+        overflow-y:scroll;
     }
 section article.popup .close {
     position:absolute;

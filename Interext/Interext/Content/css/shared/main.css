@@ -8,40 +8,58 @@
 }
 
 .interests-list {
-    margin-left: 20px;
+    margin: 20px 0 0 20px;
 }
-
+.interests-list > li {
+    list-style:none; 
+    margin-bottom:10px;
+}
 .interests-list li ul {
     margin-left: 20px;
+    
+}
+.interests-list li ul > li {
+    list-style:none; 
+    margin:10px;
+    cursor:pointer;
 }
 
 .interests-list .main-category {
-    width: 50px;
+    width: 300px;
     height: 50px;
     position: relative;
+    cursor:pointer;
 }
 
 .interests-list .main-category .image {
-    width: 50px;
+    width: 300px;
     height: 50px;
     background-size: cover;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 100;
+    background-position:center;
 }
 
 .interests-list .main-category .title {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 3px;
+    left: 3px;
     color: #fff;
     z-index: 200;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-size: 18px;
 }
 
+/*.interests-list .main-category .checkbox,*/ 
 .interests-list .main-category input {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 3px;
+    left: 3px;
     z-index: 200;
+    color: #fff;
+    /*padding: 2px 0 0 2px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
 }
