@@ -207,7 +207,19 @@ namespace Interext.Controllers
         //}
 
         // GET: /Event/Edit/5
-
+        public string CheckIfUserCanEditEvent(EventViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Id == model.CreatorUser.Id)
+            {
+                return string.Format("<a href=\"/Event/Edit?id="+ Request.QueryString["id"] +"\">Edit event<a/>");
+                //return string.Format("@ActionLink({0},{1},{2})", "\"Edit Event\"", "\"Edit\"", "\"Event\"");
+            }
+            else
+            {
+                return "";
+            }
+        }
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -221,14 +233,15 @@ namespace Interext.Controllers
             }
             string hour = @event.DateTimeOfTheEvent.Hour.ToString();
             string minute = @event.DateTimeOfTheEvent.Minute.ToString();
+            string dateString = @event.DateTimeOfTheEvent.Date.ToString();
             EventViewModel model = new EventViewModel()
             {
                 Id = @event.Id,
+                DateOfTheEvent = @event.DateTimeOfTheEvent,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateOfTheEvent = @event.DateTimeOfTheEvent.Date,
                 HourTimeOfTheEvent = hour,
                 MinuteTimeOfTheEvent = minute,
                 CreatorUser = @event.CreatorUser,

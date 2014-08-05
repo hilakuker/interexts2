@@ -17,7 +17,7 @@
                 @Html.AntiForgeryToken()
                 <div class="event-intro-wrapper">
                     <div class="event-intro">
-                        <h1 class="event-title">Create a new event</h1>
+                        <h1 class="event-title">Edit your event</h1>
                         <div class="clear"></div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
                         <div class="input-with-image-wrapper">
-                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
+                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateOfTheEvent.ToShortDateString()" />
                             <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" value="@Model.HourTimeOfTheEvent"/>
                             <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" value="@Model.MinuteTimeOfTheEvent" />
                         </div>
