@@ -287,6 +287,7 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
+                setSideOfText(@event, ref model);
                 return RedirectToAction("Details", new {id = @event.Id});
             }
             return View(model);
