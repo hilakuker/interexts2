@@ -13,7 +13,7 @@ namespace Interext.OtherCalsses
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class EventTimeValidationAttribute : ValidationAttribute, IClientValidatable
     {
-        private const string Errormessage = "Event time cannot accur in the past.";
+        private const string Errormessage = "Event time cannot occur in the past.";
         public string OtherProperty { get; private set; }
         public EventTimeValidationAttribute(string otherProperty)
             : base(Errormessage)
@@ -31,7 +31,7 @@ namespace Interext.OtherCalsses
             {
                 DateTime? eventDateTime = (DateTime)value;
                 // Check to see if the value is greater than the other property value
-                if (eventDateTime < DateTime.Now)
+                if (eventDateTime <= DateTime.Now)
                 {
                     return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
                 }

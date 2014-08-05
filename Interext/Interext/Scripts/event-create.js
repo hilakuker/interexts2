@@ -9,14 +9,9 @@
 //    $("#txtNumOfParticipantsFrom").val > $("#txtNumOfParticipantsTo").val)
 //}
 
-function isPositiveInteger(s) {
-    var i = +s; // convert to a number
-    if (i < 0) return false; // make sure it's positive
-    if (i != ~~i) return false; // make sure there's no decimal part
-    return true;
-}
+
 function pageInit() {
-    $("#DateTimeOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
+    $("#DateOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
     $("#slider").slider({
         range: "min",
         value: 80,
@@ -109,7 +104,7 @@ function updateDraftTitle() {
 }
 
 function updateEventDateDraft() {
-    var itemtoupdate = $("#DateTimeOfTheEvent");
+    var itemtoupdate = $("#DateOfTheEvent");
     var hour = $("#HourTimeOfTheEvent").val();
     var minute = $("#MinuteTimeOfTheEvent").val();
 
@@ -160,6 +155,7 @@ function initEvents() {
         updateDraftTitle();
     });
     $('#DateTimeOfTheEvent').on('change', function () {
+        updateDateTime();
         updateEventDateDraft();
     });
 
@@ -172,10 +168,10 @@ function initEvents() {
     });
 
     $('#HourTimeOfTheEvent').on('input', function () {
-                $(this).val($(this).val().replace(" ", ""));
+        updateDateTime();
+        $(this).val($(this).val().replace(" ", ""));
         var hour = $(this).val();
-        if (isPositiveInteger(hour) === false || hour>23)
-        {
+        if (isPositiveInteger(hour) === false || hour > 23) {
             $(this).val("");
         }
         else 
@@ -185,7 +181,8 @@ function initEvents() {
     });
 
     $('#MinuteTimeOfTheEvent').on('input', function () {
-                $(this).val($(this).val().replace(" ", ""));
+        updateDateTime();
+        $(this).val($(this).val().replace(" ", ""));
         var minute = $(this).val();
         if (isPositiveInteger(minute) === false || minute > 59) {
             $(this).val("");
@@ -194,6 +191,16 @@ function initEvents() {
             updateEventDateDraft();
         }
     });
+
+    function updateDateTime() {
+        var minute = $('#MinuteTimeOfTheEvent').val();
+        var hour = $('#HourTimeOfTheEvent').val();
+        var date = $('#DateOfTheEvent').val();
+        if (minute !='' && hour != '' && date != '')
+        {
+            $('#DateTimeOfTheEvent').val(date + " " + hour + ":" + minute + ":" + "00")
+        }
+    }
 
     RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
         ".event-num-of-participants-container");

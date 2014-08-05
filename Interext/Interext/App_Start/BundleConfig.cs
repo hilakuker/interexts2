@@ -36,7 +36,12 @@ namespace Interext
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
-                        "~/Scripts/event-create.js"));
+                        "~/Scripts/event-create.js",
+                        "~/Scripts/numberVlidation.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/register").Include(
+            "~/Scripts/register.js",
+            "~/Scripts/numberVlidation.js"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
@@ -44,9 +49,6 @@ namespace Interext
                         "~/Scripts/colorpicker/layout.js"
                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/register").Include(
-                        "~/Scripts/register.js"
-                        ));
             //STYLES
 
             bundles.Add(new StyleBundle("~/Content/shared-css").Include(

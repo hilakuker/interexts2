@@ -61,7 +61,7 @@ namespace Interext.Controllers
                 GenderParticipant = @event.GenderParticipant,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateOfTheEventNoYear = setDisplayDateFormat(@event.DateTimeCreated, @event.TimeOfTheEvent),
+                DateOfTheEventNoYear = setDisplayDateFormat(@event.DateTimeOfTheEvent),
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
@@ -69,13 +69,26 @@ namespace Interext.Controllers
             return View(eventToShow);
         }
 
-        private string setDisplayDateFormat(DateTime dateTime, string time)
+        private string setDisplayDateFormat(DateTime dateTime)
         {
             string date = dateTime.Date.ToString();
             string[] dateSplit = date.Split('/');
-            string rightDateFormat = string.Format("{0}.{1} {2}", dateSplit[0], dateSplit[1], time);
+            string minute = getHour(dateTime.Minute);
+            string hour = getHour(dateTime.Hour);
+            string rightDateFormat = string.Format("{0}.{1} {2}:{3}", dateSplit[0], dateSplit[1], 
+                hour, minute);
             return rightDateFormat;
         }
+
+        private string getHour(int number)
+        {
+            if (number < 10)
+            {
+                return string.Format("0{0}", number);
+            }
+            return number.ToString();
+        }
+
 
         private void setSideOfText(Event @event, ref EventViewModel eventToShow)
         {
@@ -107,10 +120,8 @@ namespace Interext.Controllers
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
-                string timeOfTheEvent = string.Format("{0}:{1}", model.HourTimeOfTheEvent, model.MinuteTimeOfTheEvent);
                 Event eventToCreate = new Event()
                 {
-                    TimeOfTheEvent = timeOfTheEvent,
                     CreatorUser = user,
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
@@ -125,7 +136,7 @@ namespace Interext.Controllers
                     Title = model.Title,
                     Description = model.Description,
                     SideOfText = model.SideOfText,
-                    DateOfTheEvent = model.DateOfTheEvent,
+                    DateTimeOfTheEvent = model.DateTimeOfTheEvent,
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude
                 };
@@ -140,7 +151,7 @@ namespace Interext.Controllers
                 }
                 saveImage(ref eventToCreate, ImageUrl);
                 db.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", new { id = eventToCreate.Id });
             }
             return View(model);
         }
@@ -208,9 +219,8 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
-            string[] dateTimeSplit = @event.TimeOfTheEvent.Split(':');
-            string hour = dateTimeSplit[0];
-            string minute = dateTimeSplit[1];
+            string hour = @event.DateTimeOfTheEvent.Hour.ToString();
+            string minute = @event.DateTimeOfTheEvent.Minute.ToString();
             EventViewModel model = new EventViewModel()
             {
                 Id = @event.Id,
@@ -218,7 +228,7 @@ namespace Interext.Controllers
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateOfTheEvent = @event.DateOfTheEvent,
+                DateOfTheEvent = @event.DateTimeOfTheEvent.Date,
                 HourTimeOfTheEvent = hour,
                 MinuteTimeOfTheEvent = minute,
                 CreatorUser = @event.CreatorUser,
@@ -244,12 +254,11 @@ namespace Interext.Controllers
         [HttpPost]
        //[Route("Event/edit?id={id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EventViewModel model)
+        public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId()); 
-
                 Event @event = db.Events.Find(model.Id);
                 @event.CreatorUser = user;
                 @event.Title = model.Title;
@@ -257,7 +266,7 @@ namespace Interext.Controllers
                 @event.Place = model.Place;
                 if (model.ImageUrl != null)
                 {
-                    @event.ImageUrl = model.ImageUrl;
+                    saveImage(ref @event, ImageUrl);
                 }
                 @event.NumOfParticipantsMax = model.NumOfParticipantsMax;
                 @event.NumOfParticipantsMin = model.NumOfParticipantsMin;
@@ -265,8 +274,7 @@ namespace Interext.Controllers
                 @event.AgeOfParticipantsMin = model.AgeOfParticipantsMin;
                 @event.BackroundColor = model.BackroundColor.Replace("rgb(","");
                 @event.BackroundColor = @event.BackroundColor.Replace(")", "");
-                @event.DateOfTheEvent = model.DateOfTheEvent;
-                @event.TimeOfTheEvent = string.Format("{0}:{1}", model.HourTimeOfTheEvent, model.MinuteTimeOfTheEvent);
+                @event.DateTimeOfTheEvent = model.DateTimeOfTheEvent;
                 @event.Description = model.Description;
                 @event.GenderParticipant = model.GenderParticipant;
                 db.Entry(@event).State = EntityState.Modified;
@@ -279,7 +287,7 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", new {id = @event.Id});
             }
             return View(model);
         }

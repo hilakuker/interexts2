@@ -1,6 +1,7 @@
 ﻿using Interext.Models;
 using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,19 +19,14 @@ namespace Interext.Controllers
         }
         public ActionResult Index()
         {
-            //return View();
             List<Event> model = _db.Events.ToList();
-
             if (Request.IsAjaxRequest())
             {
                 model = _db.Events.Take(1).ToList(); // temp
                 return PartialView("~/Views/Event/_EventsWall.cshtml", model);
             }
-
-            //return View(model);
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,13 +72,21 @@ namespace Interext.Controllers
             {
                 //if (Request.IsAjaxRequest())
                 //{
-                model = _db.Events.Where(x => (isFreeText ? x.Title.ToLower().Contains(FreeText.ToLower()) || x.Description.ToLower().Contains(FreeText.ToLower()) : true)
+                //if (isLocation && searchAccordingToRadius)
+                //{
+                //    model = _db.Events.ToList();
+                //    model.Where(x => Math.Sqrt(((Math.Pow((x.PlaceLatitude - PlaceLatitude), 2) + 
+                //        Math.Pow((x.PlaceLongitude - PlaceLongitude), 2)))) < radius);
+                //}
+                List<Event> eventList = _db.Events.ToList();
+                model = eventList.Where(
+                    x => (isFreeText ? x.Title.ToLower().Contains(FreeText.ToLower()) || 
+                        x.Description.ToLower().Contains(FreeText.ToLower()) : true)
                     && (isLocation ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
-                    && (isLocation && searchAccordingToRadius ? 
-                    (Math.Sqrt(((Math.Pow((x.PlaceLatitude-PlaceLatitude), 2) + Math.Pow((x.PlaceLongitude - PlaceLongitude), 2)))) < radius)
+                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, PlaceLatitude, PlaceLongitude) < radius)
                     : true)
-                    && (isFromDate ? (x.DateOfTheEvent >= DateFrom) : true)
-                    && (isToDate ? (x.DateOfTheEvent <= DateTo) : true)
+                    && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
+                    && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue? x.AgeOfParticipantsMax >= participantAge: true) : true)
                     && x.GenderParticipant == Gender
@@ -91,6 +95,13 @@ namespace Interext.Controllers
                 //}   
             }
             return View(model);
+        }
+
+        private double calulateDistance(Event x, double PlaceLatitude, double PlaceLongitude)
+        {
+            var locA = new GeoCoordinate(PlaceLatitude, PlaceLongitude);
+            var locB = new GeoCoordinate(x.PlaceLatitude, x.PlaceLongitude);
+            return (locA.GetDistanceTo(locB));
         }
 
         private void checkRange(int x, int y, int a, int b)
