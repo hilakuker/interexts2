@@ -164,7 +164,7 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterestController.cs" />
-    <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\PlaceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -185,13 +185,12 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Interest.cs" />
-    <Compile Include="Models\KeepTouchDB.cs" />
-    <Compile Include="Models\MapModel.cs" />
     <Compile Include="Models\ModelClientValidationEventDateRule.cs" />
     <Compile Include="Models\ModelClientValidationNumericLessThanRule.cs" />
     <Compile Include="Models\Place.cs" />
+    <Compile Include="Models\PlaceRatingUser.cs" />
+    <Compile Include="Models\PlaceViewModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
-    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -644,6 +643,7 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\numberVlidation.js" />
+    <Content Include="Scripts\place.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -694,12 +694,16 @@
     <Content Include="Views\Event\GetUsers.cshtml" />
     <Content Include="Views\Home\SearchForEvents.cshtml" />
     <Content Include="Views\Event\_EventsWallWithTempData.cshtml" />
+    <Content Include="Views\Place\Create.cshtml" />
+    <Content Include="Views\Place\Details.cshtml" />
+    <Content Include="Views\Place\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />
     <Folder Include="Content\css\intro\" />
     <Folder Include="Content\css\jquery.ui\" />
     <Folder Include="Content\images\events\" />
+    <Folder Include="Content\images\Places\" />
     <Folder Include="Content\images\users\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\PartialView\" />

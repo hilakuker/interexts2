@@ -1,0 +1,39 @@
+﻿@model Interext.Models.PlaceViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventPageCss")
+}
+
+
+<div>
+    <div id="content" class="right-sidebar">
+        <div class="event-page-content">
+            <article>
+                <div class="event-intro-wrapper" style="background-image: url('@Model.ImageUrl');">
+                    <div class="event-intro">
+                        <h1 class="event-title">
+                            @Model.Title
+                        </h1>
+                        <div class="clear"></div>
+                        <div class="event-details">
+                            <span class="fa fa-map-marker"></span>@Model.LocationAddress<br />
+                            <a href="~/Account/ShowProfile"><div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
+                            <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div></a>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                        <span class="fa fa-map-marker"></span>@Model.Rating<br />
+                    </div>
+                </div>
+                <div class="event-desc">
+                    <p>@Model.Description</p>
+                </div>
+            </article>
+        </div>
+        <div class="clear"></div>
+        @Html.Action("CheckIfUserCanEditPlace", "Place", new { model = Model })
+    </div>

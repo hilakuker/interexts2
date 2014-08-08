@@ -191,17 +191,6 @@ function initEvents() {
             updateEventDateDraft();
         }
     });
-
-    function updateDateTime() {
-        var minute = $('#MinuteTimeOfTheEvent').val();
-        var hour = $('#HourTimeOfTheEvent').val();
-        var date = $('#DateOfTheEvent').val();
-        if (minute !='' && hour != '' && date != '')
-        {
-            $('#DateTimeOfTheEvent').val(date + " " + hour + ":" + minute + ":" + "00")
-        }
-    }
-
     RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
         ".event-num-of-participants-container");
     RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants",
@@ -210,6 +199,16 @@ function initEvents() {
         updateDraftGender();
     });
 }
+
+function updateDateTime() {
+    var minute = $('#MinuteTimeOfTheEvent').val();
+    var hour = $('#HourTimeOfTheEvent').val();
+    var date = $('#DateOfTheEvent').val();
+    if (minute != '' && hour != '' && date != '') {
+        $('#DateTimeOfTheEvent').val(date + " " + hour + ":" + minute + ":" + "00")
+    }
+}
+
 $(document).ready(function () {
     pageInit();
     initEvents();
@@ -217,4 +216,5 @@ $(document).ready(function () {
     updateDraftTitle();
     updateSideOfTheTextDraft();
     updateDraftGender();
+    updateDateTime();
 });

@@ -57,5 +57,15 @@ namespace Interext.OtherCalsses
             Server.MapPath(pathForPicture);
             return pathForPicture;
         }
+
+        internal static string SavePlaceImage(int placeID, HttpPostedFileBase ImageUrl, HttpServerUtilityBase Server)
+        {
+            string pathForToSave = Path.Combine(Server.MapPath("~/Content/images/Places"), placeID.ToString());
+            string fileName = Path.GetFileName(ImageUrl.FileName);
+            string pathForPicture = string.Format(@"/Content/images/Places/{0}/{1}", placeID, fileName);
+            ImageSaver.SaveImage(ImageUrl, pathForToSave, fileName);
+            Server.MapPath(pathForPicture);
+            return pathForPicture;
+        }
     }
 }

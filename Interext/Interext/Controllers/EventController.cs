@@ -63,6 +63,7 @@ namespace Interext.Controllers
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
+                Id = @event.Id
             };
             return View(eventToShow);
         }
@@ -109,6 +110,7 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
@@ -161,7 +163,7 @@ namespace Interext.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Id == model.CreatorUser.Id)
             {
-                return string.Format("<a href=\"/Event/Edit?id="+ Request.QueryString["id"] +"\">Edit event<a/>");
+                return string.Format("<a href=\"/Event/Edit?id="+ model.Id +"\">Edit event<a/>");
             }
             else
             {
@@ -214,6 +216,7 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId()); 
@@ -245,10 +248,19 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
-                setSideOfText(@event, ref model);
                 return RedirectToAction("Details", new {id = @event.Id});
             }
+            setSideOfTextDefault(ref model);
             return View(model);
+        }
+
+        private void setSideOfTextDefault(ref EventViewModel model)
+        {
+            model.SideOfTextOptions = new Dictionary<string, bool>();
+            model.SideOfTextOptions.Add("Right", String.Equals("Right", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Left", String.Equals("Left", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Top", String.Equals("Top", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", model.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
         private void setGenderOptions(Event @event, ref EventViewModel model)

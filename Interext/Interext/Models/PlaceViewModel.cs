@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace Interext.Models
 {
-    public class Place
+    public class PlaceViewModel
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public ApplicationUser CreatorUser { get; set; }
         public int Id { get; set; }
-
-        [Required]
-        public virtual ApplicationUser CreatorUser { get; set; }
-        [Required]
+        public string ImageUrl { get; set; }
+        [Required(ErrorMessage = "Title Cannot Remain Empty")]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        [Required]
+        public string Rating { get; set; }
+        [Required(ErrorMessage = "Address Cannot Remain Empty")]
         public string LocationAddress { get; set; }
     }
 }
