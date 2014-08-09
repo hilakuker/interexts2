@@ -1,0 +1,59 @@
+﻿@model Interext.Models.PlaceViewModel
+
+@{
+    ViewBag.Title = "Create Place";
+}
+
+<div>
+    <div>
+        <article>
+            @using (Html.BeginForm("Create", "Place", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true)
+
+                    <hr />
+                    @Html.ValidationSummary(true)
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
+                    @Html.ValidationMessageFor(m => m.Title)
+
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
+                    @Html.ValidationMessageFor(model => model.Description)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
+                        <span class="btn btn-dark fileinput-button">
+                            <span class="fa fa-picture-o"></span>
+                            <span>Upload image</span>
+                            <input type="file" name="ImageUrl" id="ImageUrl">
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Rating, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Rating)
+                            @Html.ValidationMessageFor(model => model.Rating)
+                        </div>
+                    </div>
+
+                    @Html.TextBoxFor(m => m.LocationAddress, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
+                    <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
+                    <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </article>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/placeJs")
+}

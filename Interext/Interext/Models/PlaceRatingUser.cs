@@ -7,19 +7,13 @@ using System.Web;
 
 namespace Interext.Models
 {
-    public class Place
+    public class PlaceRatingUser
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [Required]
-        public virtual ApplicationUser CreatorUser { get; set; }
-        [Required]
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string ImageUrl { get; set; }
-        [Required]
-        public string LocationAddress { get; set; }
+        public Place RatedPlace { get; set; }
+        public ApplicationUser RatingUser { get; set; }
+        public int Rating { get; set; }
     }
 }

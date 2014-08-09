@@ -14,7 +14,6 @@ using Microsoft.Owin.Security.Facebook;
 using Microsoft.AspNet.Identity.Owin;
 using System.IO;
 using Interext.OtherCalsses;
-using TestApp.Models;
 
 namespace Interext.Controllers
 {
@@ -311,54 +310,8 @@ namespace Interext.Controllers
                 Task<ClaimsIdentity> externalIdentity = getExternalIdentity();
                 var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email});
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
             }
-            //var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-            //if (result == null || result.Identity == null)
-            //{
-            //    return RedirectToAction("Login");
-            //}
-
-            //var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
-            //if (idClaim == null)
-            //{
-            //    return RedirectToAction("Login");
-            //}
-
-            //var login = new UserLoginInfo(idClaim.Issuer, idClaim.Value);
-            //var name = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", "");
-
-            //// Sign in the user with this external login provider if the user already has a login
-            //var user = await UserManager.FindAsync(login);
-            //if (user != null)
-            //{
-            //    await SignInAsync(user, isPersistent: false);
-            //    return RedirectToLocal(returnUrl);
-            //}
-            //else
-            //{
-            //    // If the user does not have an account, then prompt the user to create an account
-            //    ViewBag.ReturnUrl = returnUrl;
-            //    ViewBag.LoginProvider = login.LoginProvider;
-            //    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = name });
-            //}
-        }
-
-        public ActionResult SetProfilePictureInLayout(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        public async Task<ActionResult> SetProfilePictureInLayout(ImageModel model, string returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-            ApplicationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            model.ImageUrl = user.ImageUrl;
-            }
-            return View(model);
-
         }
 
         private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_Workaround()

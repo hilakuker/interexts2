@@ -17,7 +17,7 @@
                 @Html.AntiForgeryToken()
                 <div class="event-intro-wrapper">
                     <div class="event-intro">
-                        <h1 class="event-title">Update the new event</h1>
+                        <h1 class="event-title">Edit your event</h1>
                         <div class="clear"></div>
                     </div>
                 </div>
@@ -32,19 +32,12 @@
 
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
-                        <div class="input-with-image-wrapper date-control">
-                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent.ToShortDateString()" />
-                            <span class="fa fa-calendar insert-image-button"></span>
+                        <div class="input-with-image-wrapper">
+                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
+                            <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" value="@Model.HourTimeOfTheEvent"/>
+                            <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" value="@Model.MinuteTimeOfTheEvent" />
                         </div>
-
-                        <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" value="@Model.MinuteTimeOfTheEvent" /><span class="colon">:</span>
-                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" value="@Model.HourTimeOfTheEvent" />
-
-                        <span class="time-title">Time:</span>
-                        <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" value="@Model.DateTimeOfTheEvent" />
-                        <div class="clear"></div>
-
-                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
+                        @Html.ValidationMessageFor(m => m.DateOfTheEvent)
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
@@ -118,11 +111,11 @@
                             {
                                 if (@item.Value == true)
                                 {
-                            <option value="@item.Key.ToLower()" selected="selected">@item.Key</option>
+                                    <option value="@item.Key.ToLower()" selected="selected">@item.Key</option>
                                 }
                                 else
                                 {
-                            <option value="@item.Key.ToLower()">@item.Key</option>
+                                    <option value="@item.Key.ToLower()">@item.Key</option>
                                 }
                             }
                         </select>
@@ -143,11 +136,11 @@
                             {
                                 if (@item.Value == true)
                                 {
-                            <option value="@item.Key" selected="selected">@item.Key</option>
+                                    <option value="@item.Key" selected="selected">@item.Key</option>
                                 }
                                 else
                                 {
-                            <option value="@item.Key">@item.Key</option>
+                                    <option value="@item.Key">@item.Key</option>
                                 }
                             }
                         </select>
@@ -174,7 +167,7 @@
                             <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null){<span>-</span>@Model.AgeOfParticipantsMax}else{<span>+</span>}</span></div>
                             @if (Model.GenderParticipant != "Both")
                             {
-                            <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
+                                <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
                             }
                             <div class="event-interests-container">Interests: <span id="draftInterests">@Model.InterestsToDisplay</span></div>
                             

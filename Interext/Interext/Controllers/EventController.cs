@@ -20,17 +20,15 @@ namespace Interext.Controllers
 {
     public class EventController : Controller
     {
-        //private InterextDB db = new InterextDB();
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: /Event/
 
         private UserManager<ApplicationUser> UserManager { get; set; }
         public EventController()
         {
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.db));
         }
-
+       
         public ActionResult Index()
         {
             List<Event> f = db.Events.ToList();
@@ -66,8 +64,10 @@ namespace Interext.Controllers
                 Place = @event.Place,
                 Title = @event.Title,
                 Description = @event.Description,
+                Id = @event.Id,
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
-            };            return View(eventToShow);
+            };
+            return View(eventToShow);
         }
 
         private string GetInterestsForDisplay(List<Interest> Interests)
@@ -207,12 +207,12 @@ namespace Interext.Controllers
         }
 
         // POST: /Event/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
@@ -261,9 +261,18 @@ namespace Interext.Controllers
             }
         }
 
-
-        // GET: /Event/Edit/5
-
+        public string CheckIfUserCanEditEvent(EventViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Id == model.CreatorUser.Id)
+            {
+                return string.Format("<a href=\"/Event/Edit?id="+ model.Id +"\">Edit event<a/>");
+            }
+            else
+            {
+                return "";
+            }
+        }
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -277,9 +286,11 @@ namespace Interext.Controllers
             }
             string hour = @event.DateTimeOfTheEvent.Hour.ToString();
             string minute = @event.DateTimeOfTheEvent.Minute.ToString();
+            string dateString = @event.DateTimeOfTheEvent.Date.ToString();
             EventViewModel model = new EventViewModel()
             {
                 Id = @event.Id,
+                DateOfTheEvent = @event.DateTimeOfTheEvent,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
@@ -311,16 +322,14 @@ namespace Interext.Controllers
 
 
         // POST: /Event/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[Route("Event/edit?id={id:int}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId());
+                var user = UserManager.FindById(User.Identity.GetUserId()); 
                 Event @event = db.Events.Find(model.Id);
                 @event.CreatorUser = user;
                 @event.Title = model.Title;
@@ -355,13 +364,21 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
-
-                return RedirectToAction("Details", new { id = @event.Id });
+                return RedirectToAction("Details", new {id = @event.Id});
             }
             return View(model);
         }
 
-        private void setGenderOptions(Event @event, EventViewModel model)
+        private void setSideOfTextDefault(ref EventViewModel model)
+        {
+            model.SideOfTextOptions = new Dictionary<string, bool>();
+            model.SideOfTextOptions.Add("Right", String.Equals("Right", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Left", String.Equals("Left", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Top", String.Equals("Top", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+            model.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", model.SideOfText, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private void setGenderOptions(Event @event, ref EventViewModel model)
         {
             model.GenderParticipantOptions = new Dictionary<string, bool>();
             model.GenderParticipantOptions.Add("Female", String.Equals("Female", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));

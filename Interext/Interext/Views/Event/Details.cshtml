@@ -105,6 +105,7 @@
                 @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] })
             </li>
         </ul>
+        @Html.Action("CheckIfUserCanEditEvent", "Event", new { model = Model })
     </div>
     <!--sidebar-->
     <div class="clear"></div>

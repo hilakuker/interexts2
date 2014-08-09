@@ -34,5 +34,6 @@ namespace Interext.Models
         public DbSet<Group> Groups { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<Interest> Interests { get; set; }
+        public DbSet<PlaceRatingUser> PlaceRatingUsers { get; set; }
     }
 }

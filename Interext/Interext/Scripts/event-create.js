@@ -19,7 +19,11 @@ function pageInit() {
         max: 100,
         slide: function (event, ui) {
             var rgba = $(".event-box-content").css("background-color");
-            var rgbaArr = rgba.split("rgba(")[1].split(")")[0].split(",");
+            var rgbaSplit = rgba.split("rgba(");
+            if (rgbaSplit[1] === undefined) {
+                var rgbaSplit = rgba.split("rgb(");
+            }
+            var rgbaArr = rgbaSplit[1].split(")")[0].split(",");
             var r = rgbaArr[0];
             var g = rgbaArr[1];
             var b = rgbaArr[2];
@@ -50,7 +54,7 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
         }
         else { $(thisElement).val("") }
     }
-
+     
     function setDraft(fromNumber, toNumber) {
         $(rangeToShowContainer).css("display", "block");
         if (toNumber == "") {
@@ -189,6 +193,14 @@ function initEvents() {
             updateEventDateDraft();
         }
     });
+    RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
+        ".event-num-of-participants-container");
+    RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants",
+        ".event-age-of-participants-container");
+    $('#dpdGender').on('change', function () {
+        updateDraftGender();
+    });
+}
 
     function updateDateTime() {
         var minute = $('#MinuteTimeOfTheEvent').val();
@@ -210,14 +222,6 @@ function initEvents() {
         }
     }
 
-    RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
-        ".event-num-of-participants-container");
-    RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants",
-        ".event-age-of-participants-container");
-    $('#dpdGender').on('change', function () {
-        updateDraftGender();
-    });
-}
 $(document).ready(function () {
     pageInit();
     initEvents();
@@ -225,4 +229,5 @@ $(document).ready(function () {
     updateDraftTitle();
     updateSideOfTheTextDraft();
     updateDraftGender();
+    updateDateTime();
 });
