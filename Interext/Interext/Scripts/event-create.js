@@ -19,7 +19,11 @@ function pageInit() {
         max: 100,
         slide: function (event, ui) {
             var rgba = $(".event-box-content").css("background-color");
-            var rgbaArr = rgba.split("rgba(")[1].split(")")[0].split(",");
+            var rgbaSplit = rgba.split("rgba(");
+            if (rgbaSplit[1] === undefined) {
+                var rgbaSplit = rgba.split("rgb(");
+            }
+            var rgbaArr = rgbaSplit[1].split(")")[0].split(",");
             var r = rgbaArr[0];
             var g = rgbaArr[1];
             var b = rgbaArr[2];
