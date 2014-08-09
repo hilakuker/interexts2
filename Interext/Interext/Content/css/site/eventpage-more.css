@@ -30,6 +30,7 @@
     position: relative;
     float: left;
     color: #fff;
+    width:500px;
 }
 
 .event-page-content .event-date {
@@ -37,6 +38,7 @@
     font-size: 50px;
     font-weight: 200;
     line-height: 60px;
+    text-align: right;
 }
 
 .event-page-content .event-date .event-time {
@@ -44,15 +46,16 @@
     text-align: right;
     margin-top: -24px;
 }
+.event-page-content .event-date .event-location {
+    font-size: 18px;
+    text-align: right;
+    margin-top: -32px;
+}
 
 .event-page-content .event-details {
     float: right;
-    margin-top: -10px;
+    margin-top: 20px;
     text-align: right;
-}
-
-.event-page-content .event-details .fa-map-marker {
-    margin-right: 5px;
 }
 
 #content .event-page-content .event-details img {

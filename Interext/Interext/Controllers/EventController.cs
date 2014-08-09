@@ -290,7 +290,6 @@ namespace Interext.Controllers
             EventViewModel model = new EventViewModel()
             {
                 Id = @event.Id,
-                DateOfTheEvent = @event.DateTimeOfTheEvent,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
@@ -378,7 +377,7 @@ namespace Interext.Controllers
             model.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", model.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
-        private void setGenderOptions(Event @event, ref EventViewModel model)
+        private void setGenderOptions(Event @event, EventViewModel model)
         {
             model.GenderParticipantOptions = new Dictionary<string, bool>();
             model.GenderParticipantOptions.Add("Female", String.Equals("Female", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));

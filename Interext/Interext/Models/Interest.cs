@@ -16,9 +16,6 @@ namespace Interext.Models
         public Interest InterestsCategory { get; set; }
         public string ImageUrl { get; set; }
 
-        //public virtual ICollection<Interest> SubInterests { get; set; }
-        //public virtual ICollection<Event> Events { get; set; }
-
     }
 
     public class InterestViewModel
