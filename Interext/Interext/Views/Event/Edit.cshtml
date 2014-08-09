@@ -17,7 +17,7 @@
                 @Html.AntiForgeryToken()
                 <div class="event-intro-wrapper">
                     <div class="event-intro">
-                        <h1 class="event-title">Create a new event</h1>
+                        <h1 class="event-title">Update the new event</h1>
                         <div class="clear"></div>
                     </div>
                 </div>
@@ -27,21 +27,29 @@
                     <div class="create-basic-info">
 
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
+                        
                         @Html.ValidationMessageFor(m => m.Title)
 
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
-                        <div class="input-with-image-wrapper">
-                            <input type="text" id="DateTimeOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
-                            <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" value="@Model.HourTimeOfTheEvent"/>
-                            <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" value="@Model.MinuteTimeOfTheEvent" />
+                        <div class="input-with-image-wrapper date-control">
+                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent.ToShortDateString()" />
+                            <span class="fa fa-calendar insert-image-button"></span>
                         </div>
-                        @Html.ValidationMessageFor(m => m.DateOfTheEvent)
+
+                        <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" value="@Model.MinuteTimeOfTheEvent" /><span class="colon">:</span>
+                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" value="@Model.HourTimeOfTheEvent" />
+
+                        <span class="time-title">Time:</span>
+                        <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" value="@Model.DateTimeOfTheEvent" />
+                        <div class="clear"></div>
+
+                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
-                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
-                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
+                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="@Model.PlaceLongitude" />
+                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="@Model.PlaceLatitude" />
 
                             @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
 
@@ -50,20 +58,46 @@
 
                     </div>
                     <div class="create-more-info">
-                        <span class="btn btn-dark fileinput-button">
+                        <div class="open-popup-container">
+                            <div class="btn btn-dark open-popup choose-interests">Choose interests</div>
+                            <div class="data-for-popup">
+                                <ul class="interests-list">
+                                    @foreach (var category in Model.AllInterests)
+                                    {
+                                        <li>
+                                            <div class="main-category">
+                                                <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
+                                                <div class="image" style="background-image: url('@category.ImageUrl')"></div>
+                                                <div class="title">@category.Title</div>
+                                            </div>
+                                            <ul>
+                                            @foreach (var subCategory in category.SubInterests)
+                                            {
+                                                <li>
+                                                    <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
+                                                </li>
+                                            }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
+                        <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
                             <input type="file" name="ImageUrl" id="ImageUrl" value="@Model.ImageUrl">
                         </span>
                         or
-                        <span class="btn btn-disabled fileinput-button">
+                        <span class="btn btn-disabled fileinput-button choose-from-stock">
                             <span class="fa fa-picture-o"></span>
                             <span>Choose from stock</span>
                         </span>
                         <br />
 
                         <div id="colorSelector">
-                            <div style="background-color: #000"></div>
+                            <div style="background-color: rgb(@Model.BackroundColor)"></div>
                         </div>
                         <div class="left choose-bg-color-text">
                             Choose background color for text:
@@ -84,11 +118,11 @@
                             {
                                 if (@item.Value == true)
                                 {
-                                    <option value="@item.Key.ToLower()" selected="selected">@item.Key</option>
+                            <option value="@item.Key.ToLower()" selected="selected">@item.Key</option>
                                 }
                                 else
                                 {
-                                    <option value="@item.Key.ToLower()">@item.Key</option>
+                            <option value="@item.Key.ToLower()">@item.Key</option>
                                 }
                             }
                         </select>
@@ -109,11 +143,11 @@
                             {
                                 if (@item.Value == true)
                                 {
-                                    <option value="@item.Key" selected="selected">@item.Key</option>
+                            <option value="@item.Key" selected="selected">@item.Key</option>
                                 }
                                 else
                                 {
-                                    <option value="@item.Key">@item.Key</option>
+                            <option value="@item.Key">@item.Key</option>
                                 }
                             }
                         </select>
@@ -133,15 +167,17 @@
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url('@Model.ImageUrl') 50% 49% / cover no-repeat;">
                     <div>
                         <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
-                            <div class="event-date" id="draftDate">@Model.DateOfTheEvent.Day.@Model.DateOfTheEvent.Month @Model.HourTimeOfTheEvent:@Model.MinuteTimeOfTheEvent</div>
+                            <div class="event-date" id="draftDate">@Model.DateOfTheEvent.Day.@Model.DateOfTheEvent.Month</div>
                             <div class="event-title" id="draftTitle">@Model.Title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
                             <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>
                             <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null){<span>-</span>@Model.AgeOfParticipantsMax}else{<span>+</span>}</span></div>
                             @if (Model.GenderParticipant != "Both")
                             {
-                                <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
+                            <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
                             }
+                            <div class="event-interests-container">Interests: <span id="draftInterests">@Model.InterestsToDisplay</span></div>
+                            
                             <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl" /></div>
                         </a>
                     </div>

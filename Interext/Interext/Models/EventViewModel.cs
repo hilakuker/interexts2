@@ -39,7 +39,7 @@ namespace Interext.Models
         public DateTime DateTimeCreated { get; set; }
         public ICollection<UserProfile> UsersAttending { get; set; }
         public ICollection<UserProfile> UsersInvited { get; set; }
-        public ICollection<Interest> Interests { get; set; }
+        public virtual ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
 
         public string BackroundColorOpacity { get; set; }
@@ -63,7 +63,9 @@ namespace Interext.Models
 
         public Dictionary<string, bool> GenderParticipantOptions { get; set; }
 
-        public ICollection<Interest> AllInterests { get; set; }
+        public virtual ICollection<InterestViewModel> AllInterests { get; set; }
+
+        public string InterestsToDisplay { get; set; }
     }
 
 

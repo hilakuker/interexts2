@@ -163,8 +163,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InterestController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\InterestsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -195,6 +195,7 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="OtherCalsses\CascadingDeleteHelper.cs" />
     <Compile Include="OtherCalsses\EventTimeValidationAttribute.cs" />
     <Compile Include="OtherCalsses\BirthdateValidationAttribute.cs" />
     <Compile Include="OtherCalsses\ImageSaver.cs" />
@@ -680,12 +681,12 @@
     <Content Include="Views\Event\Edit.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\_EventsWall.cshtml" />
-    <Content Include="Views\Interest\Create.cshtml" />
-    <Content Include="Views\Interest\Delete.cshtml" />
-    <Content Include="Views\Interest\Details.cshtml" />
-    <Content Include="Views\Interest\Edit.cshtml" />
-    <Content Include="Views\Interest\Index.cshtml" />
-    <Content Include="Views\Interest\_ChooseInterests.cshtml" />
+    <Content Include="Views\Interest2\Create.cshtml" />
+    <Content Include="Views\Interest2\Delete.cshtml" />
+    <Content Include="Views\Interest2\Details.cshtml" />
+    <Content Include="Views\Interest2\Edit.cshtml" />
+    <Content Include="Views\Interest2\Index.cshtml" />
+    <Content Include="Views\Interest2\_ChooseInterests.cshtml" />
     <Content Include="Views\Shared\packages.config" />
     <Content Include="Views\Shared\_Layout - old.cshtml" />
     <Content Include="Views\Shared\_LayoutLogIn.cshtml" />
@@ -694,6 +695,12 @@
     <Content Include="Views\Event\GetUsers.cshtml" />
     <Content Include="Views\Home\SearchForEvents.cshtml" />
     <Content Include="Views\Event\_EventsWallWithTempData.cshtml" />
+    <Content Include="Views\Interests\Create.cshtml" />
+    <Content Include="Views\Interests\Delete.cshtml" />
+    <Content Include="Views\Interests\Details.cshtml" />
+    <Content Include="Views\Interests\Edit.cshtml" />
+    <Content Include="Views\Interests\Index.cshtml" />
+    <Content Include="Views\Interests\_SelectInterests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />

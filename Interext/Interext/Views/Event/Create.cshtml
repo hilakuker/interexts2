@@ -30,13 +30,19 @@
 
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
-                        <div class="input-with-image-wrapper">
-                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control full-control" placeholder="Date of the event" />
-                            <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control full-control" placeholder="Hour of the event" />
-                            <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control full-control" placeholder="Minute of the event" />
+                        <div class="input-with-image-wrapper date-control">
+                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" />
+                            <span class="fa fa-calendar insert-image-button"></span>
                         </div>
+
+                        <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" /><span class="colon">:</span>
+                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" />
+                        <span class="time-title">Time:</span>
+
+                        <div class="clear"></div>
                         @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
                         <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" />
+
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
@@ -50,26 +56,51 @@
 
                     </div>
                     <div class="create-more-info">
-
-                        <span class="btn btn-dark fileinput-button">
+                        <div class="open-popup-container">
+                            <div class="btn btn-dark open-popup choose-interests">Choose interests</div>
+                            <div class="data-for-popup">
+                                <ul class="interests-list">
+                                    @foreach (var category in Model.AllInterests)
+                                    {
+                                        <li>
+                                            <div class="main-category">
+                                                <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
+                                                <div class="image" style="background-image: url('@category.ImageUrl')"></div>
+                                                <div class="title">@category.Title</div>
+                                            </div>
+                                            <ul>
+                                                @foreach (var subCategory in category.SubInterests)
+                                                {
+                                                    <li>
+                                                        <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
+                        <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
                             <input type="file" name="ImageUrl" id="ImageUrl">
                         </span>
                         or
-                        <span class="btn btn-disabled fileinput-button">
+                        <span class="btn btn-disabled fileinput-button choose-from-stock ">
                             <span class="fa fa-picture-o"></span>
                             <span>Choose from stock</span>
                         </span>
                         <br />
 
                         <div id="colorSelector">
-                            <div style="background-color: #000"></div>
+                            <div style="background-color: #68D999"></div>
                         </div>
                         <div class="left choose-bg-color-text">
                             Choose background color for text:
                         </div>
-                        <input type="hidden" id="BackroundColor" name="BackroundColor" value="0,0,0" />
+                        <input type="hidden" id="BackroundColor" name="BackroundColor" value="104,217,153" />
                         <div class="clear"></div>
                         <div class="left choose-bg-alpha-text">
                             Set opacity of the background:
@@ -99,9 +130,9 @@
                         <br />
                         Gender of the participants:
                         <select id="dpdGender" name="GenderParticipant">
-                            <option value="Both">Both</option>
+                            <option value="Both" selected="selected">Both</option>
                             <option value="Male">Male</option>
-                            <option value="Female" selected="selected">Female</option>
+                            <option value="Female">Female</option>
                         </select>
 
                         @*<ul>
@@ -122,16 +153,16 @@
             <h3>YOUR EVENT DRAFT</h3>
 
 
-            <div class="event-box" data-src="/Content/images/example-images/event1.jpg" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
-                <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url(https://localhost:44301/Content/images/example-images/event1.jpg) 50% 49% / cover no-repeat;">
+            <div class="event-box" data-src="/Content/images/example-images/draft-image.jpg" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
+                <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url(/Content/images/example-images/draft-image.jpg) 50% 49% / cover no-repeat;">
                     <div>
-                        <a href="/Event/Details?Id=1" class="event-box-content right" style="background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.46);">
-                            <div class="event-date" id="draftDate">15.5</div>
-                            <div class="event-title" id="draftTitle">Evening walks with dogs</div>
-                            <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>Hadera, Israel</div>
-                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">2-5</span></div>
+                        <a href="/Event/Details?Id=1" class="event-box-content right" style="background-color: rgb(104,217,153); background-color: rgba(104,217,153,0.8); ">
+                            <div class="event-date" id="draftDate">@DateTime.Today.Day.@DateTime.Today.Month</div>
+                            <div class="event-title" id="draftTitle">Your event title</div>
+                            <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>Event location</div>
+                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">2+</span></div>
                             <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">20-30</span></div>
-                            <div class="event-gender-container">Gender: <span id="draftGender">Female</span></div>
+                            <div class="event-gender-container" style="display:none;">Gender: <span id="draftGender"></span></div>
                             <div class="event-by-person">Created by <img src="/Content/images/example-images/sash.jpg"></div>
                         </a>
                     </div>

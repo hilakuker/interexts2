@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Interext.Models.InterestViewModel>
+@foreach (var category in Model)
+{
+    <li>
+        <div class="main-category">
+            @Html.CheckBox(@category.Title, @category.IsSelected, new { @class = "allCategoryInterests" })
+
+            @*<input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests">*@
+            <div class="image" style="background-image: url('@category.ImageUrl')"></div>
+            <div class="title">@category.Title</div>
+        </div>
+        <ul>
+            @foreach (var subCategory in category.SubInterests)
+            {
+                <li>
+                    @Html.CheckBox(@subCategory.Title, @subCategory.IsSelected, new { @class = "sub-category" })@subCategory.Title
+                    @*<input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected">@subCategory.Title*@
+                </li>
+            }
+        </ul>
+    </li>
+}

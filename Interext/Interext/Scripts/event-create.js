@@ -50,9 +50,8 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
         }
         else { $(thisElement).val("") }
     }
-     
-    function setDraft(fromNumber, toNumber)
-    {
+
+    function setDraft(fromNumber, toNumber) {
         $(rangeToShowContainer).css("display", "block");
         if (toNumber == "") {
             if (fromNumber == "") {
@@ -105,14 +104,14 @@ function updateDraftTitle() {
 
 function updateEventDateDraft() {
     var itemtoupdate = $("#DateOfTheEvent");
-    var hour = $("#HourTimeOfTheEvent").val();
-    var minute = $("#MinuteTimeOfTheEvent").val();
+    // var hour = $("#HourTimeOfTheEvent").val();
+    // var minute = $("#MinuteTimeOfTheEvent").val();
 
     var date = $(itemtoupdate).val();
     if (date != "" && date != undefined) {
         var arrdate = date.split('/');
-        var datetext = ("#draftTitle").text;
-        $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]) + " "+ hour + ":" + minute);
+        //   var datetext = ("#draftTitle").text;
+        $("#draftDate").text(removeZero(arrdate[0]) + "." + removeZero(arrdate[1]));
     }
 }
 
@@ -154,7 +153,7 @@ function initEvents() {
     $('#Title').on('input', function () {
         updateDraftTitle();
     });
-    $('#DateTimeOfTheEvent').on('change', function () {
+    $('#DateOfTheEvent').on('change', function () {
         updateDateTime();
         updateEventDateDraft();
     });
@@ -174,8 +173,7 @@ function initEvents() {
         if (isPositiveInteger(hour) === false || hour > 23) {
             $(this).val("");
         }
-        else 
-        {
+        else {
             updateEventDateDraft();
         }
     });
@@ -196,9 +194,19 @@ function initEvents() {
         var minute = $('#MinuteTimeOfTheEvent').val();
         var hour = $('#HourTimeOfTheEvent').val();
         var date = $('#DateOfTheEvent').val();
-        if (minute !='' && hour != '' && date != '')
-        {
-            $('#DateTimeOfTheEvent').val(date + " " + hour + ":" + minute + ":" + "00")
+        if (date != '') {
+            var h = "00";
+            var m = "00";
+            if (minute != '') {
+                m = minute;
+            }
+            if (hour != '') {
+                h = hour;
+            }
+            $('#DateTimeOfTheEvent').val(date + " " + h + ":" + m + ":" + "00")
+        }
+        else {
+            $('#DateTimeOfTheEvent').val("");
         }
     }
 

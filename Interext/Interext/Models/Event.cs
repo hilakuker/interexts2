@@ -51,6 +51,7 @@ namespace Interext.Models
         public ICollection<UserProfile> UsersAttending { get; set; }
         public ICollection<UserProfile> UsersAwatingApproval { get; set; }
         public ICollection<UserProfile> UsersApprovedAttendance { get; set; }
+
         public virtual ICollection<Interest> Interests { get; set; }
         
     }

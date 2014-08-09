@@ -19,27 +19,54 @@
                         <h1 class="event-title">
                             @Model.Title
                         </h1>
-                        <div class="event-date">@Model.DateOfTheEventNoYear</div>
+                        <div class="event-date">
+                            <div>
+                                @Model.DateOfTheEventNoYear
+                            </div>
+                            <div class="event-time">
+                                <span class="fa fa-clock-o"></span> @Model.DateTimeOfTheEvent.Hour.@Model.DateTimeOfTheEvent.Minute
+                            </div>
+                        </div>
                         <div class="clear"></div>
                         <div class="event-details">
                             <span class="fa fa-map-marker"></span>@Model.Place<br />
-                            <a href="~/Account/ShowProfile"><div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
-                            <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div></a>
+                            <a href="~/Account/ShowProfile">
+                                <div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
+                                <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div>
+                            </a>
                             <div class="clear"></div>
                         </div>
                         <table class="event-restrictions">
-                            <tr><td colspan="2">Event for:</td></tr>
-                            <tr><td>Ages</td><td>@Model.AgeOfParticipantsMin - @Model.AgeOfParticipantsMax</td></tr>
-                            <tr><td>Number Of Participant</td><td>@Model.NumOfParticipantsMin - @Model.AgeOfParticipantsMax</td></tr>
-                            <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>
-                            <tr><td>Interests</td><td>Dogs, Arts</td></tr>
+                            <tr>
+                                <td>Ages</td>
+                                <td>
+                                    @Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null)
+                                    {<span>-</span>@Model.AgeOfParticipantsMax}
+                                    else
+                                    {<span>+</span>}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Number Of Participants</td>
+                                <td>
+                                    @Model.NumOfParticipantsMin@if (Model.NumOfParticipantsMax != null)
+                                    {<span>-</span>@Model.NumOfParticipantsMax}
+                                    else
+                                    {<span>+</span>}
+                                </td>
+                            </tr>
+                            @if (Model.GenderParticipant != "Both")
+                            {
+                                <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>
+                            }
+                            <tr><td>Interests</td><td>
+                                @Model.InterestsToDisplay
+                                </td></tr>
                         </table>
                         <div class="clear"></div>
                     </div>
                 </div>
                 <div class="event-desc">
-                    <p>@Model.Description</p>
-                    <p><span id="more-372"></span></p>
                     <p>@Model.Description</p>
                 </div>
             </article>
@@ -74,6 +101,9 @@
                     <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
                 </div>
             </li>
+            <li>
+                @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] })
+            </li>
         </ul>
     </div>
     <!--sidebar-->
@@ -81,4 +111,3 @@
 
 
 </div>
-

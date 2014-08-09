@@ -13,7 +13,20 @@ namespace Interext.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
-        public virtual ICollection<Event> Events { get; set; }
+        public Interest InterestsCategory { get; set; }
+        public string ImageUrl { get; set; }
 
+        //public virtual ICollection<Interest> SubInterests { get; set; }
+        //public virtual ICollection<Event> Events { get; set; }
+
+    }
+
+    public class InterestViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+        public virtual ICollection<InterestViewModel> SubInterests { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

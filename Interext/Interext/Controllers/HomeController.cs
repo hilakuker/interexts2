@@ -17,22 +17,63 @@ namespace Interext.Controllers
         {
 
         }
+
+        //private EventViewModel BuildEventViewModelFromEvent(Event e)
+        //{ 
+        //    EventViewModel eventViewModel = new EventViewModel(){
+
+        //    }
+        //}
+
+        private List<InterestViewModel> InitAllInterests()
+        {
+            List<InterestViewModel> allInterests = new List<InterestViewModel>();
+            List<Interest> categories = _db.Interests.Where(x => x.InterestsCategory == null).ToList();
+            foreach (var item in categories)
+            {
+                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
+                foreach (var subitem in _db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
+                {
+                    InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
+                    category.SubInterests.Add(subcategory);
+                }
+                allInterests.Add(category);
+            }
+            return allInterests;
+        }
         public ActionResult Index()
         {
             List<Event> model = _db.Events.ToList();
-            if (Request.IsAjaxRequest())
-            {
-                model = _db.Events.Take(1).ToList(); // temp
-                return PartialView("~/Views/Event/_EventsWall.cshtml", model);
-            }
+            ViewBag.AllInterests = InitAllInterests();
+
             return View(model);
+        }
+
+        private List<Interest> GetSelectedInterests(string selectedInterests)
+        {
+            List<Interest> interests = new List<Interest>();
+            foreach (string item in selectedInterests.Split(','))
+            {
+                if (item != "")
+                {
+                    int id;
+                    if (int.TryParse(item, out id))
+                    {
+                        Interest interest = _db.Interests.SingleOrDefault(x => x.Id == id);
+                        interests.Add(interest);
+                    }
+                }
+            }
+            return interests;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(string FreeText, string locationSearchTextField, string DateOfTheEventFrom,
-            string DateOfTheEventTo, string AgeOfParticipant, string Gender, string radiusOfTheLocation,
-            double PlaceLongitude, double PlaceLatitude)
+        public ActionResult Index(string FreeText,
+            string locationSearchTextField, string PlaceLongitude, string PlaceLatitude,
+            string radiusOfTheLocation, string selectedInterests, string DateOfTheEventFrom, string DateOfTheEventTo,
+            string AgeOfParticipant, string Gender
+             )
         {
             List<Event> model = null;
             bool searchAccordingToRadius = false;
@@ -41,14 +82,27 @@ namespace Interext.Controllers
             bool isFromDate = false;
             bool isToDate = false;
             bool isParticipantAge = false;
-                double radius = 0;
-            
+            bool isInterests = false;
+            double radius = 0;
+            double longitude = 0;
+            double latitude = 0;
+
+            List<Interest> interests = GetSelectedInterests(selectedInterests);
+            if (interests != null && interests.Count > 0)
+            {
+                isInterests = true;
+            }
 
             if (radiusOfTheLocation != "The exact location")
             {
-                searchAccordingToRadius = true;
+                
                 string temp = radiusOfTheLocation.Replace("km", "");
-                radius = double.Parse(temp);
+                if (double.TryParse(temp, out radius) && double.TryParse(PlaceLongitude, out longitude) && double.TryParse(PlaceLatitude, out latitude))
+                {
+                    searchAccordingToRadius = true;
+                    radius = radius * 1000;
+                    radius += 500;// adding 500 meters to the radius
+                }  
             }
             DateTime DateFrom = DateTime.MinValue;
             if (!String.IsNullOrEmpty(DateOfTheEventFrom))
@@ -70,26 +124,18 @@ namespace Interext.Controllers
 
             if (ModelState.IsValid)
             {
-                //if (Request.IsAjaxRequest())
-                //{
-                //if (isLocation && searchAccordingToRadius)
-                //{
-                //    model = _db.Events.ToList();
-                //    model.Where(x => Math.Sqrt(((Math.Pow((x.PlaceLatitude - PlaceLatitude), 2) + 
-                //        Math.Pow((x.PlaceLongitude - PlaceLongitude), 2)))) < radius);
-                //}
                 List<Event> eventList = _db.Events.ToList();
                 model = eventList.Where(
-                    x => (isFreeText ? x.Title.ToLower().Contains(FreeText.ToLower()) || 
-                        x.Description.ToLower().Contains(FreeText.ToLower()) : true)
-                    && (isLocation ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
-                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, PlaceLatitude, PlaceLongitude) < radius)
-                    : true)
+                    x => (isFreeText ? (x.Title.ToLower().Contains(FreeText.ToLower()) ||
+                        x.Description.ToLower().Contains(FreeText.ToLower())) : true)
+                    && (isLocation && !searchAccordingToRadius ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
+                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius): true)
                     && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
                     && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)
-                    && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue? x.AgeOfParticipantsMax >= participantAge: true) : true)
+                    && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue ? x.AgeOfParticipantsMax >= participantAge : true) : true)
                     && x.GenderParticipant == Gender
+                    && (isInterests ? x.Interests.Intersect(interests).Count() > 0 : true)
                     ).ToList(); // temp
                 return PartialView("~/Views/Event/_EventsWall.cshtml", model);
                 //}   
@@ -101,7 +147,8 @@ namespace Interext.Controllers
         {
             var locA = new GeoCoordinate(PlaceLatitude, PlaceLongitude);
             var locB = new GeoCoordinate(x.PlaceLatitude, x.PlaceLongitude);
-            return (locA.GetDistanceTo(locB));
+            double distance = locA.GetDistanceTo(locB);
+            return (distance);
         }
 
         private void checkRange(int x, int y, int a, int b)
