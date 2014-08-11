@@ -109,6 +109,9 @@
             </li>
         </ul>
         @Html.Action("CheckIfUserCanEditEvent", "Event", new { model = Model })
+        @Html.Action("CheckIfUserCanJoinEvent", "Event", new { model = Model })
+
+
     </div>
     <!--sidebar-->
     <div class="clear"></div>

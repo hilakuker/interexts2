@@ -13,7 +13,7 @@ namespace Interext.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201408111802565_Initial"; }
+            get { return "201408111856429_Initial"; }
         }
         
         string IMigrationMetadata.Source

@@ -31,17 +31,14 @@ namespace Interext.Migrations
                         ApplicationUser_Id = c.String(maxLength: 128),
                         Place_Id = c.Int(),
                         CreatorUser_Id = c.String(nullable: false, maxLength: 128),
-                        Group_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
                 .ForeignKey("dbo.Places", t => t.Place_Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.CreatorUser_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Groups", t => t.Group_Id)
                 .Index(t => t.ApplicationUser_Id)
                 .Index(t => t.Place_Id)
-                .Index(t => t.CreatorUser_Id)
-                .Index(t => t.Group_Id);
+                .Index(t => t.CreatorUser_Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -120,13 +117,10 @@ namespace Interext.Migrations
                         Title = c.String(),
                         ImageUrl = c.String(),
                         InterestsCategory_Id = c.Int(),
-                        Group_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Interests", t => t.InterestsCategory_Id)
-                .ForeignKey("dbo.Groups", t => t.Group_Id)
-                .Index(t => t.InterestsCategory_Id)
-                .Index(t => t.Group_Id);
+                .Index(t => t.InterestsCategory_Id);
             
             CreateTable(
                 "dbo.Places",
@@ -142,16 +136,6 @@ namespace Interext.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.CreatorUser_Id, cascadeDelete: true)
                 .Index(t => t.CreatorUser_Id);
-            
-            CreateTable(
-                "dbo.Groups",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Title = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.PlaceRatingUsers",
@@ -213,8 +197,6 @@ namespace Interext.Migrations
         {
             DropForeignKey("dbo.PlaceRatingUsers", "RatingUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.PlaceRatingUsers", "RatedPlace_Id", "dbo.Places");
-            DropForeignKey("dbo.Interests", "Group_Id", "dbo.Groups");
-            DropForeignKey("dbo.Events", "Group_Id", "dbo.Groups");
             DropForeignKey("dbo.AspNetUsers", "Event_Id", "dbo.Events");
             DropForeignKey("dbo.Events", "CreatorUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.InterestApplicationUsers", "ApplicationUser_Id", "dbo.AspNetUsers");
@@ -233,8 +215,6 @@ namespace Interext.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.PlaceRatingUsers", new[] { "RatingUser_Id" });
             DropIndex("dbo.PlaceRatingUsers", new[] { "RatedPlace_Id" });
-            DropIndex("dbo.Interests", new[] { "Group_Id" });
-            DropIndex("dbo.Events", new[] { "Group_Id" });
             DropIndex("dbo.AspNetUsers", new[] { "Event_Id" });
             DropIndex("dbo.Events", new[] { "CreatorUser_Id" });
             DropIndex("dbo.InterestApplicationUsers", new[] { "ApplicationUser_Id" });
@@ -255,7 +235,6 @@ namespace Interext.Migrations
             DropTable("dbo.PlaceInterests");
             DropTable("dbo.InterestEvents");
             DropTable("dbo.PlaceRatingUsers");
-            DropTable("dbo.Groups");
             DropTable("dbo.Places");
             DropTable("dbo.Interests");
             DropTable("dbo.AspNetRoles");

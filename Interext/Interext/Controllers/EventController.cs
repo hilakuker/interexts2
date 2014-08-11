@@ -273,6 +273,31 @@ namespace Interext.Controllers
                 return "";
             }
         }
+        public string CheckIfUserCanJoinEvent(EventViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Id == model.CreatorUser.Id)
+            {
+                return string.Format("<a href=\"/Event/JoinEvent?id=" + model.Id + "\">Join event<a/>");
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        [HttpPost]
+        public ActionResult JoinEvent(int? id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            Event @event = db.Events.Find(id);
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+            @event.UsersAttending.Add(user);
+            return null;
+        }
         public ActionResult Edit(int? id)
         {
             if (id == null)

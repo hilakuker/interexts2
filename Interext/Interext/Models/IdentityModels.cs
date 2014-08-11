@@ -28,6 +28,7 @@ namespace Interext.Models
         public ApplicationDbContext()
             : base("DefaultConnection")
         {
+            Database.SetInitializer<ApplicationDbContext>(null);
         }
 
         public DbSet<Event> Events { get; set; }
