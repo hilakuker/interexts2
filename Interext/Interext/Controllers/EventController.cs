@@ -185,26 +185,26 @@ namespace Interext.Controllers
             return interests;
         }
 
-        private List<InterestViewModel> LoadAllInterestsWithSelected(Event e)
-        {
-            List<InterestViewModel> allInterests = InitAllInterests();
-            foreach (var item in e.Interests)
-            {
-                InterestViewModel interest = allInterests.SingleOrDefault(x => x.Id == item.Id);
-                if (interest != null)
-                    interest.IsSelected = true;
-                else
-                {
-                    foreach (var item2 in allInterests)
-                    {
-                        InterestViewModel interest2 = item2.SubInterests.SingleOrDefault(x => x.Id == item.Id);
-                        if (interest2 != null)
-                            interest2.IsSelected = true;
-                    }
-                }
-            }
-            return allInterests;
-        }
+         private List<InterestViewModel> LoadAllInterestsWithSelected(Event e)
+         {
+             List<InterestViewModel> allInterests = InitAllInterests();
+             foreach (var item in e.Interests)
+             {
+                 InterestViewModel interest = allInterests.SingleOrDefault(x => x.Id == item.Id);
+                 if (interest != null)
+                     interest.IsSelected = true;
+                 else
+                 {
+                     foreach (var item2 in allInterests)
+                     {
+                         InterestViewModel interest2 = item2.SubInterests.SingleOrDefault(x => x.Id == item.Id);
+                         if (interest2 != null)
+                             interest2.IsSelected = true;
+                     }
+                 }
+             }
+             return allInterests;
+         }
 
         // POST: /Event/Create
 
@@ -355,7 +355,7 @@ namespace Interext.Controllers
                 setGenderOptions(@event, model);
                 db.Entry(@event).State = EntityState.Modified;
 
-                //model.AllInterests = LoadAllInterestsWithSelected(@event);
+                model.AllInterests = LoadAllInterestsWithSelected(@event);
                 try
                 {
                     db.SaveChanges();

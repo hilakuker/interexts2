@@ -21,5 +21,8 @@ namespace Interext.Models
         public string ImageUrl { get; set; }
         [Required]
         public string LocationAddress { get; set; }
+
+        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<Interest> Interests { get; set; }
     }
 }

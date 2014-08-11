@@ -37,8 +37,8 @@ namespace Interext.Models
         public string MinuteTimeOfTheEvent { get; set; }
         public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }
-        public ICollection<UserProfile> UsersAttending { get; set; }
-        public ICollection<UserProfile> UsersInvited { get; set; }
+        public ICollection<ApplicationUser> UsersAttending { get; set; }
+        public ICollection<ApplicationUser> UsersInvited { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
 

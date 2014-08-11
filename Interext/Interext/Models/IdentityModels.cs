@@ -1,4 +1,4 @@
-﻿using Interext.Migrations;
+﻿//using Interext.Migrations;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace Interext.Models
         }
 
         public DbSet<Event> Events { get; set; }
-        public DbSet<Group> Groups { get; set; }
+        //public DbSet<Group> Groups { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<Interest> Interests { get; set; }
         public DbSet<PlaceRatingUser> PlaceRatingUsers { get; set; }

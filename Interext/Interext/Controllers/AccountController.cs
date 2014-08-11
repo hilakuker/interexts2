@@ -211,7 +211,7 @@ namespace Interext.Controllers
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
-                    Interests = GetSelectedInterests(selectedInterests)
+                    //Interests = GetSelectedInterests(selectedInterests)
                 };
                 uploadAndSetImage(ref user, ImageUrl);
                 var result = await UserManager.CreateAsync(user, model.Password);

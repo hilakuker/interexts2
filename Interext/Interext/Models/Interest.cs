@@ -16,6 +16,13 @@ namespace Interext.Models
         public Interest InterestsCategory { get; set; }
         public string ImageUrl { get; set; }
 
+        public virtual ICollection<Event> Events { get; set; }
+
+        public virtual ICollection<ApplicationUser> Users { get; set; }
+
+        public virtual ICollection<Place> Places { get; set; }
+
+
     }
 
     public class InterestViewModel

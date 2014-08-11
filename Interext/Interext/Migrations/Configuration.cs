@@ -1,8 +1,6 @@
 namespace Interext.Migrations
 {
     using Interext.Models;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -14,25 +12,23 @@ namespace Interext.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "Interext.Models.ApplicationDbContext";
         }
 
         protected override void Seed(Interext.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
-            //if (!context.Users.Any(u => u.UserName == "sash"))
-            //{
-            //    var roleStore = new RoleStore<IdentityRole>(context);
-            //    var roleManager = new RoleManager<IdentityRole>(roleStore);
-            //    var userStore = new UserStore<ApplicationUser>(context);
-            //    var userManager = new UserManager<ApplicationUser>(userStore);
-            //    var user = new ApplicationUser { UserName = "sashgmailcom", Email="sash@gmail.com" };
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
 
-            //    userManager.Create(user, "123456");
-            //    roleManager.Create(new IdentityRole { Name = "admin" });
-            //    userManager.AddToRole(user.Id, "admin");
-            //}
 
             var mainCategories = new List<Interest>();
 
@@ -76,8 +72,6 @@ namespace Interext.Migrations
             subCategories.ForEach(x => context.Interests.AddOrUpdate(y => y.Title, x));
 
             context.SaveChanges();
-
-
         }
     }
 }
