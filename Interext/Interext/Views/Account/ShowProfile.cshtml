@@ -37,7 +37,7 @@
         </div>
         <div class="interests">
             <h2>Interests:</h2>
-            DIY, Sports, Reading
+            @Model.InterestsToDisplay
         </div>
         <div class="clear"></div>
         @*@Html.DisplayFor(model => model.UserName)
@@ -55,7 +55,7 @@
         @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
         @Html.ActionLink("Back to List", "Index")
     </p>*@
-<section class="events">
+@*<section class="events">
     <h2>Your Events:</h2>
     @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events) ;
-</section>
+</section>*@

@@ -27,4 +27,26 @@ $(document).ready(function () {
     $('#BirthDateDay').on('input', function () { setBirthdate($(this)) });
     $('#BirthDateMonth').on('input', function () {setBirthdate($(this))});
     $('#BirthDateYear').on('input', function () { setBirthdate($(this)) });
+
+    $(".next-button").click(function () {
+        $(".all-parts").animate({
+            "margin-left": "-=315px"
+        }, 800);
+
+    });
+    $(".back-button").click(function () {
+        $(".all-parts").animate({
+            "margin-left": "+=315px"
+        }, 800);
+
+    });
+    
+    //invalid name call
+    $('.form-signin .interests-container').slimscroll({
+        color: '#333',
+        size: '10px',
+        width: '300px',
+        height: '270px',
+        opacity: '1'
+    });
 });

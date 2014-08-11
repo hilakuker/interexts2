@@ -75,10 +75,10 @@ namespace Interext.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        //[DataType(DataType.Password)]
+        //[Display(Name = "Confirm password")]
+        //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        //public string ConfirmPassword { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -146,5 +146,6 @@ namespace Interext.Models
         [Display(Name = "Events")]
         public virtual ICollection<Event> Events { get; set; }
         public string Address { get; set; }
+        public string InterestsToDisplay { get; set; }
     }
 }

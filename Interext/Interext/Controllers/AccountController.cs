@@ -20,6 +20,7 @@ namespace Interext.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -49,12 +50,30 @@ namespace Interext.Controllers
             else
                 profile.Gender = "Male";
             //add age
-            profile.Interests = null;
-            profile.Events = null;
+           // profile.Interests = null;
+           // profile.Events = null;
             profile.ImageUrl = user.ImageUrl;
             profile.BirthDate = getBirthdateAndAge(user.BirthDate);
             profile.Address = user.HomeAddress;
+            profile.InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList());
             return View(profile);
+        }
+        private string GetInterestsForDisplay(List<Interest> Interests)
+        {
+            string interestsForDisplay = "";
+            foreach (var interest in Interests)
+            {
+                //add sub categories only if their category is not in the interests list
+                if (Interests.Where(x => x.Id == interest.InterestsCategory.Id) == null || interest.InterestsCategory == null)
+                {
+                    interestsForDisplay += interest.Title + ", ";
+                }
+            }
+            if (interestsForDisplay != "")
+            {
+                interestsForDisplay = interestsForDisplay.Remove(interestsForDisplay.Count() - 2, 2);
+            }
+            return interestsForDisplay;
         }
 
         private string getBirthdateAndAge(DateTime? i_BirthDate)
@@ -134,7 +153,43 @@ namespace Interext.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            ViewBag.AllInterests = InitAllInterests();
             return View();
+        }
+
+        private List<InterestViewModel> InitAllInterests()
+        {
+            List<InterestViewModel> allInterests = new List<InterestViewModel>();
+            List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
+            foreach (var item in categories)
+            {
+                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
+                foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
+                {
+                    InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
+                    category.SubInterests.Add(subcategory);
+                }
+                allInterests.Add(category);
+            }
+            return allInterests;
+        }
+
+        private List<Interest> GetSelectedInterests(string selectedInterests)
+        {
+            List<Interest> interests = new List<Interest>();
+            foreach (string item in selectedInterests.Split(','))
+            {
+                if (item != "")
+                {
+                    int id;
+                    if (int.TryParse(item, out id))
+                    {
+                        Interest interest = db.Interests.SingleOrDefault(x => x.Id == id);
+                        interests.Add(interest);
+                    }
+                }
+            }
+            return interests;
         }
 
         //
@@ -142,7 +197,7 @@ namespace Interext.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
  
             var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -155,7 +210,8 @@ namespace Interext.Controllers
                     LastName = model.LastName,
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
-                    HomeAddress = model.Address
+                    HomeAddress = model.Address,
+                    Interests = GetSelectedInterests(selectedInterests)
                 };
                 uploadAndSetImage(ref user, ImageUrl);
                 var result = await UserManager.CreateAsync(user, model.Password);

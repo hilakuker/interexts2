@@ -1,4 +1,21 @@
-﻿.ui-datepicker {
+﻿.none {
+    display: none;
+}
+
+.clear {
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+
+.ui-datepicker {
     font-size: 62.5%;
 }
 
@@ -62,4 +79,57 @@
     color: #fff;
     /*padding: 2px 0 0 2px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 12px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 2px 0;
+}
+
+.btn-default, .btn-disabled {
+    color: #fff !important;
+    background-color: #bfbfbf !important;
+    border-color: #bfbfbf !important;
+}
+
+.btn-default:hover, .btn-special:hover {
+    color: #fff !important;
+    background-color: #333 !important;
+    border-color: #000 !important;
+}
+
+.btn-special:hover span.fa {
+    background-color: #68D999 ;
+}
+
+.btn-special {
+    color: #fff;
+    background-color: #68D999;
+    border-color: #68D999;
+}
+
+.btn-dark {
+    color: #fff;
+    background-color: #333;
+    border-color: #000;
+}
+
+.btn-dark:hover {
+    color: #fff;
+    background-color: #68D999;
+    border-color: #68D999;
 }

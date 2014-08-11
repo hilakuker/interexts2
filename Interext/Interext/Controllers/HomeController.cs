@@ -45,7 +45,6 @@ namespace Interext.Controllers
         {
             List<Event> model = _db.Events.ToList();
             ViewBag.AllInterests = InitAllInterests();
-
             return View(model);
         }
 

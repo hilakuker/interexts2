@@ -214,9 +214,10 @@
     <Content Include="App_Data\uploads\user_profiles\1c5da580-aa22-4f96-b31d-b14ab80a77fb\2.jpg" />
     <Content Include="bin\Interext.dll" />
     <Content Include="bin\Interext.pdb" />
+    <Content Include="Content\css\shared\file-uploader-button.css" />
     <Content Include="Content\images\favicon.ico" />
-    <Content Include="Content\bootstrap-signin.css" />
-    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\css\intro\bootstrap-signin.css" />
+    <Content Include="Content\css\intro\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\contrast\eventpage-main.css" />
     <Content Include="Content\contrast\eventpage.css" />
@@ -235,7 +236,6 @@
     <Content Include="Content\css\site\eventpage-template.css" />
     <Content Include="Content\css\site\events-wall.css" />
     <Content Include="Content\css\site\eventspage.css" />
-    <Content Include="Content\css\site\file-uploader-button.css" />
     <Content Include="Content\css\site\main.css" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\font\mono\MonoSocialIconsFont-1.10.svg" />
@@ -564,8 +564,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Content\zocial\zocial-regular-webfont.svg" />
-    <Content Include="Content\zocial\zocial.css" />
+    <Content Include="Content\css\intro\zocial\zocial-regular-webfont.svg" />
+    <Content Include="Content\css\intro\zocial\zocial.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -578,9 +578,9 @@
     <Content Include="Content\font\mono\MonoSocialIconsFont-1.10.eot" />
     <Content Include="Content\font\mono\MonoSocialIconsFont-1.10.ttf" />
     <Content Include="Content\font\mono\MonoSocialIconsFont-1.10.woff" />
-    <Content Include="Content\zocial\zocial-regular-webfont.eot" />
-    <Content Include="Content\zocial\zocial-regular-webfont.ttf" />
-    <Content Include="Content\zocial\zocial-regular-webfont.woff" />
+    <Content Include="Content\css\intro\zocial\zocial-regular-webfont.eot" />
+    <Content Include="Content\css\intro\zocial\zocial-regular-webfont.ttf" />
+    <Content Include="Content\css\intro\zocial\zocial-regular-webfont.woff" />
     <Content Include="Content\images\colorpicker\Thumbs.db" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\colorpicker\colorpicker.js" />
@@ -620,6 +620,7 @@
     <Content Include="Scripts\googleapi.js" />
     <Content Include="Scripts\googlemaps.js" />
     <Content Include="Scripts\hoverIntent.js" />
+    <Content Include="Scripts\intro\interests-list.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
@@ -648,6 +649,8 @@
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site\interests-popup.js" />
+    <Content Include="Scripts\shared\scroller\scroller.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -707,7 +710,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />
-    <Folder Include="Content\css\intro\" />
     <Folder Include="Content\css\jquery.ui\" />
     <Folder Include="Content\images\events\" />
     <Folder Include="Content\images\Places\" />

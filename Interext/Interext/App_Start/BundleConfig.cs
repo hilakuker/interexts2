@@ -17,13 +17,15 @@ namespace Interext
                         "~/Scripts/jquery.unobtrusive-ajax.js",
                          "~/Scripts/jquery.validate*"
                         ));
+            bundles.Add(new ScriptBundle("~/bundles/shared-js").Include(
+                 "~/Scripts/shared/scroller/scroller.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/googlemaps").Include(
               "~/Scripts/googlemaps.js"
               ));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
@@ -32,7 +34,8 @@ namespace Interext
                       "~/Scripts/contrast/contrast.js",
                       "~/Scripts/contrast/megafolio/js/megafolio-init.js",
                       "~/Scripts/hoverIntent.js",
-                      "~/Scripts/main.js"
+                      "~/Scripts/main.js", 
+                      "~/Scripts/site/interests-popup.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
@@ -44,7 +47,9 @@ namespace Interext
 
             bundles.Add(new ScriptBundle("~/bundles/register").Include(
             "~/Scripts/register.js",
-            "~/Scripts/numberVlidation.js"));
+            "~/Scripts/numberVlidation.js",
+            "~/Scripts/intro/interests-list.js"
+            ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
@@ -57,13 +62,13 @@ namespace Interext
             bundles.Add(new StyleBundle("~/Content/shared-css").Include(
                 "~/Content/css/shared/main.css",
                         "~/Content/css/shared/flipping-text.css",
-                       "~/Content/css/shared/font-awesome.css"
+                       "~/Content/css/shared/font-awesome.css",
+                        "~/Content/css/shared/file-uploader-button.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/site-css").Include(
                        "~/Content/css/site/main.css",
-                        "~/Content/css/site/events-wall.css",
-                         "~/Content/css/site/file-uploader-button.css"
+                        "~/Content/css/site/events-wall.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/jquery-ui-style").Include(
@@ -86,9 +91,9 @@ namespace Interext
                      ));
 
             bundles.Add(new StyleBundle("~/Content/signinPageCss").Include(
-                "~/Content/bootstrap.css",
-                "~/Content/bootstrap-signin.css",
-                "~/Content/zocial/zocial.css"
+                "~/Content/css/intro/bootstrap.css",
+                "~/Content/css/intro/bootstrap-signin.css",
+                "~/Content/css/intro/zocial/zocial.css"
                      ));
 
             bundles.Add(new StyleBundle("~/Content/colorPickerCss").Include(
