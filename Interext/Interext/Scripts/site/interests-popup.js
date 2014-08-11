@@ -48,11 +48,13 @@ $(".open-popup").each(function () {
         $(".main-category").each(function () {
             $(this).off("click").on("click", function (event) {
                 event.stopPropagation();
-                var allCatInterests = $(this).find("input.allCategoryInterests");
+                var mainCategory = $(this);
+                var allCatInterests = $(mainCategory).find("input.allCategoryInterests");
                 var ifIsChecked = $(allCatInterests).prop("checked");
                 if (ifIsChecked == false) {
                     $(allCatInterests).prop("checked", true);
                     checkAll(allCatInterests);
+                    $(mainCategory).parent().find("ul").slideDown();
                 }
                 else if (ifIsChecked == true) {
                     $(allCatInterests).prop("checked", false);
@@ -80,6 +82,7 @@ $(".open-popup").each(function () {
                 event.stopPropagation();
                 var allCatInterests = $(this);
                 checkAll(allCatInterests);
+                $(allCatInterests).parent().parent().find("ul").slideDown();
             });
         });
 
