@@ -29,7 +29,7 @@
                     <span class="fa fa-pencil insert-image-button"></span>
                 </div>
                 <div class="input-with-image-wrapper">
-                    <input type="text" class="form-control full-control" id="locationSearchTextField" name="locationSearchTextField" placeholder="Location" value="@ViewBag.CurrentUser.HomeAddress" />
+                    <input type="text" class="form-control full-control" id="locationSearchTextField" name="locationSearchTextField" placeholder="Location" />
                     <span class="fa fa-map-marker insert-image-button"></span>
                 </div>
                 <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
@@ -55,32 +55,8 @@
                 </div>
             </div>
             <div class="section field-row">
-                <div class="open-popup-container">
-                    <div class="btn btn-dark open-popup choose-interests">Choose interests</div>
-                    <div class="data-for-popup">
-                        <ul class="interests-list">
-                            @foreach (var category in ViewBag.AllInterests)
-                            {
-                            <li>
-                                <div class="main-category">
-                                    <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
-                                    <div class="image" style="background-image: url('@category.ImageUrl')"></div>
-                                    <div class="title">@category.Title</div>
-                                </div>
-                                <ul>
-                                    @foreach (var subCategory in category.SubInterests)
-                                        {
-                                        <li>
-                                            <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
-                                        </li>
-                                        }
-                                </ul>
-                            </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-                <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
+                @Html.Partial("~/Views/Interests/_SelectInterests.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
+                
                 <div class="label">
                     Date of the event:
                 </div>
@@ -97,7 +73,7 @@
             </div>
             <div class="section">
                 Age of the participant:
-                <input id="AgeOfParticipant" name="AgeOfParticipant" type="text" class="short-field" placeholder="" value="@ViewBag.CurrentUser.Age" />
+                <input id="AgeOfParticipant" name="AgeOfParticipant" type="text" class="short-field" placeholder="" />
                 <br />
                 Gender of the participants:
                 <select id="Gender" name="Gender">
@@ -107,17 +83,16 @@
                 </select>
             </div>
             <div class="clear"></div>
-            }
-        </div>
-        
         }
+    </div>
 
+}
 
-        @*@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);*@
+@*@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);*@
 
-        <div id="content" class="no-sidebar">
-            <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
-                @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
-            </div>
-            <div class="bottom-spacer clear"></div>
-        </div>
+<div id="content" class="no-sidebar">
+    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
+    </div>
+    <div class="bottom-spacer clear"></div>
+</div>

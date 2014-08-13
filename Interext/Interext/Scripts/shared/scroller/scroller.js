@@ -58,7 +58,7 @@
                     BorderRadius: size,
                     MozBorderRadius: size,
                     WebkitBorderRadius: size,
-                    zIndex: 400
+                    zIndex: 1200
                 });
 
                 //create scrollbar
@@ -75,7 +75,7 @@
                     BorderRadius: size,
                     MozBorderRadius: size,
                     WebkitBorderRadius: size,
-                    zIndex: 500
+                    zIndex: 1500
                 });
 
                 //set position

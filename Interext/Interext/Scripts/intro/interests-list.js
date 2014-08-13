@@ -22,7 +22,7 @@
             if (ifIsChecked == false) {
                 $(allCatInterests).prop("checked", true);
                 checkAll(allCatInterests);
-                //$(mainCategory).parent().find("ul").css({"display": "none"});
+                $(mainCategory).parent().find("ul").slideDown();
             }
             else if (ifIsChecked == true) {
                 $(allCatInterests).prop("checked", false);
@@ -52,6 +52,7 @@
             event.stopPropagation();
             var allCatInterests = $(this);
             checkAll(allCatInterests);
+            $(allCatInterests).parent().parent().find("ul").slideDown();
         });
     });
 

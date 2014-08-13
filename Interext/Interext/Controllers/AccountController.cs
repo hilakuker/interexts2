@@ -218,7 +218,9 @@ namespace Interext.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    ViewBag.AllInterests = InitAllInterests();
+                    return View(model);
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -440,7 +442,7 @@ namespace Interext.Controllers
                     return View("ExternalLoginFailure");
                 }
                 string loginProviderLowerCase = info.Login.LoginProvider.ToLower();
-                user = createUserFromFacebookInfo(model);
+                    user = createUserFromFacebookInfo(model);
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
