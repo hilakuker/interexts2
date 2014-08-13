@@ -29,7 +29,7 @@
                     <span class="fa fa-pencil insert-image-button"></span>
                 </div>
                 <div class="input-with-image-wrapper">
-                    <input type="text" class="form-control full-control" id="locationSearchTextField" name="locationSearchTextField" placeholder="Location" />
+                    <input type="text" class="form-control full-control" id="locationSearchTextField" name="locationSearchTextField" placeholder="Location" value="@ViewBag.CurrentUser.HomeAddress" />
                     <span class="fa fa-map-marker insert-image-button"></span>
                 </div>
                 <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
@@ -73,7 +73,7 @@
             </div>
             <div class="section">
                 Age of the participant:
-                <input id="AgeOfParticipant" name="AgeOfParticipant" type="text" class="short-field" placeholder="" />
+                <input id="AgeOfParticipant" name="AgeOfParticipant" type="text" class="short-field" placeholder="" value="@ViewBag.CurrentUser.Age" />
                 <br />
                 Gender of the participants:
                 <select id="Gender" name="Gender">
