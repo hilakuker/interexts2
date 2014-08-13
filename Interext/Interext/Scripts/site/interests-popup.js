@@ -24,6 +24,7 @@ $(".open-popup").each(function () {
             .appendTo('body');
         $(".popup").click(function () { return false; });
 
+
         function updateSelectedInterests() {
             var allIds = "";
             $(popupContentElement).find("input[type='checkbox']").each(function () {

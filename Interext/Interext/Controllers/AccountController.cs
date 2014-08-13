@@ -210,7 +210,7 @@ namespace Interext.Controllers
                     LastName = model.LastName,
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
-                    HomeAddress = model.Address,
+                    HomeAddress = model.Address
                     //Interests = GetSelectedInterests(selectedInterests)
                 };
                 uploadAndSetImage(ref user, ImageUrl);
@@ -218,7 +218,9 @@ namespace Interext.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    ViewBag.AllInterests = InitAllInterests();
+                    return View(model);
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {

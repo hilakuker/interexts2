@@ -41,7 +41,12 @@ $(document).ready(function () {
 
     });
     
-    //invalid name call
+    $(".Gender span").click(function () {
+        $(this).prev().prop("checked", true);;
+
+    });
+
+    
     $('.form-signin .interests-container').slimscroll({
         color: '#333',
         size: '10px',
@@ -50,3 +55,10 @@ $(document).ready(function () {
         opacity: '1'
     });
 });
+
+function onRegisterFailed() {
+    alert("failed");
+}
+function onRegisterSuccess() {
+    alert("success");
+}

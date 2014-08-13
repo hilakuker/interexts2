@@ -32,11 +32,17 @@
         $("#FreeText").val($(this).val());
     });
    
-
-
-
     function setLatLng(place, geoLng, geoLat) {
         $('#PlaceLongitude').val(geoLng);
         $('#PlaceLatitude').val(geoLat);
     }
+
+    $('.popup-content').slimscroll({
+        color: '#333',
+        size: '10px',
+        width: '350px',
+        height: '270px',
+        opacity: '1'
+    });
+
 });
