@@ -41,8 +41,12 @@ namespace Interext
                       "~/Scripts/contrast/megafolio/js/megafolio-init.js",
                       "~/Scripts/hoverIntent.js",
                       "~/Scripts/main.js", 
-                      "~/Scripts/site/interests-popup.js"
+                      "~/Scripts/site/interests-popup.js",
+                      "~/Scripts/site/chart.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/eventDetailsJs").Include(
+                        "~/Scripts/site/event-details.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
                         "~/Scripts/event-create.js",
