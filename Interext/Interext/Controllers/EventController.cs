@@ -245,7 +245,8 @@ namespace Interext.Controllers
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),
-                    EventStatus = e_EventStatus.Active
+                    EventStatus = e_EventStatus.Active,
+                    UsersAttending = new List<ApplicationUser>()
                 };
                 db.Events.Add(eventToCreate);
                 try
@@ -296,9 +297,10 @@ namespace Interext.Controllers
             }
         }
 
-        [HttpPost]
+   
         public ActionResult JoinEvent(int? id)
         {
+
             var user = UserManager.FindById(User.Identity.GetUserId());
             Event @event = db.Events.Find(id);
             if (@event == null)
@@ -306,7 +308,8 @@ namespace Interext.Controllers
                 return HttpNotFound();
             }
             @event.UsersAttending.Add(user);
-            return null;
+            db.SaveChanges();
+            return Details(id);
         }
         public ActionResult Edit(int? id)
         {
@@ -446,12 +449,13 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
-            @event.EventStatus = e_EventStatus.Deleted;
-            if (@event == null)
-            {
-                return HttpNotFound();
-            }
-            return RedirectToAction("Index", "Home");
+            //@event.EventStatus = e_EventStatus.Deleted;
+            //if (@event == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return RedirectToAction("Index", "Home");
+            return null;
         }
 
         // POST: /Event/Delete/5

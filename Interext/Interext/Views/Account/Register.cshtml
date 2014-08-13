@@ -6,7 +6,9 @@
     <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
     @*@Html.Partial("_ExternalLoginsListPartial", new Interext.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })*@
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @*@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+    @using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm" }))
+        
 {
         <div class="all-parts">
     <div class="first-part">
@@ -100,6 +102,10 @@
         <button class="btn btn-lg btn-dark btn-block back-button" type="button">Back</button>
         <button class="btn btn-lg btn-special btn-block sumbit-button" type="submit">Register</button>
     </div>
+            <div class="third-part">
+                welcome
+
+            </div>
             <div class="clear"></div>
         </div>
 }

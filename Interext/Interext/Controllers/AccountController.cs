@@ -203,7 +203,8 @@ namespace Interext.Controllers
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() {
+                var user = new ApplicationUser()
+                {
                     UserName = GenerateUserName(model.Email),
                     Email = model.Email,
                     FirstName = model.FirstName,
@@ -212,11 +213,16 @@ namespace Interext.Controllers
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
                     Age = caculateAge(model.BirthDate)
+                    
                 };
                 uploadAndSetImage(ref user, ImageUrl);
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
+                    newUser.Interests = GetSelectedInterests(selectedInterests);
+                    db.SaveChanges();
+
                     await SignInAsync(user, isPersistent: false);
                     ViewBag.AllInterests = InitAllInterests();
                     return View(model);
