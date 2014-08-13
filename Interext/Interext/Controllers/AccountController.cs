@@ -211,7 +211,7 @@ namespace Interext.Controllers
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
-                    //Interests = GetSelectedInterests(selectedInterests)
+                    Age = caculateAge(model.BirthDate)
                 };
                 uploadAndSetImage(ref user, ImageUrl);
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -366,7 +366,7 @@ namespace Interext.Controllers
                 Task<ClaimsIdentity> externalIdentity = getExternalIdentity();
                 var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email});
             }
         }
 
@@ -440,21 +440,7 @@ namespace Interext.Controllers
                     return View("ExternalLoginFailure");
                 }
                 string loginProviderLowerCase = info.Login.LoginProvider.ToLower();
-                if (loginProviderLowerCase == "facebook")
-                {
-                    user = createUserFromFacebookInfo(model);
-                }
-                else
-                {
-                    user = new ApplicationUser()
-                    {
-                        UserName = GenerateUserName(model.Email),
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Email = model.Email,
-                        Gender = model.Gender
-                    };
-                }
+                user = createUserFromFacebookInfo(model);
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -482,15 +468,8 @@ namespace Interext.Controllers
             var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
             string gender = getGender(externalIdentity);
             var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
-            string birthDate = string.Empty;
-            DateTime birthdate = DateTime.Now.Date;
-            if (externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:birthdate") != null)
-            {
-                birthDate = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:birthdate").Value;
-                birthdate = Convert.ToDateTime(birthDate);
-            }
             var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
-            //var emailClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            var birthdate = i_Model.BirthDate;
             userToReturn = new ApplicationUser()
             {
                 UserName = GenerateUserName(i_Model.Email),
@@ -499,9 +478,19 @@ namespace Interext.Controllers
                 Email = email,
                 Gender = gender,
                 ImageUrl = imageURL,
-                BirthDate = birthdate
+                BirthDate = birthdate, 
+                Age = caculateAge(birthdate)
             };
             return userToReturn;
+        }
+
+        private int caculateAge(DateTime birthdate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthdate.Year;
+            if (birthdate > today.AddYears(-age))
+            { age--; }
+            return age;
         }
 
         private string getGender(Task<ClaimsIdentity> externalIdentity)

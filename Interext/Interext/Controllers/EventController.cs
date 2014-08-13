@@ -43,6 +43,7 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
+            var user = UserManager.FindById(User.Identity.GetUserId()); 
             if (@event == null)
             {
                 return HttpNotFound();
@@ -67,6 +68,14 @@ namespace Interext.Controllers
                 Id = @event.Id,
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
             };
+            if (user.Id == eventToShow.CreatorUser.Id)
+            {
+                eventToShow.CurrentUserIsCreator = true;
+            }
+            else
+            {
+                eventToShow.CurrentUserIsCreator = false;
+            }
             return View(eventToShow);
         }
 
@@ -235,7 +244,8 @@ namespace Interext.Controllers
                     DateTimeOfTheEvent = model.DateTimeOfTheEvent,
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
-                    Interests = GetSelectedInterests(selectedInterests)
+                    Interests = GetSelectedInterests(selectedInterests),
+                    EventStatus = e_EventStatus.Active
                 };
                 db.Events.Add(eventToCreate);
                 try
@@ -436,11 +446,12 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
+            @event.EventStatus = e_EventStatus.Deleted;
             if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(@event);
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: /Event/Delete/5

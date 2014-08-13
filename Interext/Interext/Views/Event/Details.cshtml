@@ -108,9 +108,15 @@
                 @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] })
             </li>
         </ul>
-        @Html.Action("CheckIfUserCanEditEvent", "Event", new { model = Model })
-        @Html.Action("CheckIfUserCanJoinEvent", "Event", new { model = Model })
+@if( Model.CurrentUserIsCreator )
+{
+            @Html.ActionLink("Edit", "Event", new { id = Request.QueryString["Id"], model = Model  })
 
+}
+else
+{
+    @Html.ActionLink("JoinEvent", "Event", new{id = Request.QueryString["Id"]})
+}
 
     </div>
     <!--sidebar-->

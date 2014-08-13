@@ -60,24 +60,26 @@
                             <div class="btn btn-dark open-popup choose-interests">Choose interests</div>
                             <div class="data-for-popup">
                                 <ul class="interests-list">
-                                    @foreach (var category in Model.AllInterests)
+                                    @if (Model.AllInterests != null)
                                     {
-                                        <li>
-                                            <div class="main-category">
-                                                <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
-                                                <div class="image" style="background-image: url('@category.ImageUrl')"></div>
-                                                <div class="title">@category.Title</div>
-                                            </div>
-                                            <ul>
-                                                @foreach (var subCategory in category.SubInterests)
-                                                {
-                                                    <li>
-                                                        <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </li>
-                                    }
+                                        foreach (var category in Model.AllInterests)
+                                        {
+                                            <li>
+                                                <div class="main-category">
+                                                    <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
+                                                    <div class="image" style="background-image: url('@category.ImageUrl')"></div>
+                                                    <div class="title">@category.Title</div>
+                                                </div>
+                                                <ul>
+                                                    @foreach (var subCategory in category.SubInterests)
+                                                    {
+                                                        <li>
+                                                            <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }}
                                 </ul>
                             </div>
                         </div>

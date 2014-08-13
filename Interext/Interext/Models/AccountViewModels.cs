@@ -22,8 +22,8 @@ namespace Interext.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        //[Display(Name = "Date of birth")]
-        //public DateTime BirthDate { get; set; }
+        [BirthdateValidation]
+        public DateTime BirthDate { get; set; }
 
         [Display(Name = "Gender")]
         public string Gender { get; set; }
@@ -108,6 +108,7 @@ namespace Interext.Models
         public string Gender { get; set; }
 
         [Display(Name = "Address")]
+        [Required]
         public string Address { get; set; }
     }
 

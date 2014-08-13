@@ -25,6 +25,12 @@ namespace Interext
               "~/Scripts/googlemaps.js"
               ));
 
+            bundles.Add(new ScriptBundle("~/bundles/externalLogin").Include(
+                  "~/Scripts/externalLogin.js",
+                  "~/Scripts/register.js"
+                  ));
+
+
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));

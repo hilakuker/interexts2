@@ -19,7 +19,6 @@ namespace Interext.Models
         public virtual ApplicationUser CreatorUser { get; set; }
 
         [DataType(DataType.MultilineText)]
-        [Required]
         public string Description { get; set; }
 
         public string ImageUrl { get; set; }
@@ -53,6 +52,14 @@ namespace Interext.Models
         //public ICollection<UserProfile> UsersApprovedAttendance { get; set; }
 
         public virtual ICollection<Interest> Interests { get; set; }
-        
+
+
+        public e_EventStatus? EventStatus { get; set; }
+    }
+    public enum e_EventStatus
+    {
+        Active,
+        Deleted,
+        Finished
     }
 }

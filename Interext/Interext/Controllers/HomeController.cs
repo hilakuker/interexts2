@@ -1,4 +1,6 @@
 ﻿using Interext.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
@@ -13,8 +15,10 @@ namespace Interext.Controllers
     {
         //InterextDB _db = new InterextDB();
         private ApplicationDbContext _db = new ApplicationDbContext();
+        private UserManager<ApplicationUser> UserManager { get; set; }
         public HomeController()
         {
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this._db));
 
         }
 
@@ -43,10 +47,24 @@ namespace Interext.Controllers
         }
         public ActionResult Index()
         {
-            List<Event> model = _db.Events.ToList();
-            ViewBag.AllInterests = InitAllInterests();
-            return View(model);
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                List<Event> model = GetEventForUser(user);
+                ViewBag.AllInterests = InitAllInterests();
+                ViewBag.CurrentUser = user;
+                return View(model);
+            }
+            else return RedirectToAction("Login", "Account");
         }
+
+        private List<Event> GetEventForUser(ApplicationUser user)
+        {
+            //user.HomeAddress = 
+            return _db.Events.ToList();
+        }
+
+
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {

@@ -41,7 +41,7 @@ namespace Interext.Models
         public ICollection<ApplicationUser> UsersInvited { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
-
+        public bool CurrentUserIsCreator { get; set; }
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
