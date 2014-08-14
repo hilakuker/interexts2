@@ -3,114 +3,123 @@
     ViewBag.Title = "Register";
 }
 <section id="loginForm" class="form-signin">
-    <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
-    @*@Html.Partial("_ExternalLoginsListPartial", new Interext.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })*@
 
-    @*@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
     @using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm" }))
-        
-{
+    {
         <div class="all-parts">
-    <div class="first-part">
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control first-name", @placeholder = "First name" })
-        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control last-name", @placeholder = "Last name" })
-        <div class="clear"></div>
-        @Html.ValidationMessageFor(m => m.FirstName)
-        @Html.ValidationMessageFor(m => m.LastName)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @type = "email" })
-        @Html.ValidationMessageFor(m => m.Email)
-        @*@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
-            @Html.ValidationMessageFor(m => m.UserName)*@
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-        @Html.ValidationMessageFor(m => m.Password)
-        @*@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
-            @Html.ValidationMessageFor(m => m.ConfirmPassword)*@
-        <input type="hidden" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
-        <div class="birthdate">Birth day: </div>
-        <select id="BirthDateDay" class="form-control birth-day">
-            @for (int i = 1; i <= 31; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="BirthDateMonth" class="form-control birth-month">
-            @for (int i = 1; i <= 12; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        <select id="BirthDateYear" class="form-control birth-year">
-            @for (int i = DateTime.Today.Year - 10; i >= DateTime.Today.Year - 120; i--)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-        @*@Html.TextBoxFor(m => m.BirthDateDay, new { @placeholder = "Birthdate day", @id = "BirthDateDay" })*@
-        @*@Html.TextBoxFor(m => m.BirthDateMonth, new { @placeholder = "Birthdate month", @id = "BirthDateMonth" })
-            @Html.TextBoxFor(m => m.BirthDateYear, new { @placeholder = "Birthdate year", @id = "BirthDateYear" })*@
+            <div class="first-part">
+                <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
+                @Html.AntiForgeryToken()
+                @*@Html.ValidationSummary(true)*@
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control first-name", @placeholder = "First name" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control last-name", @placeholder = "Last name" })
+                <div class="clear"></div>
+                @*@Html.ValidationMessageFor(m => m.FirstName)
+                    @Html.ValidationMessageFor(m => m.LastName)*@
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @type = "email" })
+                @*@Html.ValidationMessageFor(m => m.Email)*@
+                @*@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
+                    @Html.ValidationMessageFor(m => m.UserName)*@
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                @*@Html.ValidationMessageFor(m => m.Password)*@
+                @*@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)*@
+                <input type="hidden" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
+                <div class="birthdate">Birth day: </div>
+                <select id="BirthDateDay" class="form-control birth-day">
+                    @for (int i = 1; i <= 31; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                <select id="BirthDateMonth" class="form-control birth-month">
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                <select id="BirthDateYear" class="form-control birth-year">
+                    @for (int i = DateTime.Today.Year - 10; i >= DateTime.Today.Year - 120; i--)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
 
-        @Html.ValidationMessageFor(m => m.BirthDate)
-        <p></p>
-        @*@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth date" })
-            @Html.ValidationMessageFor(m => m.BirthDate)*@
-        <input id="locationSearchTextField" type="text" size="50" placeholder="Where do you live.." name="Address" class="form-control">
-        <div class="Gender left">
-            Gender:
-            <br />
-            @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
-            <span>Male</span>
-            @Html.RadioButtonFor(m => m.Gender, "F")
-            <span>Female</span>
-        </div>
-        @*@Html.LabelFor(model => model.ImageUrl, new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(m => m.BirthDate)
+                <p></p>
+                <input id="locationSearchTextField" type="text" size="50" placeholder="Where do you live.." name="Address" class="form-control">
+                <div class="Gender left">
+                    Gender:
+                    <br />
+                    @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
+                    <span>Male</span>
+                    @Html.RadioButtonFor(m => m.Gender, "F")
+                    <span>Female</span>
+                </div>
 
-        <div class="right btn btn-dark fileinput-button choose-image">
-            <span class="fa fa-picture-o"></span>
-            <span>Upload image</span>
-            <input type="file" name="ImageUrl" id="ImageUrl">
-        </div>
+                <div class="right btn btn-dark fileinput-button choose-image">
+                    <span class="fa fa-picture-o"></span>
+                    <span>Upload image</span>
+                    <input type="file" name="ImageUrl" id="ImageUrl">
+                </div>
 
-        <button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>
-        @*@Html.TextBoxFor(m=>m.Address, new { @class = "form-control address", @placeholder = "Where your live..." })*@
-    </div>
-    <div class="second-part">
-        <div class="interests-container mousescroll">
-            <ul class="interests-list">
-                @foreach (var category in ViewBag.AllInterests)
-                {
-                <li>
-                    <div class="main-category">
-                        <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
-                        <div class="image" style="background-image: url('@category.ImageUrl')"></div>
-                        <div class="title">@category.Title</div>
-                    </div>
-                    <ul>
-                        @foreach (var subCategory in category.SubInterests)
-                            {
+                <button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>
+                @*@Html.TextBoxFor(m=>m.Address, new { @class = "form-control address", @placeholder = "Where your live..." })*@
+            </div>
+            <div class="second-part">
+                <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
+                <div class="interests-container mousescroll">
+                    <ul class="interests-list">
+                        @foreach (var category in ViewBag.AllInterests)
+                        {
                             <li>
-                                <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
+                                <div class="main-category">
+                                    <input type="checkbox" value="@category.Title" name="@category.Title" checked="@category.IsSelected" class="allCategoryInterests" data-id="@category.Id">
+                                    <div class="image" style="background-image: url('@category.ImageUrl')"></div>
+                                    <div class="title">@category.Title</div>
+                                </div>
+                                <ul>
+                                    @foreach (var subCategory in category.SubInterests)
+                                    {
+                                        <li>
+                                            <input type="checkbox" value="@subCategory.Title" class="sub-category" checked="@subCategory.IsSelected" data-id="@subCategory.Id">@subCategory.Title
+                                        </li>
+                                    }
+                                </ul>
                             </li>
-                            }
+                        }
                     </ul>
-                </li>
-                }
-            </ul>
-            <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
-        </div>
-        <button class="btn btn-lg btn-dark btn-block back-button" type="button">Back</button>
-        <button class="btn btn-lg btn-special btn-block sumbit-button" type="submit">Register</button>
-    </div>
-            <div class="third-part">
-                welcome
+                    <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
+                </div>
+                <button class="btn btn-lg btn-dark btn-block back-button" type="button">Back</button>
+                @*<button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>*@
+                <button class="btn btn-lg btn-special btn-block sumbit-button" type="submit">Register</button>
+                <div class="clear"></div>
 
             </div>
-            <div class="clear"></div>
-        </div>
-}
-</section>
+            <div class="third-part">
+                <div class="success">
+                    <h1 class="form-signin-heading flipping-hover-area">Welcome to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS!</h1>
+                    <div class="welcome-phrase">
+                        Good to see you :) <br />
+                        <a href="/">Start your tour now!</a>
+                    </div>
+                </div>
+                <div class="failure">
+                    <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS!</h1>
+                    <div class="welcome-phrase">
+                        Sorry, an error accured during registration<br />
+                        Please try again later
+                    </div>
 
+                </div>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+        @Html.ValidationSummary()
+    }
+</section>
 @section Scripts {
     @Scripts.Render("~/bundles/register")
 }

@@ -143,12 +143,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     padding: 12px 18px 12px 19px;
 }
 
-.form-signin .first-part, .form-signin .second-part, .form-signin third-part {
+.form-signin .first-part, .form-signin .second-part, .form-signin .third-part {
     float: left;
     width: 300px;
 }
 
-.form-signin .second-part, .form-signin third-part {
+.form-signin .second-part, .form-signin .third-part {
     margin-left: 15px;
 }
 
@@ -156,42 +156,80 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     width: 945px;
 }
 
+.form-signin .third-part .success, .form-signin .third-part .failure {
+    display:none;
+}
+.form-signin .third-part .welcome-phrase {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 50px;
+}
+
+.form-signin .third-part .welcome-phrase a {
+    color: #68D999;
+}
 
 .form-signin .interests-container .interests-list {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
+
 .form-signin .interests-container .interests-list li ul {
-    padding:0;
+    padding: 0;
 }
 
 
 .form-signin .interests-container {
-background-color:rgba(255,255,255,0.2);
-border-bottom:1px solid #bfbfbf;
+    background-color: rgba(255,255,255,0.2);
+    border-bottom: 1px solid #bfbfbf;
 }
+
 div.mousescroll {
     overflow: hidden;
 }
+
 div.mousescroll:hover {
     overflow-y: scroll;
 }
 
 .slimScrollBarRail {
-    background-color:#fff;
+    background-color: #fff;
 }
+
 .form-signin .btn.back-button {
-    width:25%;
-    float:left;
-    margin-top:27px;
+    width: 25%;
+    float: left;
+    margin-top: 27px;
 }
 
 .form-signin .btn.sumbit-button {
-    width:70%;
-    float:right;
-    margin-top:27px;
+    width: 70%;
+    float: right;
+    margin-top: 27px;
 }
 
 .Gender span {
-    cursor:pointer;
+    cursor: pointer;
+}
+
+.form-signin .input-validation-error {
+    border: 2px solid #e22029;
+}
+
+.validation-summary-errors {
+    border: 2px solid #e22029;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.validation-summary-errors ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.field-name-error {
+    color:#e22029;
+    font-weight:bold;
 }

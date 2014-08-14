@@ -69,31 +69,29 @@ namespace Interext.Models
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The <span class=\"field-name-error\">Password</span> field is required.")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        //[DataType(DataType.Password)]
-        //[Display(Name = "Confirm password")]
-        //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        //public string ConfirmPassword { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "The <span class=\"field-name-error\">First Name</span> field is required.")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The <span class=\"field-name-error\">Last Name</span> field is required.")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "The <span class=\"field-name-error\">Email</span> field is required.")]
+        [EmailAddress(ErrorMessage = "The <span class=\"field-name-error\">Email</span> is incorrect.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [BirthdateValidation]
+        [Required]
+        [DataType(DataType.Date, ErrorMessage = "The <span class=\"field-name-error\">Birth day</span> is incorrect.")]
+        [BirthdateValidation(ErrorMessage = "The <span class=\"field-name-error\">Birth day</span> is incorrect.")]
+
         public DateTime BirthDate { get; set; }
 
         public string BirthDateDay { get; set; }

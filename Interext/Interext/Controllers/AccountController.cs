@@ -233,6 +233,8 @@ namespace Interext.Controllers
                     AddErrors(result);
                 }
             }
+            ViewBag.AllInterests = InitAllInterests();
+           // ModelState.AddModelError("e", "Sample Error");
             // If we got this far, something failed, redisplay form
             return View(model);
         }

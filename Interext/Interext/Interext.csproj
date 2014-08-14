@@ -645,6 +645,8 @@
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site\chart.js" />
+    <Content Include="Scripts\site\event-details.js" />
     <Content Include="Scripts\site\interests-popup.js" />
     <Content Include="Scripts\shared\scroller\scroller.js" />
     <Content Include="Scripts\_references.js" />
