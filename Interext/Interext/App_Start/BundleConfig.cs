@@ -61,6 +61,10 @@ namespace Interext
             "~/Scripts/intro/interests-list.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/register-approval").Include(
+            "~/Scripts/intro/register-approval.js"
+            ));
+            
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
                         "~/Scripts/colorpicker/colorpicker.js",
@@ -109,6 +113,9 @@ namespace Interext
             bundles.Add(new StyleBundle("~/Content/colorPickerCss").Include(
                             "~/Content/css/site/colorpicker.css"
                                  ));
+   
+
+            
         }
     }
 }

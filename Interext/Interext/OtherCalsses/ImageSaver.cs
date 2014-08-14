@@ -26,7 +26,10 @@ namespace Interext.OtherCalsses
             {
                 if (ImageUrl.ContentLength > 0)
                 {
-                    Directory.CreateDirectory(SavePath);
+                    if (!Directory.Exists(SavePath))
+                    {
+                        Directory.CreateDirectory(SavePath);
+                    }
                     // need to create folder for each user, the name of the folder is the id of the user
                     var path = Path.Combine(SavePath, fileName);
                     ImageUrl.SaveAs(path);

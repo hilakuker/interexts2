@@ -3,9 +3,10 @@
     ViewBag.Title = "Register";
 }
 <section id="loginForm" class="form-signin">
-
-    @using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm" }))
-    {
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    { 
+    @*@using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm", enctype = "multipart/form-data" }))
+    {*@
         <div class="all-parts">
             <div class="first-part">
                 <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
@@ -44,9 +45,6 @@
                         <option value="@i">@i</option>
                     }
                 </select>
-
-                @Html.ValidationMessageFor(m => m.BirthDate)
-                <p></p>
                 <input id="locationSearchTextField" type="text" size="50" placeholder="Where do you live.." name="Address" class="form-control">
                 <div class="Gender left">
                     Gender:
@@ -96,23 +94,6 @@
                 <button class="btn btn-lg btn-special btn-block sumbit-button" type="submit">Register</button>
                 <div class="clear"></div>
 
-            </div>
-            <div class="third-part">
-                <div class="success">
-                    <h1 class="form-signin-heading flipping-hover-area">Welcome to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS!</h1>
-                    <div class="welcome-phrase">
-                        Good to see you :) <br />
-                        <a href="/">Start your tour now!</a>
-                    </div>
-                </div>
-                <div class="failure">
-                    <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS!</h1>
-                    <div class="welcome-phrase">
-                        Sorry, an error accured during registration<br />
-                        Please try again later
-                    </div>
-
-                </div>
             </div>
             <div class="clear"></div>
 

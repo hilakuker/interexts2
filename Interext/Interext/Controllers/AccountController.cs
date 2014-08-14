@@ -200,7 +200,7 @@ namespace Interext.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
  
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser()
@@ -225,7 +225,8 @@ namespace Interext.Controllers
 
                     await SignInAsync(user, isPersistent: false);
                     ViewBag.AllInterests = InitAllInterests();
-                    return View(model);
+                    //return View(model);
+                    return Redirect("/Account/RegisterApproval");
                     //return RedirectToAction("Index", "Home");
                 }
                 else
@@ -234,12 +235,20 @@ namespace Interext.Controllers
                 }
             }
             ViewBag.AllInterests = InitAllInterests();
-           // ModelState.AddModelError("e", "Sample Error");
+            //string allErrors = "";
+            //foreach (ModelError item in errors)
+            //{
+            //    allErrors += item.ErrorMessage + "<br/>";
+            //}
+            //ModelState.AddModelError("", allErrors);
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-    
+        public ActionResult RegisterApproval()
+        {
+            return View();
+        }
 
         private void uploadAndSetImage(ref ApplicationUser user, HttpPostedFileBase ImageUrl)
         {

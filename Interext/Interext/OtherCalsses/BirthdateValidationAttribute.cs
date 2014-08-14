@@ -7,22 +7,9 @@ using System.Web.Mvc;
 
 namespace Interext.OtherCalsses
 {
-    //[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class BirthdateValidationAttribute : ValidationAttribute, IClientValidatable
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class BirthdateValidationAttribute : ValidationAttribute
     {
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            var clientValidationRule = new ModelClientValidationRule()
-            {
-                ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
-                ValidationType = "validateBirthday"
-            };
-
-            //clientValidationRule.ValidationParameters.Add("otherproperty", OtherProperty);
-
-            return new[] { clientValidationRule };
-        }
         public BirthdateValidationAttribute()
             : base("The <span class=\"field-name-error\">Birth day</span> field is incorrect")
         {
@@ -46,16 +33,14 @@ namespace Interext.OtherCalsses
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            //ValidationResult validationResult = new ValidationResult("Date cannot be bigger than Today's date");
-            //ValidationResult validationResult = new ValidationResult("The <span class=\"field-name-error\">Birth day</span> field is incorrect");
-            ValidationResult validationResult = new ValidationResult(this.FormatErrorMessage(validationContext.DisplayName));
+            ValidationResult validationResult = new ValidationResult("Date cannot be bigger than Today's date");
+            
             if (value != null)
             {
                 DateTime dateStart = (DateTime)value;
                 if (dateStart > DateTime.Now)
                     return validationResult;
                 else return ValidationResult.Success;
-                //else return null;
             }
             else
             {
@@ -69,7 +54,8 @@ namespace Interext.OtherCalsses
     //{
     //    public override bool IsValid(object value)
     //    {
-    //        return value != null && (DateTime)value > DateTime.Now;
+    //        //bool res = value != null && (DateTime)value < DateTime.Now;
+    //        return true;
     //    }
 
     //    public IEnumerable<ModelClientValidationRule>

@@ -143,21 +143,23 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     padding: 12px 18px 12px 19px;
 }
 
-.form-signin .first-part, .form-signin .second-part, .form-signin .third-part {
+.form-signin .first-part, .form-signin .second-part {
     float: left;
     width: 300px;
 }
 
-.form-signin .second-part, .form-signin .third-part {
+.form-signin .second-part {
     margin-left: 15px;
 }
 
 .form-signin .all-parts {
-    width: 945px;
+    width: 630px;
 }
-
+.form-signin .third-part {
+    margin-bottom:50px;
+}
 .form-signin .third-part .success, .form-signin .third-part .failure {
-    display:none;
+    
 }
 .form-signin .third-part .welcome-phrase {
     text-align: center;

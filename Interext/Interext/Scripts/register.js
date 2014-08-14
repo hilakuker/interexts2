@@ -54,21 +54,21 @@ function onRegisterFailed() {
     }, 800);
 }
 function onRegisterSuccess(response) {
-    $(".form-signin .third-part .failure").css({ "display": "none" });
-    $(".form-signin .third-part .success").css({ "display": "block" });
-    $(".all-parts").animate({
-        "margin-left": "-=315px"
-    }, 800);
+    //$(".form-signin .third-part .failure").css({ "display": "none" });
+    //$(".form-signin .third-part .success").css({ "display": "block" });
+    //$(".all-parts").animate({
+    //    "margin-left": "-=315px"
+    //}, 800);
 }
 
-jQuery.validator.addMethod('birthdatee', function (value, element, params) {
-    if (!/Invalid|NaN/.test(new Date(value))) {
-        return new Date(value) > new Date();
-    }
-    return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
-}, '');
+//jQuery.validator.addMethod('birthdatee', function (value, element, params) {
+//    if (!/Invalid|NaN/.test(new Date(value))) {
+//        return new Date(value) > new Date();
+//    }
+//    return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
+//}, '');
 
-jQuery.validator.unobtrusive.adapters.add('birthdatee', {}, function (options) {
-    options.rules['birthdatee'] = true;
-    options.messages['birthdatee'] = options.message;
-});
+//jQuery.validator.unobtrusive.adapters.add('birthdatee', {}, function (options) {
+//    options.rules['birthdatee'] = true;
+//    options.messages['birthdatee'] = options.message;
+//});

@@ -617,6 +617,7 @@
     <Content Include="Scripts\googlemaps.js" />
     <Content Include="Scripts\hoverIntent.js" />
     <Content Include="Scripts\intro\interests-list.js" />
+    <Content Include="Scripts\intro\register-approval.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
@@ -705,6 +706,7 @@
     <Content Include="Views\Place\Create.cshtml" />
     <Content Include="Views\Place\Details.cshtml" />
     <Content Include="Views\Place\Edit.cshtml" />
+    <Content Include="Views\Account\RegisterApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />
