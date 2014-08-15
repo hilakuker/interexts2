@@ -11,7 +11,7 @@ namespace Interext.OtherCalsses
     public class BirthdateValidationAttribute : ValidationAttribute
     {
         public BirthdateValidationAttribute()
-            : base("The <span class=\"field-name-error\">Birth day</span> field is incorrect")
+            : base("Birth Day cannot be bigger than Today's date")
         {
 
         }
@@ -33,7 +33,7 @@ namespace Interext.OtherCalsses
         }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            ValidationResult validationResult = new ValidationResult("Date cannot be bigger than Today's date");
+            ValidationResult validationResult = new ValidationResult("Birth Day cannot be bigger than Today's date");
             
             if (value != null)
             {

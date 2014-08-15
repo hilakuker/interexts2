@@ -12,6 +12,23 @@
     @Styles.Render("~/Content/signinPageCss")
 
     @Scripts.Render("~/bundles/jquery-main")
+    @*<script type="text/javascript">
+        jQuery.validator.unobtrusive.adapters.add(
+            'atleastonerequired', ['properties'], function (options) {
+                options.rules['atleastonerequired'] = options.params;
+                options.messages['atleastonerequired'] = options.message;
+            }
+        );
+
+        jQuery.validator.addMethod('atleastonerequired', function (value, element, params) {
+            var properties = params.properties.split(',');
+            var values = $.map(properties, function (property, index) {
+                var val = $('#' + property).val();
+                return val != '' ? val : null;
+            });
+            return values.length > 0;
+        }, '');
+    </script>*@
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
     @Scripts.Render("~/bundles/googlemaps")
     @RenderSection("Scripts", required: false)

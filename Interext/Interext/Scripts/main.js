@@ -42,7 +42,8 @@
         size: '10px',
         width: '350px',
         height: '270px',
-        opacity: '1'
+        opacity: '1',
+        alwaysVisible:true
     });
 
 });

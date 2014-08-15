@@ -2,30 +2,23 @@
 @{
     ViewBag.Title = "Register";
 }
+
 <section id="loginForm" class="form-signin">
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    { 
-    @*@using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm", enctype = "multipart/form-data" }))
-    {*@
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", id="RegisterForm" }))
+    {
+        @*@using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm", enctype = "multipart/form-data" }))
+            {*@
         <div class="all-parts">
             <div class="first-part">
                 <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
                 @Html.AntiForgeryToken()
-                @*@Html.ValidationSummary(true)*@
                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control first-name", @placeholder = "First name" })
                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-control last-name", @placeholder = "Last name" })
                 <div class="clear"></div>
-                @*@Html.ValidationMessageFor(m => m.FirstName)
-                    @Html.ValidationMessageFor(m => m.LastName)*@
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @type = "email" })
-                @*@Html.ValidationMessageFor(m => m.Email)*@
-                @*@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
-                    @Html.ValidationMessageFor(m => m.UserName)*@
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                @*@Html.ValidationMessageFor(m => m.Password)*@
-                @*@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword)*@
-                <input type="hidden" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
+                @Html.HiddenFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth day", @value = "1/1/" + (DateTime.Today.Year - 10) })
+                @*<input type="hidden"  placeholder="Birth day" value="1/1/@(DateTime.Today.Year - 10)" />*@
                 <div class="birthdate">Birth day: </div>
                 <select id="BirthDateDay" class="form-control birth-day">
                     @for (int i = 1; i <= 31; i++)
@@ -45,7 +38,7 @@
                         <option value="@i">@i</option>
                     }
                 </select>
-                <input id="locationSearchTextField" type="text" size="50" placeholder="Where do you live.." name="Address" class="form-control">
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Where do you live?", @type = "text", @id = "locationSearchTextField" })
                 <div class="Gender left">
                     Gender:
                     <br />
@@ -58,11 +51,11 @@
                 <div class="right btn btn-dark fileinput-button choose-image">
                     <span class="fa fa-picture-o"></span>
                     <span>Upload image</span>
-                    <input type="file" name="ImageUrl" id="ImageUrl">
+                    @*<input type="file" name="ImageUrl" id="ImageUrl">*@
+                    @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file" })
                 </div>
 
                 <button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>
-                @*@Html.TextBoxFor(m=>m.Address, new { @class = "form-control address", @placeholder = "Where your live..." })*@
             </div>
             <div class="second-part">
                 <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
@@ -86,11 +79,11 @@
                                 </ul>
                             </li>
                         }
+                        
                     </ul>
                     <input type="hidden" id="selectedInterests" name="selectedInterests" value="" />
                 </div>
                 <button class="btn btn-lg btn-dark btn-block back-button" type="button">Back</button>
-                @*<button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>*@
                 <button class="btn btn-lg btn-special btn-block sumbit-button" type="submit">Register</button>
                 <div class="clear"></div>
 
@@ -98,7 +91,7 @@
             <div class="clear"></div>
 
         </div>
-        @Html.ValidationSummary()
+        @Html.ValidationSummary(false, "Please fill the required fields")
     }
 </section>
 @section Scripts {

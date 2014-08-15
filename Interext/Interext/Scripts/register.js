@@ -1,4 +1,7 @@
-﻿//$(document).ready(function () {
+﻿
+
+
+//$(document).ready(function () {
 //    $("#BirthDate").datepicker({ dateFormat: "dd/mm/yy", maxDate: 0 });
 //});
 function setBirthdate(thisElement) {
@@ -14,6 +17,18 @@ function setBirthdate(thisElement) {
     }
 }
 $(document).ready(function () {
+    $("#RegisterForm").submit(function () {
+        if ($("#selectedInterests").val() == "")
+        {
+            if ($(".input-validation-error").length == 0)
+            {
+                $(".validation-summary-errors ul").html("");
+            }
+            $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
+            return false;
+        }
+
+    });
     $('#BirthDateDay').on('change', function () { setBirthdate($(this)) });
     $('#BirthDateMonth').on('change', function () { setBirthdate($(this)) });
     $('#BirthDateYear').on('change', function () { setBirthdate($(this)) });
@@ -42,33 +57,9 @@ $(document).ready(function () {
         size: '10px',
         width: '300px',
         height: '270px',
-        opacity: '1'
+        opacity: '1',
+        alwaysVisible: true
     });
 });
 
-function onRegisterFailed() {
-    $(".form-signin .third-part .success").css({ "display": "none" });
-    $(".form-signin .third-part .failure").css({ "display": "block" });
-    $(".all-parts").animate({
-        "margin-left": "-=315px"
-    }, 800);
-}
-function onRegisterSuccess(response) {
-    //$(".form-signin .third-part .failure").css({ "display": "none" });
-    //$(".form-signin .third-part .success").css({ "display": "block" });
-    //$(".all-parts").animate({
-    //    "margin-left": "-=315px"
-    //}, 800);
-}
 
-//jQuery.validator.addMethod('birthdatee', function (value, element, params) {
-//    if (!/Invalid|NaN/.test(new Date(value))) {
-//        return new Date(value) > new Date();
-//    }
-//    return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
-//}, '');
-
-//jQuery.validator.unobtrusive.adapters.add('birthdatee', {}, function (options) {
-//    options.rules['birthdatee'] = true;
-//    options.messages['birthdatee'] = options.message;
-//});

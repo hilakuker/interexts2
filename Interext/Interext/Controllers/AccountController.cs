@@ -201,6 +201,15 @@ namespace Interext.Controllers
         {
  
             List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+            if (ImageUrl.FileName == "")
+            {
+                ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            }
+                
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser()
@@ -235,11 +244,7 @@ namespace Interext.Controllers
                 }
             }
             ViewBag.AllInterests = InitAllInterests();
-            //string allErrors = "";
-            //foreach (ModelError item in errors)
-            //{
-            //    allErrors += item.ErrorMessage + "<br/>";
-            //}
+
             //ModelState.AddModelError("", allErrors);
             // If we got this far, something failed, redisplay form
             return View(model);

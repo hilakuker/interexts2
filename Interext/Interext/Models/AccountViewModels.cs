@@ -1,9 +1,9 @@
 ﻿//using Interext.Migrations;
-using Interext.OtherCalsses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Interext.OtherCalsses;
 
 namespace Interext.Models
 {
@@ -65,32 +65,38 @@ namespace Interext.Models
 
     public class RegisterViewModel
     {
-        //[Required]
+        
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "The <span class=\"field-name-error\">Password</span> field is required.")]
+//[AtLeastOneRequiredAttribute("Email", "Password", "FirstName", "LastName", "Address", ErrorMessage = "Please fill the required fields")]
+
+        //[Required(ErrorMessage = "Password field is required.")]
+        [Required(ErrorMessage = " ")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "The <span class=\"field-name-error\">First Name</span> field is required.")]
+        //[Required(ErrorMessage = "First Name field is required.")]
+        [Required(ErrorMessage = " ")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "The <span class=\"field-name-error\">Last Name</span> field is required.")]
+        //[Required(ErrorMessage = "Last Name field is required.")]
+        [Required(ErrorMessage = " ")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "The <span class=\"field-name-error\">Email</span> field is required.")]
-        [EmailAddress(ErrorMessage = "The <span class=\"field-name-error\">Email</span> is incorrect.")]
+        //[Required(ErrorMessage = "Email field is required.")]
+        [Required(ErrorMessage = " ")]
+        [EmailAddress(ErrorMessage = "Email is incorrect.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
-        [DataType(DataType.Date, ErrorMessage = "The <span class=\"field-name-error\">Birth day</span> is incorrect.")]
-        [BirthdateValidation(ErrorMessage = "The <span class=\"field-name-error\">Birth day</span> is incorrect.")]
+        [DataType(DataType.Date, ErrorMessage = "Birth day is incorrect.")]
+        [BirthdateValidation(ErrorMessage = "Birth Day cannot be bigger than Today's date")]
 
         public DateTime BirthDate { get; set; }
 
@@ -98,15 +104,19 @@ namespace Interext.Models
         public string BirthDateMonth { get; set; }
         public string BirthDateYear { get; set; }
 
+
         [Display(Name = "Image Url")]
+        [Required(ErrorMessage = "Please upload profile image")]
         public string ImageUrl { get; set; }
 
-        [Required]
-        [Display(Name = "Gender")]
+
+        [Required(ErrorMessage = "Gender field is required.")]
         public string Gender { get; set; }
 
+
         [Display(Name = "Address")]
-        [Required]
+        //[Required(ErrorMessage = "Address field is required.")]
+        [Required(ErrorMessage = " ")]
         public string Address { get; set; }
     }
 

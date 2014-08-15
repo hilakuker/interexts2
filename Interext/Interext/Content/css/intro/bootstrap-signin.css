@@ -235,3 +235,8 @@ div.mousescroll:hover {
     color:#e22029;
     font-weight:bold;
 }
+
+.validation-summary-valid
+{
+display:none;
+}
