@@ -21,7 +21,12 @@
         @Html.ValidationMessageFor(m => m.LastName)
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @type = "email" })
         @Html.ValidationMessageFor(m => m.Email)
-z
+        @*@Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
+            @Html.ValidationMessageFor(m => m.UserName)*@
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+        @Html.ValidationMessageFor(m => m.Password)
+        @*@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm password" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)*@
         <input type="hidden" id="BirthDate" name="BirthDate" class="form-control" placeholder="Birth day" />
         <div class="birthdate">Birth day: </div>
         <select id="BirthDateDay" class="form-control birth-day">
