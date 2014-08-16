@@ -38,6 +38,7 @@ namespace Interext.Controllers
         // GET: /Event/Details/5
         public ActionResult Details(int? id)
         {
+            ViewData["Id"] = id;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -66,7 +67,8 @@ namespace Interext.Controllers
                 Title = @event.Title,
                 Description = @event.Description,
                 Id = @event.Id,
-                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
+                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList()),
+                UsersAttending = @event.UsersAttending
             };
             if (user.Id == eventToShow.CreatorUser.Id)
             {
@@ -248,6 +250,7 @@ namespace Interext.Controllers
                     EventStatus = e_EventStatus.Active,
                     UsersAttending = new List<ApplicationUser>()
                 };
+                eventToCreate.UsersAttending.Add(user);
                 db.Events.Add(eventToCreate);
                 try
                 {
@@ -307,6 +310,7 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
+
             @event.UsersAttending.Add(user);
             db.SaveChanges();
             return Details(id);

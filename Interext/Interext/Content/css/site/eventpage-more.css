@@ -194,8 +194,9 @@
     left: 80%;
 }
 
-#sidebar .join-event {
+#sidebar .side-bar-button {
     width: 100%;
+    padding: 12px 0;
 }
 
 

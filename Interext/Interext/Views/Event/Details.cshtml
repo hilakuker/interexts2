@@ -32,7 +32,7 @@
                         </div>
                         <div class="clear"></div>
                         <div class="event-details">
-                            
+
                             <a href="~/Account/ShowProfile">
                                 <div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
                                 <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div>
@@ -62,9 +62,12 @@
                             {
                                 <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>
                             }
-                            <tr><td>Interests</td><td>
-                                @Model.InterestsToDisplay
-                                </td></tr>
+                            <tr>
+                                <td>Interests</td>
+                                <td>
+                                    @Model.InterestsToDisplay
+                                </td>
+                            </tr>
                         </table>
                         <div class="clear"></div>
                     </div>
@@ -74,6 +77,11 @@
 
                     <h3>ATTENDERS:</h3>
                     <div class="ozy-latest-posts">
+                        @foreach (var item in Model.UsersAttending)
+                        {
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('@item.ImageUrl')"></a>
+                        }
+
                         <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
                         <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
                         <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
@@ -94,9 +102,16 @@
     <div id="sidebar" class="right-sidebar">
         <ul>
             <li>
-                <form>
-                    <input value="+Join" type="submit" class="join-event btn btn-dark" />
-                </form>
+                @if (Model.CurrentUserIsCreator)
+                {
+                    @Html.ActionLink("Edit the Event", "Edit", new { Id = ViewData["Id"], model = Model }, new { @class = "side-bar-button btn btn-dark" })
+
+                }
+                else
+                {
+                    @Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })
+                }
+
             </li>
             @*<li class="widget">
                     <h3>LOOKING FOR SOMETHING?</h3><form action="http://contrast.freevision.me/" method="get" class="wp-search-form">
@@ -120,33 +135,27 @@
                     <canvas id="chart-area-interests" width="300" height="300" />
                 </div>
             </li>
-            
-            @*<li class="widget">
-                <h3>SIMILAR EVENTS</h3><div class="ozy-latest-posts">
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
-                    <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
-                </div>
-            </li>*@
-            <li>
-                @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] })
-            </li>
-        </ul>
-@if( Model.CurrentUserIsCreator )
-{
-            @Html.ActionLink("Edit", "Event", new { id = Request.QueryString["Id"], model = Model  })
 
-}
-else
-{
-    @Html.ActionLink("Join Event", "JoinEvent", new{id = Request.QueryString["Id"]})
-}
+            @*<li class="widget">
+                    <h3>SIMILAR EVENTS</h3><div class="ozy-latest-posts">
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
+                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
+                    </div>
+                </li>*@
+            @if (Model.CurrentUserIsCreator)
+            {
+                <li>
+                    @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] }, new { @class = "side-bar-button btn btn-dark" })
+                </li>
+            }
+        </ul>
 
     </div>
     <!--sidebar-->
