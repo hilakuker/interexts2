@@ -25,8 +25,16 @@ namespace Interext.Models
         [BirthdateValidation]
         public DateTime BirthDate { get; set; }
 
+        [Display(Name = "Image Url")]
+        public string ImageUrl { get; set; }
+
+        [Required]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
+
+        [Display(Name = "Address")]
+        [Required]
+        public string Address { get; set; }
     }
 
     public class ManageUserViewModel
