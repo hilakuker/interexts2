@@ -154,7 +154,7 @@ namespace Interext.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.AllInterests = InitAllInterests();
-            return View();
+            return View(new RegisterViewModel(){BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1)});
         }
 
         private List<InterestViewModel> InitAllInterests()
@@ -199,8 +199,9 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
- 
-            List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
             if (ImageUrl.FileName == "")
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
@@ -360,7 +361,7 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Request a redirect to the external login provider
+
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -389,8 +390,16 @@ namespace Interext.Controllers
                 ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                 Task<ClaimsIdentity> externalIdentity = getExternalIdentity();
                 var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email});
+                var firstName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:first_name").Value;
+                var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
+                string gender = getGender(externalIdentity);
+                var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
+                var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
+                ViewBag.AllInterests = InitAllInterests();
+                return View("ExternalLoginConfirmation", 
+                    new ExternalLoginConfirmationViewModel { 
+                        Email = email, FirstName = firstName, Gender = gender, ImageUrl = imageURL, LastName = lastName, 
+                        BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1) });
             }
         }
 
@@ -446,12 +455,14 @@ namespace Interext.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation
+            (ExternalLoginConfirmationViewModel model, HttpPostedFileBase ImageUrl, 
+            string returnUrl, string selectedInterests)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Manage");
+                return RedirectToAction("Index", "Home");
             }
 
             if (ModelState.IsValid)
@@ -463,26 +474,43 @@ namespace Interext.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                string loginProviderLowerCase = info.Login.LoginProvider.ToLower();
-                    user = createUserFromFacebookInfo(model);
+                user = createUserFromFacebookInfo(model, ImageUrl);
                 var result = await UserManager.CreateAsync(user);
+
+            //    if (result.Succeeded)
+            //    {
+            //        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+            //        if (result.Succeeded)
+            //        {
+            //            await SignInAsync(user, isPersistent: false);
+            //            return RedirectToLocal(returnUrl);
+            //        }
+            //    }
+            //    AddErrors(result);
+            //}
+
+                //ViewBag.ReturnUrl = returnUrl;
+                //return View(model);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInAsync(user, isPersistent: false);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
+                    ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
+                    newUser.Interests = GetSelectedInterests(selectedInterests);
+                    db.SaveChanges();
 
-            ViewBag.ReturnUrl = returnUrl;
+                    await SignInAsync(user, isPersistent: false);
+                    ViewBag.AllInterests = InitAllInterests();
+                    return Redirect("/Account/RegisterApproval");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+            ViewBag.AllInterests = InitAllInterests();
             return View(model);
         }
 
-        private ApplicationUser createUserFromFacebookInfo(ExternalLoginConfirmationViewModel i_Model)
+        private ApplicationUser createUserFromFacebookInfo(ExternalLoginConfirmationViewModel i_Model, HttpPostedFileBase ImageUrl)
         {
             ApplicationUser userToReturn;
             var externalIdentity = getExternalIdentity();
@@ -492,19 +520,27 @@ namespace Interext.Controllers
             var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
             string gender = getGender(externalIdentity);
             var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
-            var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
+
             var birthdate = i_Model.BirthDate;
             userToReturn = new ApplicationUser()
             {
                 UserName = GenerateUserName(i_Model.Email),
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                Gender = gender,
-                ImageUrl = imageURL,
+                FirstName = i_Model.FirstName,
+                LastName = i_Model.LastName,
+                Email = i_Model.Email,
+                Gender = i_Model.Gender,
                 BirthDate = birthdate, 
-                Age = caculateAge(birthdate)
+                Age = caculateAge(birthdate),
+                HomeAddress = i_Model.Address
             };
+            if (ImageUrl == null)
+            {
+                userToReturn.ImageUrl = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
+            }
+            else
+            {
+                uploadAndSetImage(ref userToReturn, ImageUrl);
+            }
             return userToReturn;
         }
 

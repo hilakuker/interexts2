@@ -17,7 +17,7 @@
                 <div class="clear"></div>
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @type = "email" })
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                @Html.HiddenFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth day", @value = "1/1/" + (DateTime.Today.Year - 10) })
+                @Html.HiddenFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth day", @value = "1/1/2004" })
                 @*<input type="hidden"  placeholder="Birth day" value="1/1/@(DateTime.Today.Year - 10)" />*@
                 <div class="birthdate">Birth day: </div>
                 <select id="BirthDateDay" class="form-control birth-day">

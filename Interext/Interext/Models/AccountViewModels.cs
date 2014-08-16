@@ -22,11 +22,21 @@ namespace Interext.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [BirthdateValidation]
+        [Required]
+        [DataType(DataType.Date, ErrorMessage = "Birth day is incorrect.")]
+        [BirthdateValidation(ErrorMessage = "Birth Day cannot be bigger than Today's date")]
         public DateTime BirthDate { get; set; }
 
+        [Display(Name = "Image Url")]
+        public string ImageUrl { get; set; }
+
+        [Required]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
+
+        [Display(Name = "Address")]
+        [Required]
+        public string Address { get; set; }
     }
 
     public class ManageUserViewModel
