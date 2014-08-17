@@ -46,7 +46,35 @@ namespace Interext.Migrations
 
             Interest tracking = new Interest { Title = "Tracking", ImageUrl = "", InterestsCategory = nature2 };
             Interest mauntainClimbing = new Interest { Title = "Mauntain Climbing", ImageUrl = "", InterestsCategory = nature2 };
-
+            Interest Fantasy = new Interest { Title = "Fantasy", ImageUrl = "", InterestsCategory = books2 };
+            Interest Adventure = new Interest { Title = "Adventure", ImageUrl = "", InterestsCategory = books2 };
+            Interest Classics = new Interest { Title = "Classics", ImageUrl = "", InterestsCategory = books2 };
+            Interest Crime = new Interest { Title = "Crime", ImageUrl = "", InterestsCategory = books2 };
+            Interest EroticFiction = new Interest { Title = "Erotic Fiction", ImageUrl = "", InterestsCategory = books2 };
+            Interest GraphicNovelsAnimeManga = new Interest { Title = "Graphic Novels, Anime & Manga", ImageUrl = "", InterestsCategory = books2 };
+            Interest HistoricalFiction = new Interest { Title = "Historical Fiction", ImageUrl = "", InterestsCategory = books2 };
+            Interest Horror = new Interest { Title = "Horror", ImageUrl = "", InterestsCategory = books2 };
+            Interest MythLegendToldFiction = new Interest { Title = "Myth & Legend Told As Fiction", ImageUrl = "", InterestsCategory = books2 };
+            Interest ReligiousSpiritualFiction = new Interest { Title = "Religious & Spiritual Fiction", ImageUrl = "", InterestsCategory = books2 };
+            Interest Romance = new Interest { Title = "Romance", ImageUrl = "", InterestsCategory = books2 };
+            Interest Sagas = new Interest { Title = "Sagas", ImageUrl = "", InterestsCategory = books2 };
+            Interest ScienceFiction = new Interest { Title = "Science Fiction", ImageUrl = "", InterestsCategory = books2 };
+            Interest Thrillers = new Interest { Title = "Thrillers", ImageUrl = "", InterestsCategory = books2 };
+         
+            subCategories.Add(Thrillers);
+            subCategories.Add(ScienceFiction);
+            subCategories.Add(Sagas);
+            subCategories.Add(Romance);
+            subCategories.Add(ReligiousSpiritualFiction);
+            subCategories.Add(MythLegendToldFiction);
+            subCategories.Add(Horror);
+            subCategories.Add(HistoricalFiction);
+            subCategories.Add(GraphicNovelsAnimeManga);
+            subCategories.Add(EroticFiction);
+            subCategories.Add(Crime);
+            subCategories.Add(Adventure);
+            subCategories.Add(Classics);
+            subCategories.Add(Fantasy);
             subCategories.Add(jogging);
             subCategories.Add(bicycle);
             subCategories.Add(basketball);
