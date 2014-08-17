@@ -23,19 +23,40 @@
                 <select id="BirthDateDay" class="form-control birth-day">
                     @for (int i = 1; i <= 31; i++)
                     {
-                        <option value="@i">@i</option>
+                        if (Model.BirthDate.Day == i)
+                        {
+                            <option value="@i" selected>@i</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
                     }
                 </select>
                 <select id="BirthDateMonth" class="form-control birth-month">
                     @for (int i = 1; i <= 12; i++)
                     {
-                        <option value="@i">@i</option>
+                        if (Model.BirthDate.Month == i)
+                        {
+                            <option value="@i" selected>@i</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
                     }
                 </select>
                 <select id="BirthDateYear" class="form-control birth-year">
                     @for (int i = DateTime.Today.Year - 10; i >= DateTime.Today.Year - 120; i--)
                     {
-                        <option value="@i">@i</option>
+                        if (Model.BirthDate.Year == i)
+                        {
+                            <option value="@i" selected>@i</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
                     }
                 </select>
                 @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Where do you live?", @type = "text", @id = "locationSearchTextField" })

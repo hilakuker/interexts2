@@ -149,25 +149,8 @@ namespace Interext.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.AllInterests = InitAllInterests();
+            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
             return View(new RegisterViewModel(){BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1)});
-        }
-
-        private List<InterestViewModel> InitAllInterests()
-        {
-            List<InterestViewModel> allInterests = new List<InterestViewModel>();
-            List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
-            foreach (var item in categories)
-            {
-                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
-                foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
-                {
-                    InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
-                    category.SubInterests.Add(subcategory);
-                }
-                allInterests.Add(category);
-            }
-            return allInterests;
         }
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
@@ -230,7 +213,7 @@ namespace Interext.Controllers
                     db.SaveChanges();
 
                     await SignInAsync(user, isPersistent: false);
-                    ViewBag.AllInterests = InitAllInterests();
+                    ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(newUser,db);
                     //return View(model);
                     return Redirect("/Account/RegisterApproval");
                     //return RedirectToAction("Index", "Home");
@@ -240,10 +223,7 @@ namespace Interext.Controllers
                     AddErrors(result);
                 }
             }
-            ViewBag.AllInterests = InitAllInterests();
-
-            //ModelState.AddModelError("", allErrors);
-            // If we got this far, something failed, redisplay form
+            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
             return View(model);
         }
 
@@ -391,7 +371,7 @@ namespace Interext.Controllers
                 string gender = getGender(externalIdentity);
                 var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
                 var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
-                ViewBag.AllInterests = InitAllInterests();
+                ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
                 return View("ExternalLoginConfirmation", 
                     new ExternalLoginConfirmationViewModel { 
                         Email = email, FirstName = firstName, Gender = gender, ImageUrl = imageURL, LastName = lastName, 
@@ -496,7 +476,7 @@ namespace Interext.Controllers
                         newUser.Interests = GetSelectedInterests(selectedInterests);
                         db.SaveChanges();
                         await SignInAsync(user, isPersistent: false);
-                        ViewBag.AllInterests = InitAllInterests();
+                        ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(newUser,db);
                         return Redirect("/Account/RegisterApproval");
                     }
                 }
@@ -505,7 +485,7 @@ namespace Interext.Controllers
                     AddErrors(result);
                 }
             }
-            ViewBag.AllInterests = InitAllInterests();
+            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
             return View(model);
         }
 

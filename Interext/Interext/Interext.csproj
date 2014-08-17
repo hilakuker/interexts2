@@ -193,6 +193,7 @@
     <Compile Include="OtherCalsses\EventTimeValidationAttribute.cs" />
     <Compile Include="OtherCalsses\BirthdateValidationAttribute.cs" />
     <Compile Include="OtherCalsses\ImageSaver.cs" />
+    <Compile Include="OtherCalsses\InterestsFromObjects.cs" />
     <Compile Include="OtherCalsses\MinMaxValidationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
