@@ -79,7 +79,7 @@
                     <div class="ozy-latest-posts">
                         @foreach (var item in Model.UsersAttending)
                         {
-                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('@item.ImageUrl')"></a>
+                            <a href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
                         }
 
                         @*<a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
@@ -121,19 +121,12 @@
                     {
                         using (Ajax.BeginForm("JoinEvent", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onJoinEventFailure", OnSuccess = "onJoinEventSuccess" }, new { id = "joinEventForm" }))
                         {
-                            @*@Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
                             <input type="submit" class="side-bar-button btn btn-dark" value="+Join event" />
                         }
                     }
                 }
 
             </li>
-            @*<li class="widget">
-                    <h3>LOOKING FOR SOMETHING?</h3><form action="http://contrast.freevision.me/" method="get" class="wp-search-form">
-                        <i class="fa fa-search"></i>
-                        <input x-webkit-speech="" speech="" type="text" name="s" id="search" placeholder="Type and hit Enter">
-                    </form>
-                </li>*@
             <li class="widget">
                 <h3>ATTENDERS STATISTICS:</h3>
                 <div id="canvas-holder-gender">
@@ -150,25 +143,9 @@
                     <canvas id="chart-area-interests" width="300" height="300" />
                 </div>
             </li>
-
-            @*<li class="widget">
-                    <h3>SIMILAR EVENTS</h3><div class="ozy-latest-posts">
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
-                    </div>
-                </li>*@
             @if (Model.CurrentUserIsCreator)
             {
                 <li>
-                    @*@Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
-
                     @using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
                     {
                         <input type="submit" class="side-bar-button btn btn-dark" value="Cancel event" />

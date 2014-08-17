@@ -421,6 +421,11 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
+            var user = UserManager.FindById(User.Identity.GetUserId()); 
+            if (user.Id != @event.CreatorUser.Id)
+            {
+                return RedirectToAction("Index","Home");
+            }
             if (@event == null)
             {
                 return HttpNotFound();

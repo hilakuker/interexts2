@@ -14,6 +14,8 @@ using Microsoft.Owin.Security.Facebook;
 using Microsoft.AspNet.Identity.Owin;
 using System.IO;
 using Interext.OtherCalsses;
+using System.Net;
+using System.Globalization;
 
 namespace Interext.Controllers
 {
@@ -53,7 +55,7 @@ namespace Interext.Controllers
            // profile.Interests = null;
            // profile.Events = null;
             profile.ImageUrl = user.ImageUrl;
-            profile.BirthDate = getBirthdateAndAge(user.BirthDate);
+            profile.BirthDate = getBirthdateAndAge(user.BirthDate.Value);
             profile.Address = user.HomeAddress;
             profile.InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList());
             return View(profile);
@@ -76,18 +78,12 @@ namespace Interext.Controllers
             return interestsForDisplay;
         }
 
-        private string getBirthdateAndAge(DateTime? i_BirthDate)
+        private string getBirthdateAndAge(DateTime i_BirthDate)
         {
             string finalResult = "";
-            int birthDateYear;
             int todayYear = DateTime.Today.Year;
-            if(i_BirthDate.HasValue == true)
-            {
-                string birthDateString = i_BirthDate.Value.ToShortDateString();
-                birthDateYear = i_BirthDate.Value.Year;
-                 int age = todayYear - birthDateYear - 1;
-                 finalResult = string.Format("{0} ({1} year old)", birthDateString, age.ToString());
-            }
+            string birthDateString = i_BirthDate.ToShortDateString();
+            finalResult = string.Format("{0} ({1} year old)", birthDateString, caculateAge(i_BirthDate).ToString());
             return finalResult;
         }
 
@@ -217,8 +213,8 @@ namespace Interext.Controllers
                 {
                     UserName = GenerateUserName(model.Email),
                     Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
+                    FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.FirstName),
+                    LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(model.LastName),
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
@@ -493,13 +489,16 @@ namespace Interext.Controllers
                 //return View(model);
                 if (result.Succeeded)
                 {
-                    ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
-                    newUser.Interests = GetSelectedInterests(selectedInterests);
-                    db.SaveChanges();
-
-                    await SignInAsync(user, isPersistent: false);
-                    ViewBag.AllInterests = InitAllInterests();
-                    return Redirect("/Account/RegisterApproval");
+                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    if (result.Succeeded)
+                    {
+                        ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
+                        newUser.Interests = GetSelectedInterests(selectedInterests);
+                        db.SaveChanges();
+                        await SignInAsync(user, isPersistent: false);
+                        ViewBag.AllInterests = InitAllInterests();
+                        return Redirect("/Account/RegisterApproval");
+                    }
                 }
                 else
                 {
@@ -631,6 +630,33 @@ namespace Interext.Controllers
             }
         }
 
+        public ActionResult Details(string id)
+        {
+            ViewData["Id"] = id;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser @user = db.Users.Find(id);
+            if (@user == null)
+            {
+                return HttpNotFound();
+            }
+            ProfileViewModel profileToShow = new ProfileViewModel()
+            {
+                Address = @user.HomeAddress,
+                BirthDate = getBirthdateAndAge(user.BirthDate.Value),
+                Email = @user.Email,
+                Interests = @user.Interests,
+                Events = @user.Events,
+                FirstName = @user.FirstName,
+                Gender = @user.Gender,
+                LastName = @user.LastName,
+                ImageUrl = @user.ImageUrl,
+                UserName = @user.UserName
+            };
+            return View(profileToShow);
+        }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);

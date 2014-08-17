@@ -21,14 +21,6 @@ namespace Interext.Controllers
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this._db));
 
         }
-
-        //private EventViewModel BuildEventViewModelFromEvent(Event e)
-        //{ 
-        //    EventViewModel eventViewModel = new EventViewModel(){
-
-        //    }
-        //}
-
         private List<InterestViewModel> InitAllInterests()
         {
             List<InterestViewModel> allInterests = new List<InterestViewModel>();

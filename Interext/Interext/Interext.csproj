@@ -202,10 +202,6 @@
     <Content Include="App_Data\aspnetdb_log.ldf">
       <DependentUpon>ASPNETDB.MDF</DependentUpon>
     </Content>
-    <Content Include="App_Data\Interext.mdf" />
-    <Content Include="App_Data\Interext_log.ldf">
-      <DependentUpon>Interext.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\uploads\user_profiles\1c5da580-aa22-4f96-b31d-b14ab80a77fb\2.jpg" />
     <Content Include="bin\Interext.dll" />
     <Content Include="bin\Interext.pdb" />
@@ -708,6 +704,7 @@
     <Content Include="Views\Place\Details.cshtml" />
     <Content Include="Views\Place\Edit.cshtml" />
     <Content Include="Views\Account\RegisterApproval.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />
