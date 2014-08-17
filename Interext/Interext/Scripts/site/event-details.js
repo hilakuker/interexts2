@@ -133,3 +133,36 @@ window.onload = function () {
     var ctx3 = document.getElementById("chart-area-age").getContext("2d");
     window.myDoughnut3 = new Chart(ctx3).Doughnut(doughnutDataAge, { responsive: true });
 };
+
+function onJoinEventFailure(response)
+{
+alert("failure");
+
+}
+function onJoinEventSuccess(response) {
+    if (response == false) {
+        onJoinEventFailure(response)
+    }
+    else {
+        location.reload();
+    }
+}
+
+function onDeleteEventFailure(response) {
+    alert("failure");
+
+}
+function onDeleteEventSuccess(response) {
+    if (response == false) {
+        onDeleteEventFailure(response)
+    }
+    else {
+        location.href = "/";
+        //location.reload();
+    }
+}
+
+$(document).ready(function () {
+
+
+});

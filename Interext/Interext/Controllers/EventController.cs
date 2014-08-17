@@ -39,11 +39,16 @@ namespace Interext.Controllers
         public ActionResult Details(int? id)
         {
             ViewData["Id"] = id;
+            ViewData["UserAlreadyAttending"] = false;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
+            if (@event.EventStatus == e_EventStatus.Deleted)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var user = UserManager.FindById(User.Identity.GetUserId()); 
             if (@event == null)
             {
@@ -73,10 +78,15 @@ namespace Interext.Controllers
             if (user.Id == eventToShow.CreatorUser.Id)
             {
                 eventToShow.CurrentUserIsCreator = true;
+                ViewData["UserAlreadyAttending"] = false;
             }
             else
             {
                 eventToShow.CurrentUserIsCreator = false;
+                if (eventToShow.UsersAttending.SingleOrDefault(x => x.Id == user.Id) != null)
+                {
+                    ViewData["UserAlreadyAttending"] = true;
+                }
             }
             return View(eventToShow);
         }
@@ -300,21 +310,110 @@ namespace Interext.Controllers
             }
         }
 
-   
-        public ActionResult JoinEvent(int? id)
+
+        public bool JoinEvent(int? id)
         {
-
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            Event @event = db.Events.Find(id);
-            if (@event == null)
+            try
             {
-                return HttpNotFound();
-            }
+                if (id == null)
+                {
+                    return false;
+                }
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                Event @event = db.Events.Find(id);
+                if (@event == null)
+                {
+                    return false;
+                }
 
-            @event.UsersAttending.Add(user);
-            db.SaveChanges();
-            return Details(id);
+                @event.UsersAttending.Add(user);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
+
+        //public ActionResult UnjoinEvent(int? id)
+        //{
+
+        //    try
+        //    {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        var user = UserManager.FindById(User.Identity.GetUserId());
+        //        Event @event = db.Events.Find(id);
+        //        if (@event == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
+        //        if (userAttending != null)
+        //        {
+        //            @event.UsersAttending.Remove(userAttending);
+        //            db.SaveChanges();
+        //        }
+        //        return Details(id);
+        //    }
+        //    catch
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //}
+
+        public bool UnjoinEvent(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    return false;
+                }
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                Event @event = db.Events.Find(id);
+                if (@event == null)
+                {
+                    return false;
+                }
+                ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
+                if (userAttending != null)
+                {
+                    //ViewBag["UserAlreadyAttending"] = false;
+                    @event.UsersAttending.Remove(userAttending);
+                    db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        //public ActionResult JoinEvent(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    var user = UserManager.FindById(User.Identity.GetUserId());
+        //    Event @event = db.Events.Find(id);
+        //    if (@event == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    @event.UsersAttending.Add(user);
+        //    db.SaveChanges();
+        //    return Details(id);
+        //}
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -360,7 +459,6 @@ namespace Interext.Controllers
             setGenderOptions(@event, model);
             return View(model);
         }
-
 
         // POST: /Event/Edit/5
         [HttpPost]
@@ -446,34 +544,70 @@ namespace Interext.Controllers
 
 
         // GET: /Event/Delete/5
-        public ActionResult Delete(int? id)
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Event @event = db.Events.Find(id);
+        //    //@event.EventStatus = e_EventStatus.Deleted;
+        //    //if (@event == null)
+        //    //{
+        //    //    return HttpNotFound();
+        //    //}
+        //    //return RedirectToAction("Index", "Home");
+        //    return null;
+        //}
+
+        public bool Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return false;
+                }
+                Event @event = db.Events.Find(id);
+                if (@event == null)
+                {
+                    return false;
+                }
+                @event.EventStatus = e_EventStatus.Deleted;
+                @event.CreatorUser = @event.CreatorUser;
+                db.Entry(@event).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            
             }
-            Event @event = db.Events.Find(id);
-            //@event.EventStatus = e_EventStatus.Deleted;
-            //if (@event == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return RedirectToAction("Index", "Home");
-            return null;
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
         }
 
-        // POST: /Event/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Event @event = db.Events.Find(id);
-            CascadingDeleteHelper.Delete(@event, null);
-            db.Events.Remove(@event);
-            db.SaveChanges();
+        //// POST: /Event/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Event @event = db.Events.Find(id);
+        //    CascadingDeleteHelper.Delete(@event, null);
+        //    db.Events.Remove(@event);
+        //    db.SaveChanges();
             
-            return RedirectToAction("Index", "Home");
-        }
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         protected override void Dispose(bool disposing)
         {

@@ -47,7 +47,7 @@ namespace Interext.Models
         [Column(TypeName = "datetime2")]
         public DateTime DateTimeCreated { get; set; }
 
-        public ICollection<ApplicationUser> UsersAttending { get; set; }
+        public virtual ICollection<ApplicationUser> UsersAttending { get; set; }
         //public ICollection<UserProfile> UsersAwatingApproval { get; set; }
         //public ICollection<UserProfile> UsersApprovedAttendance { get; set; }
 

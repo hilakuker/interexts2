@@ -61,7 +61,7 @@ namespace Interext.Controllers
         private List<Event> GetEventForUser(ApplicationUser user)
         {
             //user.HomeAddress = 
-            return _db.Events.ToList();
+            return _db.Events.Where(x => x.EventStatus != e_EventStatus.Deleted).ToList();
         }
 
 
@@ -112,14 +112,14 @@ namespace Interext.Controllers
 
             if (radiusOfTheLocation != "The exact location")
             {
-                
+
                 string temp = radiusOfTheLocation.Replace("km", "");
                 if (double.TryParse(temp, out radius) && double.TryParse(PlaceLongitude, out longitude) && double.TryParse(PlaceLatitude, out latitude))
                 {
                     searchAccordingToRadius = true;
                     radius = radius * 1000;
                     radius += 500;// adding 500 meters to the radius
-                }  
+                }
             }
             DateTime DateFrom = DateTime.MinValue;
             if (!String.IsNullOrEmpty(DateOfTheEventFrom))
@@ -143,10 +143,11 @@ namespace Interext.Controllers
             {
                 List<Event> eventList = _db.Events.ToList();
                 model = eventList.Where(
-                    x => (isFreeText ? (x.Title.ToLower().Contains(FreeText.ToLower()) ||
+                    x => (x.EventStatus != e_EventStatus.Deleted)
+                    && (isFreeText ? (x.Title.ToLower().Contains(FreeText.ToLower()) ||
                         x.Description.ToLower().Contains(FreeText.ToLower())) : true)
                     && (isLocation && !searchAccordingToRadius ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
-                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius): true)
+                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius) : true)
                     && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
                     && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)

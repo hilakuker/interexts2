@@ -46,4 +46,8 @@
         alwaysVisible:true
     });
 
+    $(".fa-search").click(function () {
+        $(".search-btn").click();
+    });
+    
 });

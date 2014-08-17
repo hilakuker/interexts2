@@ -13,7 +13,9 @@
 .right {
     float: right;
 }
-
+.bold {
+    font-weight:bold;
+}
 
 .ui-datepicker {
     font-size: 62.5%;
@@ -107,7 +109,15 @@
     border-color: #bfbfbf !important;
 }
 
-.btn-default:hover, .btn-special:hover {
+.btn-default:hover {
+    color: #fff !important;
+    background-color: #333 !important;
+    border-color: #000 !important;
+}
+.btn-special:hover {
+    color: #fff !important;
+}
+/*.btn-special:hover {
     color: #fff !important;
     background-color: #333 !important;
     border-color: #000 !important;
@@ -115,7 +125,7 @@
 
 .btn-special:hover span.fa {
     background-color: #68D999 ;
-}
+}*/
 
 .btn-special {
     color: #fff;

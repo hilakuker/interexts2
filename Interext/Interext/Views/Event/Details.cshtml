@@ -82,15 +82,15 @@
                             <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('@item.ImageUrl')"></a>
                         }
 
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
-                        <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>
+                        @*<a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event1.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event2.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event3.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event4.png')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event5.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event6.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event7.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event8.jpg')"></a>
+                            <a href="/Event/Details?id=1" title="Arizona Muse" style="background-image:url('/Content/images/example-images/event9.jpg')"></a>*@
                     </div>
                 </div>
             </article>
@@ -109,7 +109,22 @@
                 }
                 else
                 {
-                    @Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })
+                    if (bool.Parse(ViewData["UserAlreadyAttending"].ToString()))
+                    {
+                        using (Ajax.BeginForm("UnjoinEvent", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onJoinEventFailure", OnSuccess = "onJoinEventSuccess" }, new { id = "unjoinEventForm" }))
+                        {
+                            @*@Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
+                            <input type="submit" class="side-bar-button btn btn-dark" value="Leave event" />
+                        }
+                    }
+                    else
+                    {
+                        using (Ajax.BeginForm("JoinEvent", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onJoinEventFailure", OnSuccess = "onJoinEventSuccess" }, new { id = "joinEventForm" }))
+                        {
+                            @*@Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
+                            <input type="submit" class="side-bar-button btn btn-dark" value="+Join event" />
+                        }
+                    }
                 }
 
             </li>
@@ -152,11 +167,15 @@
             @if (Model.CurrentUserIsCreator)
             {
                 <li>
-                    @Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] }, new { @class = "side-bar-button btn btn-dark" })
+                    @*@Html.ActionLink("Delete The Event", "Delete", new { id = Request.QueryString["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
+
+                    @using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
+                    {
+                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel event" />
+                    }
                 </li>
             }
         </ul>
-
     </div>
     <!--sidebar-->
     <div class="clear"></div>

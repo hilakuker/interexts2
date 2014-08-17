@@ -60,11 +60,11 @@ namespace Interext.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage=" ")]
         [Display(Name = "Your Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = " ")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

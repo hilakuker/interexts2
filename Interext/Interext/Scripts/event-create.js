@@ -148,6 +148,7 @@ function updateDraftGender() {
             $(".event-gender-container").css("display", "none");
         }
         else {
+            $(".event-gender-container").css("display", "block");
             $("#draftGender").text(gender);
         }
     }
