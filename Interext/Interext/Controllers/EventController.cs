@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Validation;
 using System.Text;
+using System.Web.Script.Serialization;
 
 namespace Interext.Controllers
 {
@@ -28,14 +29,13 @@ namespace Interext.Controllers
         {
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.db));
         }
-       
+
         public ActionResult Index()
         {
             List<Event> f = db.Events.ToList();
             return View(db.Events.ToList());
         }
 
-        // GET: /Event/Details/5
         public ActionResult Details(int? id)
         {
             ViewData["Id"] = id;
@@ -49,7 +49,7 @@ namespace Interext.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = UserManager.FindById(User.Identity.GetUserId()); 
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (@event == null)
             {
                 return HttpNotFound();
@@ -88,9 +88,95 @@ namespace Interext.Controllers
                     ViewData["UserAlreadyAttending"] = true;
                 }
             }
+            Statistics Statistics = LoadStatistics(eventToShow.UsersAttending.ToList());
+            var json = new JavaScriptSerializer().Serialize(Statistics);
+            ViewData["Statistics"] = json;
             return View(eventToShow);
         }
+        private List<StatisticItem> LoadGenderStatistics(List<ApplicationUser> attenders)
+        {
+            List<StatisticItem> genderStatistics = new List<StatisticItem>();
 
+            List<string> genders = attenders.Select(x => x.Gender).ToList();
+            int females = genders.Where(x => x == "F").Count();
+            int males = genders.Where(x => x == "M").Count();
+
+            genderStatistics.Add(new StatisticItem { number = females, title = "Female" });
+            genderStatistics.Add(new StatisticItem { number = males, title = "Male" });
+            return genderStatistics;
+        }
+
+        private List<StatisticItem> LoadAgeStatistics(List<ApplicationUser> attenders)
+        {
+            List<StatisticItem> ageStatistics = new List<StatisticItem>();
+            int[] agesCount = new int[24]; // 0-5, 6-10, 11-15, 16-20, 21-25, 26-30...
+            for (int i = 0; i < agesCount.Length; i++)
+            {
+                agesCount[i] = 0;
+            }
+
+            List<int> ages = attenders.Select(x => x.Age).ToList();
+            foreach (int age in ages)
+            {
+                int j = (age - 1) / 5;   // 15/5 = 3 16 /5 = 3, 20/5  = 4
+                agesCount[j]++;
+            }
+            for (int j = 0; j < agesCount.Length; j++)
+            {
+                int ageCount = agesCount[j];
+                if (ageCount != 0)
+                {
+                    int ageFrom = j * 5 + 1;
+                    string ageTitle = ageFrom.ToString() + "-" + (ageFrom + 4).ToString();
+                    ageStatistics.Add(new StatisticItem { number = ageCount, title = ageTitle });
+                }
+            }
+            return ageStatistics;
+        }
+
+        private List<StatisticItem> LoadInterestsStatistics(List<ApplicationUser> attenders)
+        {
+            List<StatisticItem> interestsStatistics = new List<StatisticItem>();
+
+            List<Interest> allInterests = new List<Interest>();
+            foreach (ApplicationUser user in attenders)
+            {
+                if (user.Interests.Count > 0)
+                {
+                    allInterests.AddRange(user.Interests);
+                }
+            }
+            var d1 = allInterests.Distinct();
+            List<Interest> uniqueInterests = d1.ToList();
+            foreach (Interest item in uniqueInterests)
+            {
+                if (item.InterestsCategory == null)
+                {
+                    if (db.Interests.Where(x => x.InterestsCategory.Id == item.Id).Count() == 0)
+                    {
+                        int count = allInterests.Where(x => x.Id == item.Id).Count();
+                        interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+                    }
+                }
+                else
+                {
+                    int count = allInterests.Where(x => x.Id == item.Id).Count();
+                    interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+                }
+            }
+            interestsStatistics = interestsStatistics.OrderByDescending(x => x.number).Take(10).ToList();
+            return interestsStatistics;
+        }
+
+        private Statistics LoadStatistics(List<ApplicationUser> attenders)
+        {
+            Statistics statistics = new Statistics();
+            statistics.Gender = LoadGenderStatistics(attenders);
+            statistics.Age = LoadAgeStatistics(attenders);
+            statistics.Interests = LoadInterestsStatistics(attenders);
+
+            return statistics;
+        }
         private string GetInterestsForDisplay(List<Interest> Interests)
         {
             string interestsForDisplay = "";
@@ -130,7 +216,6 @@ namespace Interext.Controllers
             return number.ToString();
         }
 
-
         private void setSideOfText(Event @event, EventViewModel eventToShow)
         {
             eventToShow.SideOfTextOptions = new Dictionary<string, bool>();
@@ -140,7 +225,6 @@ namespace Interext.Controllers
             eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
-        // GET: /Event/Create
         public ActionResult Create()
         {
             EventViewModel model = new EventViewModel();
@@ -150,7 +234,6 @@ namespace Interext.Controllers
             return View(model);
             //return View();
         }
-
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {
@@ -190,10 +273,6 @@ namespace Interext.Controllers
 
             return interests;
         }
-
-
-
-        // POST: /Event/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -256,7 +335,7 @@ namespace Interext.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Id == model.CreatorUser.Id)
             {
-                return string.Format("<a href=\"/Event/Edit?id="+ model.Id +"\">Edit event<a/>");
+                return string.Format("<a href=\"/Event/Edit?id=" + model.Id + "\">Edit event<a/>");
             }
             else
             {
@@ -302,36 +381,6 @@ namespace Interext.Controllers
             }
         }
 
-        //public ActionResult UnjoinEvent(int? id)
-        //{
-
-        //    try
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        var user = UserManager.FindById(User.Identity.GetUserId());
-        //        Event @event = db.Events.Find(id);
-        //        if (@event == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
-        //        if (userAttending != null)
-        //        {
-        //            @event.UsersAttending.Remove(userAttending);
-        //            db.SaveChanges();
-        //        }
-        //        return Details(id);
-        //    }
-        //    catch
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //}
-
         public bool UnjoinEvent(int? id)
         {
             try
@@ -362,24 +411,6 @@ namespace Interext.Controllers
             }
         }
 
-
-        //public ActionResult JoinEvent(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    var user = UserManager.FindById(User.Identity.GetUserId());
-        //    Event @event = db.Events.Find(id);
-        //    if (@event == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    @event.UsersAttending.Add(user);
-        //    db.SaveChanges();
-        //    return Details(id);
-        //}
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -387,10 +418,10 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
-            var user = UserManager.FindById(User.Identity.GetUserId()); 
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Id != @event.CreatorUser.Id)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             if (@event == null)
             {
@@ -431,7 +462,7 @@ namespace Interext.Controllers
             return View(model);
         }
 
-        // POST: /Event/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
@@ -439,7 +470,7 @@ namespace Interext.Controllers
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId()); 
+                var user = UserManager.FindById(User.Identity.GetUserId());
                 Event @event = db.Events.Find(model.Id);
                 @event.CreatorUser = user;
                 @event.Title = model.Title;
@@ -474,7 +505,7 @@ namespace Interext.Controllers
                 catch (DbEntityValidationException e)
                 {
                 }
-                return RedirectToAction("Details", new {id = @event.Id});
+                return RedirectToAction("Details", new { id = @event.Id });
             }
             return View(model);
         }
@@ -496,41 +527,6 @@ namespace Interext.Controllers
             model.GenderParticipantOptions.Add("Both", String.Equals("Both", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
 
-        //private void setAllInterests(Event @event, EventViewModel model)
-        //{
-        //    model.AllInterests = new List<InterestViewModel>();
-        //    List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
-        //    foreach (var item in categories)
-        //    {
-        //        InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
-        //        foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
-        //        {
-        //            InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = true };
-        //            category.SubInterests.Add(subcategory);
-        //        }
-        //        model.AllInterests.Add(category);
-        //    }
-        //}
-
-
-
-        // GET: /Event/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Event @event = db.Events.Find(id);
-        //    //@event.EventStatus = e_EventStatus.Deleted;
-        //    //if (@event == null)
-        //    //{
-        //    //    return HttpNotFound();
-        //    //}
-        //    //return RedirectToAction("Index", "Home");
-        //    return null;
-        //}
-
         public bool Delete(int? id)
         {
             try
@@ -549,7 +545,7 @@ namespace Interext.Controllers
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
                 return true;
-            
+
             }
             catch (DbEntityValidationException e)
             {
@@ -566,19 +562,6 @@ namespace Interext.Controllers
                 throw;
             }
         }
-
-        //// POST: /Event/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Event @event = db.Events.Find(id);
-        //    CascadingDeleteHelper.Delete(@event, null);
-        //    db.Events.Remove(@event);
-        //    db.SaveChanges();
-            
-        //    return RedirectToAction("Index", "Home");
-        //}
 
         protected override void Dispose(bool disposing)
         {

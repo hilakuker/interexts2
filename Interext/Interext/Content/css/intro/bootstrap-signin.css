@@ -21,8 +21,17 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     color: #fff;
     font-family: 'Raleway';
 }
+.form-signin .slogin {
+    text-align:center;
+    font-size: 13px;
+}
+.form-signin .slogin .first-line {
+    font-size: 14px;
+font-weight: bold;
+}
 
 .form-signin form {
+
     overflow: hidden;
     width: 300px;
 }

@@ -47,7 +47,7 @@
                     }
                 </select>
                 <select id="BirthDateYear" class="form-control birth-year">
-                    @for (int i = DateTime.Today.Year - 10; i >= DateTime.Today.Year - 120; i--)
+                    @for (int i = DateTime.Today.Year; i >= DateTime.Today.Year - 120; i--)
                     {
                         if (Model.BirthDate.Year == i)
                         {

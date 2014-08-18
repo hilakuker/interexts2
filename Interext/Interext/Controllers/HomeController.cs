@@ -1,4 +1,5 @@
 ﻿using Interext.Models;
+using Interext.OtherCalsses;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -37,23 +38,32 @@ namespace Interext.Controllers
             }
             return allInterests;
         }
-        public ActionResult Index()
+        public ActionResult Index(string searchword, string advanced)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId());
-                List<Event> model = GetEventForUser(user);
-                ViewBag.AllInterests = InitAllInterests();
+                string userId = User.Identity.GetUserId();
+                var user = UserManager.FindById(userId);
+                List<Event> model = GetEventForUser(user, searchword, advanced);
                 ViewBag.CurrentUser = user;
+                ViewBag.SearchWord = searchword;
+                ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(user, _db);
                 return View(model);
             }
             else return RedirectToAction("Login", "Account");
         }
 
-        private List<Event> GetEventForUser(ApplicationUser user)
+        private List<Event> GetEventForUser(ApplicationUser user, string searchword, string advanced)
         {
-            //user.HomeAddress = 
-            return _db.Events.Where(x => x.EventStatus != e_EventStatus.Deleted).ToList();
+            bool isSearchWord = true;
+            if (String.IsNullOrEmpty(searchword) || advanced == "1")
+            {
+                isSearchWord = false;
+            }
+
+            return _db.Events.Where(x => (x.EventStatus != e_EventStatus.Deleted)
+                    && (isSearchWord ? (x.Title.ToLower().Contains(searchword.ToLower()) ||
+                        x.Description.ToLower().Contains(searchword.ToLower())) : true)).ToList();
         }
 
 
@@ -92,6 +102,7 @@ namespace Interext.Controllers
             bool isToDate = false;
             bool isParticipantAge = false;
             bool isInterests = false;
+            bool isGenderNotBoth = false;
             double radius = 0;
             double longitude = 0;
             double latitude = 0;
@@ -131,6 +142,11 @@ namespace Interext.Controllers
                 isParticipantAge = int.TryParse(AgeOfParticipant, out participantAge);
             }
 
+            if (Gender != "Both")
+            {
+                isGenderNotBoth = true;
+            }
+
             if (ModelState.IsValid)
             {
                 List<Event> eventList = _db.Events.ToList();
@@ -144,7 +160,7 @@ namespace Interext.Controllers
                     && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)
                     && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue ? x.AgeOfParticipantsMax >= participantAge : true) : true)
-                    && x.GenderParticipant == Gender
+                    && (isGenderNotBoth ? x.GenderParticipant == Gender : true)
                     && (isInterests ? x.Interests.Intersect(interests).Count() > 0 : true)
                     ).ToList(); // temp
                 return PartialView("~/Views/Event/_EventsWall.cshtml", model);

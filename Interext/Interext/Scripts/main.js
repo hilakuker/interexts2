@@ -1,4 +1,10 @@
-﻿$(document).ready(function () {
+﻿function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+$(document).ready(function () {
     initplacechangecevent(setLatLng);
     /*sliding down the submenu*/
     $('.top-sub-menu').each(function () {
@@ -16,10 +22,38 @@
     });
 
     $(".search-txt-container .fa-gear").on("click", function () {
-        $("#searchEventsForm").parent().stop(true, true).slideDown('slow', function () {
-            return true;
-        });
+        var pathname = window.location.pathname.toLowerCase();
+        if (pathname == "/" || pathname == "/home/index") {
+            $("#searchEventsForm").parent().stop(true, true).slideDown('slow', function () {
+                return true;
+            });
+        }
+        else {
+            var searchWord = $(".search-txt-container input[type='text']").val();
+            if (searchWord == "") {
+                window.location = "/?advanced=1";
+            }
+            else {
+                window.location = "/?advanced=1&&searchword=" + searchWord;
+            }
+        }
     });
+    $(".fa-search").click(function () {
+        var pathname = window.location.pathname.toLowerCase();
+        if (pathname == "/" || pathname == "/home/index") {
+            $(".search-btn").click();
+        }
+        else {
+            var searchWord = $(".search-txt-container input[type='text']").val();
+            if (searchWord == "") {
+                window.location = "/";
+            }
+            else {
+                window.location = "/?searchword=" + searchWord;
+            }
+        }
+    });
+
     $("#searchEventsForm .close-btn").on("click", function () {
         $("#searchEventsForm").parent().stop(true, true).slideUp('slow');
     });
@@ -46,8 +80,8 @@
         alwaysVisible:true
     });
 
-    $(".fa-search").click(function () {
-        $(".search-btn").click();
-    });
+    if (getParameterByName("advanced") == "1") {
+        $(".search-txt-container .fa-gear").click();
+    }
     
 });

@@ -633,8 +633,10 @@ namespace Interext.Controllers
                 Gender = @user.Gender,
                 LastName = @user.LastName,
                 ImageUrl = @user.ImageUrl,
-                UserName = @user.UserName
+                UserName = @user.UserName,
+                InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList())
             };
+
             return View(profileToShow);
         }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)

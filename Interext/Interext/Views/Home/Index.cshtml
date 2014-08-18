@@ -25,7 +25,7 @@
             <h2>Search for event</h2>
             <div class="section">
                 <div class="input-with-image-wrapper">
-                    <input type="text" class="form-control full-control" id="FreeText" name="FreeText" placeholder="Free text" />
+                    <input type="text" class="form-control full-control" id="FreeText" name="FreeText" placeholder="Free text" value="@ViewBag.SearchWord " />
                     <span class="fa fa-pencil insert-image-button"></span>
                 </div>
                 <div class="input-with-image-wrapper">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="section field-row">
-                @Html.Partial("~/Views/Interests/_SelectInterests.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
+                @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
                 
                 <div class="label">
                     Date of the event:

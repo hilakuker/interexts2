@@ -33,7 +33,7 @@
                         <div class="clear"></div>
                         <div class="event-details">
 
-                            <a href="~/Account/ShowProfile">
+                            <a href="/Account/Details?id=@Model.CreatorUser.Id">
                                 <div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
                                 <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div>
                             </a>
@@ -129,6 +129,7 @@
             </li>
             <li class="widget">
                 <h3>ATTENDERS STATISTICS:</h3>
+                <input type="hidden" id="hidStatisticValues" value="@ViewData["statistics"]" />
                 <div id="canvas-holder-gender">
                     <h4>Gender:</h4>
                     <canvas id="chart-area-gender" width="300" height="300" />
@@ -158,6 +159,10 @@
     <div class="clear"></div>
 
 
+</div>
+
+<div id="dialog-confirm" title="Cancel the event?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The event will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
 @section Scripts {

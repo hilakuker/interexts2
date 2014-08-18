@@ -1281,11 +1281,12 @@ dd {
 
 #topMenuForm li .search-txt-container input {
     padding: 10px 70px 10px 10px;
+}
 
-}
 #topMenuForm li .search-txt-container input:hover, #topMenuForm li .search-txt-container input:focus {
-    border-color:#bfbfbf;
+    border-color: #bfbfbf;
 }
+
 #topMenuForm li .search-txt-container .fa.fa-search {
     border-radius: 3px 0 0 3px;
     background-color: #bfbfbf;
@@ -1297,7 +1298,7 @@ dd {
     padding: 9px 9px;
     box-sizing: border-box;
     text-shadow: 2px 2px #000;
-    border-right:1px solid #7a7a7a;
+    border-right: 1px solid #7a7a7a;
 }
 
 #topMenuForm li .search-txt-container .fa.fa-gear {
@@ -1311,10 +1312,11 @@ dd {
     padding: 9px 9px;
     box-sizing: border-box;
     text-shadow: 2px 2px #000;
-    border-left:1px solid #fff;
+    border-left: 1px solid #fff;
 }
+
 #topMenuForm li .search-txt-container .fa.fa-gear:hover, #topMenuForm li .search-txt-container .fa.fa-search:hover {
-    color:#000;
+    color: #000;
     text-shadow: 2px 2px #fff;
 }
 
@@ -1359,7 +1361,7 @@ dd {
 
 #main > .container.event-search-container {
     margin-bottom: -35px !important;
-    display:none;
+    display: none;
 }
 
 
@@ -1402,8 +1404,8 @@ dd {
     position: absolute;
     right: 1px;
     bottom: 0;
-    padding:8px 5px 8px 9px;
-    font-size:24px;
+    padding: 8px 5px 8px 9px;
+    font-size: 24px;
 }
 
 #searchEventsForm .search-btn {
@@ -1413,33 +1415,39 @@ dd {
     width: 100px;
 }
 
+#searchEventsForm #AgeOfParticipant {
+    margin-left: 27px;
+}
 
 /*   Popup    */
 .open-popup-container .data-for-popup {
-    display:none;
+    display: none;
 }
+
 section.hidden-popup-container {
-        display: none;
-        position: fixed;
-        z-index:1000;
-    }
-    section article.popup {
-        position: relative;
-        width: 380px;
-        height: 300px;
-        background: #e3e3e3;
-        color: #222;
-        border: 1px solid #333;
-        border-radius: 3px;
-        padding: 5px 7px;
-        margin: 10% auto;
-    }
+    display: none;
+    position: fixed;
+    z-index: 1000;
+}
+
+section article.popup {
+    position: relative;
+    width: 380px;
+    height: 300px;
+    background: #e3e3e3;
+    color: #222;
+    border: 1px solid #333;
+    border-radius: 3px;
+    padding: 5px 7px;
+    margin: 10% auto;
+}
+
 section article.popup .close {
-    position:absolute;
-    top:10px;
-    right:10px;
-    font-size:20px;
-    cursor:pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 
@@ -1447,21 +1455,84 @@ section article.popup .close {
     margin: auto;
     width: 220px;
 }
+
 .no-events a {
-    color:#68D999;
+    color: #68D999;
 }
 
 .form-signin .interests-container {
-/*background-color:rgba(255,255,255,0.2);
+    /*background-color:rgba(255,255,255,0.2);
 border-bottom:1px solid #bfbfbf;*/
 }
+
 div.mousescroll {
     overflow: hidden;
 }
+
 div.mousescroll:hover {
     overflow-y: scroll;
 }
 
 .slimScrollBarRail {
-    background-color:#fff;
+    background-color: #fff;
 }
+/* CONFIRM DIALOG*/
+.ui-dialog {
+    font-family: "Raleway";
+    font-weight: normal;
+    font-size: 14px;
+    color: #222222;
+}
+
+.ui-dialog #dialog-confirm {
+    height: 60px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    width: 100%;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 12px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 2px 0;
+    padding: 12px 20px 12px 20px;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button:first-child {
+    color: #fff !important;
+    background-color: #bfbfbf !important;
+    border-color: #bfbfbf !important;
+    float:left;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button:nth-child(2) {
+    color: #fff;
+    background-color: #333;
+    border-color: #000;
+    float:right;
+}
+
+.ui-dialog .ui-button-text-only .ui-button-text {
+    padding: 0;
+}
+.ui-dialog .ui-dialog-titlebar.ui-widget-header {
+    color: #000;
+    background-color: #bfbfbf !important;
+    background-image:none !important;
+    border-color: #bfbfbf !important;
+}
+/* END CONFIRM DIALOG*/
