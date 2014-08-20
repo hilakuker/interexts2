@@ -225,6 +225,15 @@ namespace Interext.Controllers
             eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
+        private void setSideOfText(EventViewModel eventToShow)
+        {
+            eventToShow.SideOfTextOptions = new Dictionary<string, bool>();
+            eventToShow.SideOfTextOptions.Add("Right", String.Equals("Right", eventToShow.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Left", String.Equals("Left", eventToShow.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Top", String.Equals("Top", eventToShow.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", eventToShow.SideOfText, StringComparison.OrdinalIgnoreCase));
+        }
+
         public ActionResult Create()
         {
             EventViewModel model = new EventViewModel();
@@ -235,44 +244,7 @@ namespace Interext.Controllers
             //return View();
         }
 
-        private List<Interest> GetSelectedInterests(string selectedInterests)
-        {
-            List<Interest> interests = new List<Interest>();
-            foreach (string item in selectedInterests.Split(','))
-            {
-                if (item != "")
-                {
-                    int id;
-                    if (int.TryParse(item, out id))
-                    {
-                        Interest interest = db.Interests.SingleOrDefault(x => x.Id == id);
-                        interests.Add(interest);
-                    }
-                }
-            }
-            //add the categories if all the subcategories are selected 
-
-            var allSubCategories = interests.Where(x => x.InterestsCategory != null);
-            foreach (var item in allSubCategories)
-            {
-                var categoryId = item.InterestsCategory.Id;
-                if (interests.SingleOrDefault(x => x.Id == categoryId) == null)
-                {
-                    //the category is not in the list, so check if all its subcategories are in the list
-                    //if so, add it to the list
-                    var allSubCategoriesOfTheCategory = db.Interests.Where(x => x.InterestsCategory.Id == categoryId);
-                    var allSubCategoriesOfTheCategoriesChecked = interests.Where(x => x.InterestsCategory.Id == categoryId);
-                    if (allSubCategoriesOfTheCategory.Count() == allSubCategoriesOfTheCategoriesChecked.Count())
-                    {
-                        //all the sub categories are checked, but the category itself is not. Add it to the list
-                        Interest category = db.Interests.SingleOrDefault(x => x.Id == categoryId);
-                        interests.Add(category);
-                    }
-                }
-            }
-
-            return interests;
-        }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -309,7 +281,7 @@ namespace Interext.Controllers
                     DateTimeOfTheEvent = model.DateTimeOfTheEvent,
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
-                    Interests = GetSelectedInterests(selectedInterests),
+                    Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db),
                     EventStatus = e_EventStatus.Active,
                     UsersAttending = new List<ApplicationUser>()
                 };
@@ -330,13 +302,7 @@ namespace Interext.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = eventToCreate.Id });
             }
-            else
-            {
-                foreach (ModelError error in errors)
-                {
-                    ModelState.AddModelError(" ", error.ErrorMessage);
-                }
-            }
+            InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
             return View(model);
         }
 
@@ -456,6 +422,8 @@ namespace Interext.Controllers
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
                 DateOfTheEvent = @event.DateTimeOfTheEvent.ToShortDateString(),
+                DateOfTheEventNoYear = string.Format("{0}.{1}", 
+                @event.DateTimeOfTheEvent.Day.ToString(), @event.DateTimeOfTheEvent.Month.ToString()),
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
                 HourTimeOfTheEvent = hour,
                 MinuteTimeOfTheEvent = minute,
@@ -486,10 +454,14 @@ namespace Interext.Controllers
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            }
+            Event @event = db.Events.Find(model.Id);
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
-                Event @event = db.Events.Find(model.Id);
                 @event.CreatorUser = user;
                 @event.Title = model.Title;
                 @event.SideOfText = model.SideOfText;
@@ -509,7 +481,7 @@ namespace Interext.Controllers
                 @event.GenderParticipant = model.GenderParticipant;
                 @event.PlaceLatitude = model.PlaceLatitude;
                 @event.PlaceLongitude = model.PlaceLongitude;
-                @event.Interests = GetSelectedInterests(selectedInterests);
+                @event.Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db);
 
                 setSideOfText(@event, model);
                 setGenderOptions(@event, model);
@@ -525,6 +497,11 @@ namespace Interext.Controllers
                 }
                 return RedirectToAction("Details", new { id = @event.Id });
             }
+            InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
+            setSideOfText(model);
+            setGenderOptions(model);
+            model.InterestsToDisplay = selectedInterests;
+            model.CreatorUser = @event.CreatorUser;
             return View(model);
         }
 
@@ -544,7 +521,13 @@ namespace Interext.Controllers
             model.GenderParticipantOptions.Add("Male", String.Equals("Male", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
             model.GenderParticipantOptions.Add("Both", String.Equals("Both", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
-
+        private void setGenderOptions(EventViewModel model)
+        {
+            model.GenderParticipantOptions = new Dictionary<string, bool>();
+            model.GenderParticipantOptions.Add("Female", String.Equals("Female", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Male", String.Equals("Male", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Both", String.Equals("Both", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+        }
         public bool Delete(int? id)
         {
             try
