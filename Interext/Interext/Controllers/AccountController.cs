@@ -178,9 +178,7 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
-
             var errors = ModelState.Values.SelectMany(v => v.Errors);
-
             if (ImageUrl.FileName == "")
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
@@ -214,9 +212,7 @@ namespace Interext.Controllers
 
                     await SignInAsync(user, isPersistent: false);
                     ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(newUser,db);
-                    //return View(model);
                     return Redirect("/Account/RegisterApproval");
-                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {

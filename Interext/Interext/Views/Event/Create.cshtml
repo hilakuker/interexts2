@@ -11,7 +11,7 @@
 <div id="content" class="right-sidebar">
     <div class="event-page-content create-page">
         <article>
-            @using (Html.BeginForm("Create", "Event", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Create", "Event", FormMethod.Post, new { @enctype = "multipart/form-data", id = "EventForm" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="event-intro-wrapper">
@@ -27,27 +27,33 @@
 
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
                         @Html.ValidationMessageFor(m => m.Title)
-
+                        
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description)
                         <div class="input-with-image-wrapper date-control">
-                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" />
+                            @Html.TextBoxFor(m => m.DateOfTheEvent, new {@id = "DateOfTheEvent", @class = "form-control", @placeholder = DateTime.Today.ToShortDateString() })
+                            @*<input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" />*@
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
 
-                        <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" /><span class="colon">:</span>
-                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" />
+                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @value = "00", @id = "MinuteTimeOfTheEvent", @placeholder = "00" })<span class="colon">:</span>
+                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @value = "00", @id = "HourTimeOfTheEvent", @placeholder = "00" })
+                        @*<input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" /><span class="colon">:</span>
+                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" />*@
                         <span class="time-title">Time:</span>
 
                         <div class="clear"></div>
                         @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
-                        <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" />
+                        @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id="DateTimeOfTheEvent" })
+                        @*<input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" />*@
 
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
-                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
-                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
+                            @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value= "0" })
+                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
+                            @*<input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
+                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />*@
 
                             @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
 
@@ -56,13 +62,13 @@
 
                     </div>
                     <div class="create-more-info">
-                        
-                        @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", Model.AllInterests)
 
+                        @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", Model.AllInterests)
                         <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
-                            <input type="file" name="ImageUrl" id="ImageUrl">
+                            @*<input type="file" name="ImageUrl" id="ImageUrl">*@
+                            @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl" })
                         </span>
                         or
                         <span class="btn btn-disabled fileinput-button choose-from-stock ">
@@ -122,6 +128,7 @@
             }
         </article>
     </div>
+    @Html.ValidationSummary(false, "Please fill the required fields")
 </div>
 
 <div id="sidebar" class="right-sidebar">
@@ -148,7 +155,6 @@
         </li>
     </ul>
 </div>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/eventPageJs")

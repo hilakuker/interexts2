@@ -8,10 +8,27 @@
 //    if (
 //    $("#txtNumOfParticipantsFrom").val > $("#txtNumOfParticipantsTo").val)
 //}
-
+function getTodayDate()
+{
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}
 
 function pageInit() {
     $("#DateOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
+    $("#DateOfTheEvent").val(getTodayDate());
+    $("#MinuteTimeOfTheEvent").val("00");
+    $("#HourTimeOfTheEvent").val("00");
     $("#slider").slider({
         range: "min",
         value: 80,
@@ -35,6 +52,18 @@ function pageInit() {
     });
     initplacechangecevent(placeSelecter);
 }
+
+$(document).ready(function () {
+    $("#EventForm").submit(function () {
+        if ($("#selectedInterests").val() == "") {
+            if ($(".input-validation-error").length == 0) {
+                $(".validation-summary-errors ul").html("");
+            }
+            $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
+            return false;
+        }
+    });
+});
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
     $(fromElement).on('input', function () {
@@ -231,4 +260,5 @@ $(document).ready(function () {
     updateSideOfTheTextDraft();
     updateDraftGender();
     updateDateTime();
+    $("#DateOfTheEvent").val(getTodayDate());
 });

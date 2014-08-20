@@ -279,6 +279,14 @@ namespace Interext.Controllers
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (ImageUrl == null)
+            {
+                ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            } 
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
@@ -313,11 +321,21 @@ namespace Interext.Controllers
                 }
                 catch (DbEntityValidationException ex)
                 {
-                    var a = ex.EntityValidationErrors;
+                    foreach (DbEntityValidationResult error in ex.EntityValidationErrors)
+                    {
+                        ModelState.AddModelError("", error.ValidationErrors.ToString());
+                    }
                 }
                 saveImage(ref eventToCreate, ImageUrl);
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = eventToCreate.Id });
+            }
+            else
+            {
+                foreach (ModelError error in errors)
+                {
+                    ModelState.AddModelError(" ", error.ErrorMessage);
+                }
             }
             return View(model);
         }
@@ -437,7 +455,7 @@ namespace Interext.Controllers
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
-                DateOfTheEvent = @event.DateTimeOfTheEvent.Date,
+                DateOfTheEvent = @event.DateTimeOfTheEvent.ToShortDateString(),
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
                 HourTimeOfTheEvent = hour,
                 MinuteTimeOfTheEvent = minute,

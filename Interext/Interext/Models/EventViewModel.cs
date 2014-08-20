@@ -12,28 +12,28 @@ namespace Interext.Models
     public class EventViewModel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Title is required")]
+        [Required(ErrorMessage = " ")]
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public ApplicationUser CreatorUser { get; set; }
 
-        [Display(Name = "Place")]
+        [Required(ErrorMessage = " ")]
         public string Place { get; set; }
         public double PlaceLongitude { get; set; }
         public double PlaceLatitude { get; set; }
 
-        [Required(ErrorMessage = "Date is required")]
+        [Required(ErrorMessage = " ")]
         [EventTimeValidation("DateTimeOfTheEvent")]
         public DateTime DateTimeOfTheEvent { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "Date is required")]
-        public DateTime DateOfTheEvent { get; set; }
-        [Required(ErrorMessage = "Time of the event hour is required")]
+        //[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = " ")]
+        public string DateOfTheEvent { get; set; }
+        [Required(ErrorMessage = " ")]
         public string HourTimeOfTheEvent { get; set; }
 
-        [Required(ErrorMessage = "Time of the event minute is required")]
+        [Required(ErrorMessage = " ")]
         public string MinuteTimeOfTheEvent { get; set; }
         public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }

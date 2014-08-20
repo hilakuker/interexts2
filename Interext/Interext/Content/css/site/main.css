@@ -1536,3 +1536,14 @@ div.mousescroll:hover {
     border-color: #bfbfbf !important;
 }
 /* END CONFIRM DIALOG*/
+.input-validation-error {
+    border: 2px solid #e22029 !important;
+}
+
+.validation-summary-errors {
+    border: 2px solid #e22029 !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    padding: 10px !important;
+}
