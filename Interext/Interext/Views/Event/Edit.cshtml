@@ -23,7 +23,6 @@
                 </div>
                 <div class="create-form">
 
-                    @Html.ValidationSummary(true)
                     <div class="create-basic-info">
 
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
@@ -127,8 +126,11 @@
                             }
                         </select>
                         <input type="submit" value="Update" class="btn btn-special" />
+                        @Html.ValidationSummary(false, "Please fill the required fields")
                     </div>
+                    <div class="clear"></div>
                 </div>
+                
             }
         </article>
     </div>

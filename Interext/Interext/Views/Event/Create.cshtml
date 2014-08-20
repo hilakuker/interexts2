@@ -21,8 +21,6 @@
                     </div>
                 </div>
                 <div class="create-form">
-
-                    @Html.ValidationSummary(true)
                     <div class="create-basic-info">
 
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
@@ -123,12 +121,17 @@
                                 <li onclick="TINY.box.show({html:'content here',width:300,height:150})">Invite Users</li>
                             </ul>*@
                         <input type="submit" value="Create" class="btn btn-special" />
+                        @Html.ValidationSummary(false, "Please fill the required fields")
                     </div>
+                    
+                    <div class="clear"></div>
                 </div>
+            
+                
             }
         </article>
     </div>
-    @Html.ValidationSummary(false, "Please fill the required fields")
+   
 </div>
 
 <div id="sidebar" class="right-sidebar">

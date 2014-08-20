@@ -1545,5 +1545,9 @@ div.mousescroll:hover {
     width: 100% !important;
     text-align: center !important;
     margin-top: 10px !important;
-    padding: 10px !important;
+    padding: 10px 0 !important;
+
+}
+.validation-summary-errors ul li{
+    list-style:none;
 }

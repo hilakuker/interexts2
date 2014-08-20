@@ -149,3 +149,6 @@
     color: #e22029;
 }
 
+.validation-summary-valid {
+    display: none;
+}
