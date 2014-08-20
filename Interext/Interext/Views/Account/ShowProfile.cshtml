@@ -51,6 +51,17 @@
             @Html.DisplayFor(model => model.Gender)*@
     </div>
 </section>
+
+<div id="content" class="no-sidebar">
+    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events);
+
+    </div>
+    <div class="bottom-spacer clear"></div>
+</div>
+
+
+
 @*<p>
         @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
         @Html.ActionLink("Back to List", "Index")

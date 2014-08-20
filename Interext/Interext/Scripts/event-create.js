@@ -58,7 +58,9 @@ $(document).ready(function () {
         if ($("#selectedInterests").val() == "") {
             if ($(".input-validation-error").length == 0) {
                 $(".validation-summary-errors ul").html("");
+                $(".validation-summary-errors").css({"display": "block"});
             }
+            
             $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
             return false;
         }

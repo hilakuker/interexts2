@@ -53,13 +53,16 @@ namespace Interext.Controllers
                 profile.Gender = "Male";
             //add age
            // profile.Interests = null;
-           // profile.Events = null;
+            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
+            profile.Events = attendingEvents;
             profile.ImageUrl = user.ImageUrl;
             profile.BirthDate = getBirthdateAndAge(user.BirthDate.Value);
             profile.Address = user.HomeAddress;
             profile.InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList());
             return View(profile);
         }
+
+       
         private string GetInterestsForDisplay(List<Interest> Interests)
         {
             string interestsForDisplay = "";
@@ -211,7 +214,7 @@ namespace Interext.Controllers
                     db.SaveChanges();
 
                     await SignInAsync(user, isPersistent: false);
-                    ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(newUser,db);
+                    ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(newUser.Interests, db);
                     return Redirect("/Account/RegisterApproval");
                 }
                 else
@@ -472,7 +475,7 @@ namespace Interext.Controllers
                         newUser.Interests = GetSelectedInterests(selectedInterests);
                         db.SaveChanges();
                         await SignInAsync(user, isPersistent: false);
-                        ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(newUser,db);
+                        ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(newUser.Interests, db);
                         return Redirect("/Account/RegisterApproval");
                     }
                 }
@@ -624,7 +627,7 @@ namespace Interext.Controllers
                 BirthDate = getBirthdateAndAge(user.BirthDate.Value),
                 Email = @user.Email,
                 Interests = @user.Interests,
-                Events = @user.Events,
+                //Events = @user.Events,
                 FirstName = @user.FirstName,
                 Gender = @user.Gender,
                 LastName = @user.LastName,
@@ -632,7 +635,8 @@ namespace Interext.Controllers
                 UserName = @user.UserName,
                 InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList())
             };
-
+            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
+            profileToShow.Events = attendingEvents;
             return View(profileToShow);
         }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)

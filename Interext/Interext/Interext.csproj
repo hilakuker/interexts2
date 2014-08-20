@@ -177,6 +177,7 @@
     <Compile Include="Models\ChooseUsersViewModel.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventViewModel.cs" />
+    <Compile Include="Models\EventVsAttendingUser.cs" />
     <Compile Include="Models\ExternalLoginViewModel.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />

@@ -72,9 +72,13 @@ namespace Interext.Controllers
                 Title = @event.Title,
                 Description = @event.Description,
                 Id = @event.Id,
-                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList()),
-                UsersAttending = @event.UsersAttending
+                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
+                //UsersAttending = @event.UsersAttending
             };
+
+            List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where(e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).ToList();
+            //ViewData["AttendingUsers"] = attendingUsers;
+            eventToShow.UsersAttending = attendingUsers;
             if (user.Id == eventToShow.CreatorUser.Id)
             {
                 eventToShow.CurrentUserIsCreator = true;
@@ -88,7 +92,7 @@ namespace Interext.Controllers
                     ViewData["UserAlreadyAttending"] = true;
                 }
             }
-            Statistics Statistics = LoadStatistics(eventToShow.UsersAttending.ToList());
+            Statistics Statistics = LoadStatistics(attendingUsers);
             var json = new JavaScriptSerializer().Serialize(Statistics);
             ViewData["Statistics"] = json;
             return View(eventToShow);
@@ -199,10 +203,6 @@ namespace Interext.Controllers
         {
             string date = dateTime.Date.ToString();
             string[] dateSplit = date.Split('/');
-            //string minute = getHour(dateTime.Minute);
-            //string hour = getHour(dateTime.Hour);
-            //string rightDateFormat = string.Format("{0}.{1} {2}:{3}", dateSplit[0], dateSplit[1], 
-            //    hour, minute);
             string rightDateFormat = string.Format("{0}.{1}", dateSplit[0], dateSplit[1]);
             return rightDateFormat;
         }
@@ -216,24 +216,16 @@ namespace Interext.Controllers
             return number.ToString();
         }
 
-        private void setSideOfText(Event @event, EventViewModel eventToShow)
+        private void setSideOfText(string sideOfText, EventViewModel eventToShow)
         {
             eventToShow.SideOfTextOptions = new Dictionary<string, bool>();
-            eventToShow.SideOfTextOptions.Add("Right", String.Equals("Right", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
-            eventToShow.SideOfTextOptions.Add("Left", String.Equals("Left", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
-            eventToShow.SideOfTextOptions.Add("Top", String.Equals("Top", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
-            eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", @event.SideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Right", String.Equals("Right", sideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Left", String.Equals("Left", sideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Top", String.Equals("Top", sideOfText, StringComparison.OrdinalIgnoreCase));
+            eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", sideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
-        public ActionResult Create()
-        {
-            EventViewModel model = new EventViewModel();
-            //model.Title = "dd";
-            model.AllInterests = InterestsFromObjects.InitAllInterests(db);
-            //ViewBag.AllInterests = InitAllInterests();
-            return View(model);
-            //return View();
-        }
+        
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {
@@ -274,11 +266,20 @@ namespace Interext.Controllers
             return interests;
         }
 
+        public ActionResult Create()
+        {
+            EventViewModel model = new EventViewModel();
+            //model.Title = "dd";
+            model.AllInterests = InterestsFromObjects.InitAllInterests(db);
+            //ViewBag.AllInterests = InitAllInterests();
+            return View(model);
+            //return View();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
             if (ImageUrl == null)
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
@@ -286,10 +287,12 @@ namespace Interext.Controllers
             if (selectedInterests == "")
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
-            } 
+            }
+            
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
+
                 Event eventToCreate = new Event()
                 {
                     CreatorUser = user,
@@ -310,14 +313,21 @@ namespace Interext.Controllers
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),
-                    EventStatus = e_EventStatus.Active,
-                    UsersAttending = new List<ApplicationUser>()
+                    EventStatus = e_EventStatus.Active
+                    //UsersAttending = new List<ApplicationUser>()
                 };
-                eventToCreate.UsersAttending.Add(user);
+               // eventToCreate.UsersAttending.Add(user);
                 db.Events.Add(eventToCreate);
                 try
                 {
                     db.SaveChanges();
+                    saveImage(ref eventToCreate, ImageUrl);
+
+                    EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId=eventToCreate.Id, UserId=user.Id, Event = eventToCreate, AttendingUser = user };
+                    db.EventVsAttendingUsers.Add(eventVsAttendingUser);
+
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = eventToCreate.Id });
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -326,15 +336,18 @@ namespace Interext.Controllers
                         ModelState.AddModelError("", error.ValidationErrors.ToString());
                     }
                 }
-                saveImage(ref eventToCreate, ImageUrl);
-                db.SaveChanges();
-                return RedirectToAction("Details", new { id = eventToCreate.Id });
+               
             }
             else
             {
-                foreach (ModelError error in errors)
+                if (selectedInterests != "")
                 {
-                    ModelState.AddModelError(" ", error.ErrorMessage);
+                    List<Interest> interests = GetSelectedInterests(selectedInterests);
+                    model.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(interests, db);
+                }
+                else
+                {
+                    model.AllInterests = InterestsFromObjects.InitAllInterests(db);
                 }
             }
             return View(model);
@@ -382,14 +395,15 @@ namespace Interext.Controllers
                 {
                     return false;
                 }
-                var user = UserManager.FindById(User.Identity.GetUserId());
+                ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
                 Event @event = db.Events.Find(id);
                 if (@event == null)
                 {
                     return false;
                 }
-
-                @event.UsersAttending.Add(user);
+                EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser {EventId=@event.Id, UserId=user.Id, Event = @event, AttendingUser = user};
+                db.EventVsAttendingUsers.Add(eventVsAttendingUser);
+               // @event.UsersAttending.Add(user);
                 db.SaveChanges();
                 return true;
             }
@@ -413,13 +427,21 @@ namespace Interext.Controllers
                 {
                     return false;
                 }
-                ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
-                if (userAttending != null)
+
+                EventVsAttendingUser eventVsAttendingUser = db.EventVsAttendingUsers.SingleOrDefault(x=>x.Event.Id == @event.Id && x.AttendingUser.Id == user.Id);
+                if (eventVsAttendingUser != null)
                 {
-                    //ViewBag["UserAlreadyAttending"] = false;
-                    @event.UsersAttending.Remove(userAttending);
+                    db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
                     db.SaveChanges();
                 }
+
+                //ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
+                //if (userAttending != null)
+                //{
+                //    //ViewBag["UserAlreadyAttending"] = false;
+                //    @event.UsersAttending.Remove(userAttending);
+                //    db.SaveChanges();
+                //}
 
                 return true;
             }
@@ -471,12 +493,12 @@ namespace Interext.Controllers
                 Title = @event.Title,
                 PlaceLongitude = @event.PlaceLongitude,
                 PlaceLatitude = @event.PlaceLatitude,
-                AllInterests = InterestsFromObjects.LoadAllInterestsFromEvent(@event, db),
+                AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(@event.Interests, db),
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
             };
             // setAllInterests(@event, model);
-            setSideOfText(@event, model);
-            setGenderOptions(@event, model);
+            setSideOfText(@event.SideOfText, model);
+            setGenderOptions(@event.GenderParticipant, model);
             return View(model);
         }
 
@@ -485,7 +507,15 @@ namespace Interext.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+            if (ImageUrl == null)
+            {
+                ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            }
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
@@ -511,19 +541,36 @@ namespace Interext.Controllers
                 @event.PlaceLongitude = model.PlaceLongitude;
                 @event.Interests = GetSelectedInterests(selectedInterests);
 
-                setSideOfText(@event, model);
-                setGenderOptions(@event, model);
+                setSideOfText(@event.SideOfText, model);
+                setGenderOptions(@event.GenderParticipant, model);
                 db.Entry(@event).State = EntityState.Modified;
-
-                model.AllInterests = InterestsFromObjects.LoadAllInterestsFromEvent(@event, db);
                 try
                 {
                     db.SaveChanges();
+                    return RedirectToAction("Details", new { id = @event.Id });
                 }
-                catch (DbEntityValidationException e)
+                catch (DbEntityValidationException ex)
                 {
+                    foreach (DbEntityValidationResult error in ex.EntityValidationErrors)
+                    {
+                        ModelState.AddModelError("", error.ValidationErrors.ToString());
+                    }
                 }
-                return RedirectToAction("Details", new { id = @event.Id });
+                
+            }
+            else
+            {
+                setSideOfText(model.SideOfText, model);
+                setGenderOptions(model.GenderParticipant, model);
+                if (selectedInterests != "")
+                {
+                    List<Interest> interests = GetSelectedInterests(selectedInterests);
+                    model.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(interests, db);
+                }
+                else
+                {
+                    model.AllInterests = InterestsFromObjects.InitAllInterests(db);
+                }
             }
             return View(model);
         }
@@ -537,12 +584,12 @@ namespace Interext.Controllers
             model.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", model.SideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
-        private void setGenderOptions(Event @event, EventViewModel model)
+        private void setGenderOptions(string GenderParticipant, EventViewModel model)
         {
             model.GenderParticipantOptions = new Dictionary<string, bool>();
-            model.GenderParticipantOptions.Add("Female", String.Equals("Female", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
-            model.GenderParticipantOptions.Add("Male", String.Equals("Male", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
-            model.GenderParticipantOptions.Add("Both", String.Equals("Both", @event.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Female", String.Equals("Female", GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Male", String.Equals("Male", GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Both", String.Equals("Both", GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
 
         public bool Delete(int? id)

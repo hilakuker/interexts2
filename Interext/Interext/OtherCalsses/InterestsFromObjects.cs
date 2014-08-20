@@ -8,13 +8,6 @@ namespace Interext.OtherCalsses
 {
     public static class InterestsFromObjects
     {
-        public static List<InterestViewModel> LoadAllInterestsFromEvent(Event @event, ApplicationDbContext db)
-         {
-             List<InterestViewModel> allInterests = InitAllInterests(db);
-             setInterests(@event.Interests, ref allInterests);
-             return allInterests;
-         }
-
         private static void setInterests(ICollection<Interest> interestsColleciton, ref List<InterestViewModel> allInterests)
         {
             foreach (var item in interestsColleciton)
@@ -51,10 +44,10 @@ namespace Interext.OtherCalsses
             return allInterests;
         }
 
-        internal static dynamic LoadAllInterestsFromUser(ApplicationUser User, ApplicationDbContext db)
+        internal static List<InterestViewModel> LoadInterestViewModelsFromInterests(ICollection<Interest> interests, ApplicationDbContext db)
         {
             List<InterestViewModel> allInterests = InitAllInterests(db);
-            setInterests(User.Interests, ref allInterests);
+            setInterests(interests, ref allInterests);
             return allInterests;
         }
     }

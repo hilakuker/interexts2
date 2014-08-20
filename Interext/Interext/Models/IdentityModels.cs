@@ -20,7 +20,7 @@ namespace Interext.Models
         public string Gender { get; set; }
         public string ImageUrl { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
-        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<EventVsAttendingUser> EventVsAttentingUsers { get; set; }
         public string HomeAddress { get; set; }
     }
 
@@ -37,5 +37,7 @@ namespace Interext.Models
         public DbSet<Place> Places { get; set; }
         public DbSet<Interest> Interests { get; set; }
         public DbSet<PlaceRatingUser> PlaceRatingUsers { get; set; }
+
+        public DbSet<EventVsAttendingUser> EventVsAttendingUsers { get; set; }
     }
 }

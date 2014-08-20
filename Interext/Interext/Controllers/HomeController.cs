@@ -47,7 +47,7 @@ namespace Interext.Controllers
                 List<Event> model = GetEventForUser(user, searchword, advanced);
                 ViewBag.CurrentUser = user;
                 ViewBag.SearchWord = searchword;
-                ViewBag.AllInterests = InterestsFromObjects.LoadAllInterestsFromUser(user, _db);
+                ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, _db);
                 return View(model);
             }
             else return RedirectToAction("Login", "Account");

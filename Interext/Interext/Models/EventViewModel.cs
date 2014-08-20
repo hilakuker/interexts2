@@ -12,9 +12,14 @@ namespace Interext.Models
     public class EventViewModel
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = " ")]
         public string Title { get; set; }
+
         public string Description { get; set; }
+
+        [Display(Name = "Image Url")]
+        [Required(ErrorMessage = "Please upload profile image")]
         public string ImageUrl { get; set; }
         public ApplicationUser CreatorUser { get; set; }
 
@@ -44,21 +49,26 @@ namespace Interext.Models
         public bool CurrentUserIsCreator { get; set; }
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
-        [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
-
         public Dictionary<string, bool> SideOfTextOptions { get; set; }
 
-        public int? NumOfParticipantsMin { get; set; }
+
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
+        public int? NumOfParticipantsMin { get; set; }
+
+        [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [MinMaxValidation("NumOfParticipantsMin", AllowEquality = true)]
         public int? NumOfParticipantsMax { get; set; }
+
+
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
         public int? AgeOfParticipantsMin { get; set; }
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [MinMaxValidation("AgeOfParticipantsMin", AllowEquality = true)]
         public int? AgeOfParticipantsMax { get; set; }
+
+
         public string GenderParticipant { get; set; }
 
         public Dictionary<string, bool> GenderParticipantOptions { get; set; }

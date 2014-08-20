@@ -26,13 +26,9 @@
                     <div class="create-basic-info">
 
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
-                        
-                        @Html.ValidationMessageFor(m => m.Title)
-
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
-                        @Html.ValidationMessageFor(model => model.Description)
                         <div class="input-with-image-wrapper date-control">
-                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent.ToShortDateString()" />
+                            <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
 
@@ -42,8 +38,6 @@
                         <span class="time-title">Time:</span>
                         <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" value="@Model.DateTimeOfTheEvent" />
                         <div class="clear"></div>
-
-                        @Html.ValidationMessageFor(m => m.DateTimeOfTheEvent)
                         <div class="input-with-image-wrapper">
 
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
@@ -107,9 +101,7 @@
                         <br />
                         Age of the participants:
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMin, new { @id = "txtAgeOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
-                        @Html.ValidationMessageFor(m => m.NumOfParticipantsMin)
-                        @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
-                        @Html.ValidationMessageFor(m => m.NumOfParticipantsMax)
+                        @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })                       
                         <br />
                         Gender of the participants:
                         <select id="dpdGender" name="GenderParticipant">
@@ -144,7 +136,7 @@
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url('@Model.ImageUrl') 50% 49% / cover no-repeat;">
                     <div>
                         <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
-                            <div class="event-date" id="draftDate">@Model.DateOfTheEvent.Day.@Model.DateOfTheEvent.Month</div>
+                            <div class="event-date" id="draftDate">@Model.DateTimeOfTheEvent.Day.@Model.DateTimeOfTheEvent.Month</div>
                             <div class="event-title" id="draftTitle">@Model.Title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
                             <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>
@@ -153,8 +145,6 @@
                             {
                                 <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
                             }
-                            <div class="event-interests-container">Interests: <span id="draftInterests">@Model.InterestsToDisplay</span></div>
-                            
                             <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl" /></div>
                         </a>
                     </div>
