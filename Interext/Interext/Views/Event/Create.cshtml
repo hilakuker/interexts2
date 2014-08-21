@@ -27,7 +27,6 @@
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         <div class="input-with-image-wrapper date-control">
                             @Html.TextBoxFor(m => m.DateOfTheEvent, new {@id = "DateOfTheEvent", @class = "form-control", @placeholder = DateTime.Today.ToShortDateString() })
-                            @*<input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" />*@
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
                        
@@ -39,21 +38,12 @@
                         @Html.CheckBoxFor(m => m.TimeSet, new { @class = "time-set" })
                         <div class="clear"></div>
                         @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id="DateTimeOfTheEvent" })
-                        @*<input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" />*@
-
                         <div class="input-with-image-wrapper">
-
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
                             @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value= "0" })
                             @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
-                            @*<input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
-                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />*@
-
-                            @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
-
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
-
                     </div>
                     <div class="create-more-info">
 
@@ -61,7 +51,6 @@
                         <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
-                            @*<input type="file" name="ImageUrl" id="ImageUrl">*@
                             @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl" })
                         </span>
                         or
@@ -109,19 +98,11 @@
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
-
-                        @*<ul>
-                                <a href="#" id="popup" onclick="show_popup()">Invite Users</a>
-                                <li onclick="TINY.box.show({html:'content here',width:300,height:150})">Invite Users</li>
-                            </ul>*@
                         <input type="submit" value="Create" class="btn btn-special" />
                         @Html.ValidationSummary(false, "Please fill the required fields")
                     </div>
-                    
                     <div class="clear"></div>
                 </div>
-            
-                
             }
         </article>
     </div>

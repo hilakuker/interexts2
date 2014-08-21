@@ -22,30 +22,22 @@
                     </div>
                 </div>
                 <div class="create-form">
-
                     <div class="create-basic-info">
-
                         @Html.TextBoxFor(m => m.Title, new { @class = "form-control full-control", @placeholder = "Title" })
                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Description" })
                         <div class="input-with-image-wrapper date-control">
                             <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
-
-                        <input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" value="@Model.MinuteTimeOfTheEvent" /><span class="colon">:</span>
-                        <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" value="@Model.HourTimeOfTheEvent" />
-
+                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @value = "00", @id = "MinuteTimeOfTheEvent", @placeholder = "00" })<span class="colon">:</span>
+                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @value = "00", @id = "HourTimeOfTheEvent", @placeholder = "00" })
                         <span class="time-title">Time:</span>
-                        <input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" value="@Model.DateTimeOfTheEvent" />
+                        @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id = "DateTimeOfTheEvent" })
                         <div class="clear"></div>
                         <div class="input-with-image-wrapper">
-
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
-                            <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="@Model.PlaceLongitude" />
-                            <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="@Model.PlaceLatitude" />
-
-                            @*<input type="text" class="form-control full-control" id="searchTextField" placeholder="Location of event" name="Place" />*@
-
+                            @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
+                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
@@ -55,7 +47,7 @@
                         <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
-                            <input type="file" name="ImageUrl" id="ImageUrl" value="@Model.ImageUrl">
+                            @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl" })
                         </span>
                         or
                         <span class="btn btn-disabled fileinput-button choose-from-stock">
@@ -101,7 +93,7 @@
                         <br />
                         Age of the participants:
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMin, new { @id = "txtAgeOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
-                        @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })                       
+                        @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
                         <br />
                         Gender of the participants:
                         <select id="dpdGender" name="GenderParticipant">

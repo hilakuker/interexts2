@@ -225,7 +225,7 @@ namespace Interext.Controllers
             eventToShow.SideOfTextOptions.Add("Bottom", String.Equals("Bottom", sideOfText, StringComparison.OrdinalIgnoreCase));
         }
 
-        
+
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {
@@ -244,24 +244,6 @@ namespace Interext.Controllers
             }
             //add the categories if all the subcategories are selected 
 
-            var allSubCategories = interests.Where(x => x.InterestsCategory != null);
-            foreach (var item in allSubCategories)
-            {
-                var categoryId = item.InterestsCategory.Id;
-                if (interests.SingleOrDefault(x => x.Id == categoryId) == null)
-                {
-                    //the category is not in the list, so check if all its subcategories are in the list
-                    //if so, add it to the list
-                    var allSubCategoriesOfTheCategory = db.Interests.Where(x => x.InterestsCategory.Id == categoryId);
-                    var allSubCategoriesOfTheCategoriesChecked = interests.Where(x => x.InterestsCategory.Id == categoryId);
-                    if (allSubCategoriesOfTheCategory.Count() == allSubCategoriesOfTheCategoriesChecked.Count())
-                    {
-                        //all the sub categories are checked, but the category itself is not. Add it to the list
-                        Interest category = db.Interests.SingleOrDefault(x => x.Id == categoryId);
-                        interests.Add(category);
-                    }
-                }
-            }
 
             return interests;
         }
@@ -287,7 +269,7 @@ namespace Interext.Controllers
             if (selectedInterests == "")
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
-            }
+            } 
             if (model.TimeSet == true && model.DateTimeOfTheEvent < DateTime.Now)
             {
                 ModelState.AddModelError("Event Date time", "Event date cannot occur in the past.");
@@ -487,6 +469,8 @@ namespace Interext.Controllers
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
                 DateOfTheEvent = @event.DateTimeOfTheEvent.ToShortDateString(),
+                DateOfTheEventNoYear = string.Format("{0}.{1}", 
+                @event.DateTimeOfTheEvent.Day.ToString(), @event.DateTimeOfTheEvent.Month.ToString()),
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
                 HourTimeOfTheEvent = hour,
                 MinuteTimeOfTheEvent = minute,
@@ -528,7 +512,6 @@ namespace Interext.Controllers
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
-                Event @event = db.Events.Find(model.Id);
                 @event.CreatorUser = user;
                 @event.Title = model.Title;
                 @event.SideOfText = model.SideOfText;
@@ -548,7 +531,7 @@ namespace Interext.Controllers
                 @event.GenderParticipant = model.GenderParticipant;
                 @event.PlaceLatitude = model.PlaceLatitude;
                 @event.PlaceLongitude = model.PlaceLongitude;
-                @event.Interests = GetSelectedInterests(selectedInterests);
+                @event.Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db);
 
                 setSideOfText(@event.SideOfText, model);
                 setGenderOptions(@event.GenderParticipant, model);
@@ -581,6 +564,11 @@ namespace Interext.Controllers
                     model.AllInterests = InterestsFromObjects.InitAllInterests(db);
                 }
             }
+            InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
+            setSideOfText(model);
+            setGenderOptions(model);
+            model.InterestsToDisplay = selectedInterests;
+            model.CreatorUser = @event.CreatorUser;
             return View(model);
         }
 
@@ -600,7 +588,13 @@ namespace Interext.Controllers
             model.GenderParticipantOptions.Add("Male", String.Equals("Male", GenderParticipant, StringComparison.OrdinalIgnoreCase));
             model.GenderParticipantOptions.Add("Both", String.Equals("Both", GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
-
+        private void setGenderOptions(EventViewModel model)
+        {
+            model.GenderParticipantOptions = new Dictionary<string, bool>();
+            model.GenderParticipantOptions.Add("Female", String.Equals("Female", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Male", String.Equals("Male", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Both", String.Equals("Both", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+        }
         public bool Delete(int? id)
         {
             try
