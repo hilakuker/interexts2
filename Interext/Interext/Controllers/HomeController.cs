@@ -53,6 +53,24 @@ namespace Interext.Controllers
             else return RedirectToAction("Login", "Account");
         }
 
+        public bool Report()
+        {
+            _db.ReportedUrl.Add(new ReportLinks()
+            {
+                ReportedUrl = Request.UrlReferrer.ToString(),
+                CreatedTime = DateTime.Now,
+                ReportStatus = e_reportStatus.ToBeHandled
+            });
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
         private List<Event> GetEventForUser(ApplicationUser user, string searchword, string advanced)
         {
             bool isSearchWord = true;
@@ -65,8 +83,6 @@ namespace Interext.Controllers
                     && (isSearchWord ? (x.Title.ToLower().Contains(searchword.ToLower()) ||
                         x.Description.ToLower().Contains(searchword.ToLower())) : true)).ToList();
         }
-
-
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {

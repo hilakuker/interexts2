@@ -305,9 +305,7 @@ namespace Interext.Controllers
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),
                     EventStatus = e_EventStatus.Active
-                    //UsersAttending = new List<ApplicationUser>()
                 };
-               // eventToCreate.UsersAttending.Add(user);
                 db.Events.Add(eventToCreate);
                 try
                 {
@@ -327,7 +325,6 @@ namespace Interext.Controllers
                         ModelState.AddModelError("", error.ValidationErrors.ToString());
                     }
                 }
-               
             }
             else
             {
@@ -501,6 +498,7 @@ namespace Interext.Controllers
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+            Event @event = db.Events.Find(model.Id);
             if (ImageUrl == null)
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
@@ -565,7 +563,7 @@ namespace Interext.Controllers
                 }
             }
             InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
-            setSideOfText(model);
+            setSideOfText(model.SideOfText, model);
             setGenderOptions(model);
             model.InterestsToDisplay = selectedInterests;
             model.CreatorUser = @event.CreatorUser;

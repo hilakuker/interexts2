@@ -30,8 +30,6 @@ namespace Interext
                   "~/Scripts/register.js"
                   ));
 
-
-
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 

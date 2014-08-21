@@ -149,10 +149,24 @@
                 <li>
                     @using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
                     {
-                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel event" />
+                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel Event" />
                     }
                 </li>
             }
+            <li>
+                @using (Ajax.BeginForm("Report", "Home", new { Id = ViewData["Id"] },
+                    new AjaxOptions
+                    {
+                HttpMethod = "Get",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "target",
+                OnFailure = "onReportEventFailure",
+                OnSuccess = "onReportEventSuccess"
+                    }))
+                {
+                    <input type="submit" class="side-bar-button btn btn-dark" value="Report Event" />
+                }
+            </li>
         </ul>
     </div>
     <!--sidebar-->

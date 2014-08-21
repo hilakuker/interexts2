@@ -73,6 +73,19 @@ function onDeleteEventSuccess(response) {
     }
 }
 
+function onReportEventFailure(response) {
+    alert("failure");
+
+}
+function onReportEventSuccess(response) {
+    if (response == false) {
+        onDeleteEventFailure(response)
+    }
+    else {
+        location.href = "/";
+    }
+}
+
 function fillStatistics(statistics, container) {
     var index = 0;
     $.each(statistics, function () {
