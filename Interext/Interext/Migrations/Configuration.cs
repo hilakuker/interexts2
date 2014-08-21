@@ -1,6 +1,8 @@
 namespace Interext.Migrations
 {
     using Interext.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -88,10 +90,35 @@ namespace Interext.Migrations
 
             context.SaveChanges();
         }
-
+        public string GenerateUserName(string email)
+        {
+            return email.Replace("@", "").Replace(".", "").Replace("-", "");
+        }
         private void CreateAdminUser(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            ApplicationDbContext db = new ApplicationDbContext();
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            if (RoleManager.FindByName("Admin") == null)
+            {
+                RoleManager.Create(new IdentityRole("Admin"));
+            }
+            if (db.Users.SingleOrDefault(x => x.UserName == "admin@123.com") == null)
+            {
+                var user = new ApplicationUser()
+                {
+                    Email = "admin@123.com",
+                    FirstName = "admin",
+                    LastName = "admin",
+                    BirthDate = new DateTime(1987, 12, 13),
+                    Gender = "Female",
+                    Age = 26,
+                    UserName = GenerateUserName("admin@123.com")
+                };
+                UserManager.Create(user, "123456");
+                ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
+                UserManager.AddToRole(newUser.Id, "Admin");
+            }
         }
     }
 }
