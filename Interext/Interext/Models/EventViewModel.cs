@@ -29,17 +29,20 @@ namespace Interext.Models
         public double PlaceLatitude { get; set; }
 
         [Required(ErrorMessage = " ")]
-        [EventTimeValidation("DateTimeOfTheEvent")]
+        //[EventTimeValidation("DateTimeOfTheEvent")]
         public DateTime DateTimeOfTheEvent { get; set; }
 
         //[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = " ")]
         public string DateOfTheEvent { get; set; }
-        [Required(ErrorMessage = " ")]
+        //[Required(ErrorMessage = " ")]
         public string HourTimeOfTheEvent { get; set; }
 
-        [Required(ErrorMessage = " ")]
+        //[Required(ErrorMessage = " ")]
         public string MinuteTimeOfTheEvent { get; set; }
+
+        public bool TimeSet { get; set; }
+
         public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public ICollection<ApplicationUser> UsersAttending { get; set; }

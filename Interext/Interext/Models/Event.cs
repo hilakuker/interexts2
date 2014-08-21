@@ -34,6 +34,8 @@ namespace Interext.Models
         [Column(TypeName = "datetime2")]
         public DateTime DateTimeOfTheEvent { get; set; }
 
+        public bool TimeSet { get; set; }
+
         [Required]
         public string BackroundColor { get; set; }
         public string BackroundColorOpacity { get; set; }
@@ -53,6 +55,7 @@ namespace Interext.Models
         //public ICollection<UserProfile> UsersApprovedAttendance { get; set; }
 
         public virtual ICollection<Interest> Interests { get; set; }
+
 
 
         public e_EventStatus? EventStatus { get; set; }

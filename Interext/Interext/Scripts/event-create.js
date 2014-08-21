@@ -65,6 +65,36 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    $(".time-set").click(function () {
+        var ifIsChecked = $(this).prop("checked");
+        if (ifIsChecked == true) {
+            var minutes = $("#MinuteTimeOfTheEvent");
+            var hours = $("#HourTimeOfTheEvent");
+            $(minutes).removeAttr("disabled");
+            $(hours).removeAttr("disabled");
+
+            if ($(minutes).val() == "")
+            {
+                $(minutes).val("00");
+            }
+
+            if ($(hours).val() == "") {
+                $(hours).val("00");
+            }
+        }
+        else {
+            $("#MinuteTimeOfTheEvent").attr({"disabled":""});
+            $("#HourTimeOfTheEvent").attr({ "disabled": "" });
+
+        }
+    });
+    $("#MinuteTimeOfTheEvent").focus(function () {
+        $(this).val("");
+    });
+    $("#HourTimeOfTheEvent").focus(function () {
+        $(this).val("");
+    });
 });
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {

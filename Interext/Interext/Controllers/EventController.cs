@@ -288,6 +288,14 @@ namespace Interext.Controllers
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
             }
+            if (model.TimeSet == true && model.DateTimeOfTheEvent < DateTime.Now)
+            {
+                ModelState.AddModelError("Event Date time", "Event date cannot occur in the past.");
+            }
+            if (model.TimeSet == false && model.DateTimeOfTheEvent.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("Event Date", "Event date cannot occur in the past.");
+            }
             
             if (ModelState.IsValid)
             {
@@ -310,6 +318,7 @@ namespace Interext.Controllers
                     Description = model.Description,
                     SideOfText = model.SideOfText,
                     DateTimeOfTheEvent = model.DateTimeOfTheEvent,
+                    TimeSet = model.TimeSet,
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),

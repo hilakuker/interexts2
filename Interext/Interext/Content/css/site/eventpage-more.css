@@ -132,7 +132,10 @@
     width: 50%;
     float: left;
 }
-
+.create-form .create-basic-info .time-set {
+    float: right;
+    margin: 17px 4px 0 0;
+}
 .create-form .create-basic-info .time-title {
     float: right;
     margin: 15px 8px 0 0;

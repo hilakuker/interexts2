@@ -30,13 +30,13 @@
                             @*<input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" />*@
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
-
-                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @value = "00", @id = "MinuteTimeOfTheEvent", @placeholder = "00" })<span class="colon">:</span>
-                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @value = "00", @id = "HourTimeOfTheEvent", @placeholder = "00" })
+                       
+                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @id = "MinuteTimeOfTheEvent", @disabled = "" })<span class="colon">:</span>
+                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @id = "HourTimeOfTheEvent", @disabled = "" })
                         @*<input type="text" id="MinuteTimeOfTheEvent" name="MinuteTimeOfTheEvent" class="form-control minute-control" placeholder="00" /><span class="colon">:</span>
                         <input type="text" id="HourTimeOfTheEvent" name="HourTimeOfTheEvent" class="form-control hour-control" placeholder="00" />*@
                         <span class="time-title">Time:</span>
-
+                        @Html.CheckBoxFor(m => m.TimeSet, new { @class = "time-set" })
                         <div class="clear"></div>
                         @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id="DateTimeOfTheEvent" })
                         @*<input type="hidden" id="DateTimeOfTheEvent" name="DateTimeOfTheEvent" />*@
