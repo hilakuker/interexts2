@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Page Not Found";
+}
+@section CssStyles{
+    @Styles.Render("~/Content/eventsPageCss")
+}
+<div class="for-error-page">
+    <img src="~/Content/images/404.jpg" />
+    @*<h1>Page Not Found</h1>
+        <p>Could not find the page: @ViewBag.RequestedUrl</p>
+        @if (ViewBag.ReferrerUrl != null)
+        {
+            <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
+        }
+        @(new string(' ', 512))*@
+</div>

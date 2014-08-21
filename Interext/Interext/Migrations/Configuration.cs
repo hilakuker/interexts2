@@ -16,6 +16,7 @@ namespace Interext.Migrations
 
         protected override void Seed(Interext.Models.ApplicationDbContext context)
         {
+            CreateAdminUser(context);
             var mainCategories = new List<Interest>();
 
             Interest books = new Interest { Title = "Books", ImageUrl = "/Content/images/interests/books.jpg", InterestsCategory = null };
@@ -86,6 +87,11 @@ namespace Interext.Migrations
             subCategories.ForEach(x => context.Interests.AddOrUpdate(y => y.Title, x));
 
             context.SaveChanges();
+        }
+
+        private void CreateAdminUser(ApplicationDbContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

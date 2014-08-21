@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NotFoundMvc">
+      <HintPath>..\packages\NotFoundMvc.1.2.0\lib\net40\NotFoundMvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Device" />
@@ -161,7 +164,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterestsController.cs" />
@@ -213,6 +215,7 @@
     <Content Include="bin\Interext.dll" />
     <Content Include="bin\Interext.pdb" />
     <Content Include="Content\css\shared\file-uploader-button.css" />
+    <Content Include="Content\images\404.jpg" />
     <Content Include="Content\images\example-images\draft-image.jpg" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\css\intro\bootstrap-signin.css" />
@@ -712,7 +715,7 @@
     <Content Include="Views\Place\Edit.cshtml" />
     <Content Include="Views\Account\RegisterApproval.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
-    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />

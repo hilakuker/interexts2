@@ -152,3 +152,9 @@
 .validation-summary-valid {
     display: none;
 }
+
+.for-error-page img {
+   
+    width: 100%;
+   
+}
