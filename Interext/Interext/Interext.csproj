@@ -488,6 +488,13 @@
     <Content Include="Content\images\icons-svg\user-white.svg" />
     <Content Include="Content\images\icons-svg\video-black.svg" />
     <Content Include="Content\images\icons-svg\video-white.svg" />
+    <Content Include="Content\images\interests\Arts.jpg" />
+    <Content Include="Content\images\interests\books.jpg" />
+    <Content Include="Content\images\interests\cooking.jpg" />
+    <Content Include="Content\images\interests\music.jpg" />
+    <Content Include="Content\images\interests\nature.jpg" />
+    <Content Include="Content\images\interests\pets.jpg" />
+    <Content Include="Content\images\interests\sports.jpg" />
     <Content Include="Content\jquery.mobile-1.4.2.css" />
     <Content Include="Content\jquery.mobile.external-png-1.4.2.css" />
     <Content Include="Content\jquery.mobile.external-png-1.4.2.min.css" />

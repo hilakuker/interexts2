@@ -24,12 +24,18 @@ namespace Interext.Migrations
             Interest books = new Interest { Title = "Books", ImageUrl = "/Content/images/interests/books.jpg", InterestsCategory = null };
             Interest sports = new Interest { Title = "Sports", ImageUrl = "/Content/images/interests/sports.jpg", InterestsCategory = null };
             Interest cooking = new Interest { Title = "Cooking", ImageUrl = "/Content/images/interests/cooking.jpg", InterestsCategory = null };
-            Interest nature = new Interest { Title = "Nature", ImageUrl = "/Content/images/interests/nature.jpg", InterestsCategory = null };
+            Interest outdoor = new Interest { Title = "Outdoor", ImageUrl = "/Content/images/interests/nature.jpg", InterestsCategory = null };
+            Interest arts = new Interest { Title = "Arts", ImageUrl = "/Content/images/interests/Arts.jpg", InterestsCategory = null };
+            Interest music = new Interest { Title = "Music", ImageUrl = "/Content/images/interests/music.jpg", InterestsCategory = null };
+            Interest Pets = new Interest { Title = "Pets", ImageUrl = "/Content/images/interests/pets.jpg", InterestsCategory = null };
 
+            mainCategories.Add(music);
             mainCategories.Add(books);
             mainCategories.Add(sports);
+            mainCategories.Add(arts);
             mainCategories.Add(cooking);
-            mainCategories.Add(nature);
+            mainCategories.Add(outdoor);
+            mainCategories.Add(Pets);
 
             mainCategories.ForEach(x => context.Interests.AddOrUpdate(y => y.Title, x));
 
@@ -38,17 +44,42 @@ namespace Interext.Migrations
             Interest books2 = context.Interests.Where(x => x.Title == "Books").ToList()[0];
             Interest sports2 = context.Interests.Where(x => x.Title == "Sports").ToList()[0];
             Interest cooking2 = context.Interests.Where(x => x.Title == "Cooking").ToList()[0];
-            Interest nature2 = context.Interests.Where(x => x.Title == "Nature").ToList()[0];
+            Interest outdoor2 = context.Interests.Where(x => x.Title == "Outdoor").ToList()[0];
+            Interest arts2 = context.Interests.Where(x => x.Title == "Arts").ToList()[0];
+            Interest music2 = context.Interests.Where(x => x.Title == "Music").ToList()[0];
+            Interest pets2 = context.Interests.Where(x => x.Title == "Pets").ToList()[0];
 
             var subCategories = new List<Interest>();
             Interest jogging = new Interest { Title = "Jogging", ImageUrl = "", InterestsCategory = sports2 };
-            Interest bicycle = new Interest { Title = "Bicycle", ImageUrl = "", InterestsCategory = sports2 };
+            Interest bicycle = new Interest { Title = "Bicycling", ImageUrl = "", InterestsCategory = sports2 };
             Interest basketball = new Interest { Title = "Basketball", ImageUrl = "", InterestsCategory = sports2 };
             Interest tennis = new Interest { Title = "Tennis", ImageUrl = "", InterestsCategory = sports2 };
             Interest football = new Interest { Title = "Football", ImageUrl = "", InterestsCategory = sports2 };
+            Interest Dance = new Interest { Title = "Dance", ImageUrl = "", InterestsCategory = sports2 };
+            subCategories.Add(Dance);
 
-            Interest tracking = new Interest { Title = "Tracking", ImageUrl = "", InterestsCategory = nature2 };
-            Interest mauntainClimbing = new Interest { Title = "Mauntain Climbing", ImageUrl = "", InterestsCategory = nature2 };
+            Interest Dogs = new Interest { Title = "Dogs", ImageUrl = "", InterestsCategory = pets2 };
+            subCategories.Add(Dogs);
+            Interest Cats = new Interest { Title = "Cats", ImageUrl = "", InterestsCategory = pets2 };
+            subCategories.Add(Cats);
+            Interest Birds = new Interest { Title = "Birds", ImageUrl = "", InterestsCategory = pets2 };
+            subCategories.Add(Birds);
+            Interest PetShelter = new Interest { Title = "Pet Shelter", ImageUrl = "", InterestsCategory = pets2 };
+            subCategories.Add(PetShelter);
+
+            Interest Baking = new Interest { Title = "Baking", ImageUrl = "", InterestsCategory = cooking2 };
+            subCategories.Add(Baking);
+            Interest barbecue = new Interest { Title = "Barbecue", ImageUrl = "", InterestsCategory = cooking2 };
+            subCategories.Add(barbecue);
+
+            Interest tracking = new Interest { Title = "Tracking", ImageUrl = "", InterestsCategory = outdoor2 };
+            subCategories.Add(tracking);
+            Interest mauntainClimbing = new Interest { Title = "Mauntain Climbing", ImageUrl = "", InterestsCategory = outdoor2 };
+            subCategories.Add(mauntainClimbing);
+            Interest Camping = new Interest { Title = "Camping", ImageUrl = "", InterestsCategory = outdoor2 };
+            subCategories.Add(Camping);
+
+
             Interest Fantasy = new Interest { Title = "Fantasy", ImageUrl = "", InterestsCategory = books2 };
             Interest Adventure = new Interest { Title = "Adventure", ImageUrl = "", InterestsCategory = books2 };
             Interest Classics = new Interest { Title = "Classics", ImageUrl = "", InterestsCategory = books2 };
@@ -63,7 +94,37 @@ namespace Interext.Migrations
             Interest Sagas = new Interest { Title = "Sagas", ImageUrl = "", InterestsCategory = books2 };
             Interest ScienceFiction = new Interest { Title = "Science Fiction", ImageUrl = "", InterestsCategory = books2 };
             Interest Thrillers = new Interest { Title = "Thrillers", ImageUrl = "", InterestsCategory = books2 };
-         
+
+            Interest Painting = new Interest { Title = "Painting", ImageUrl = "", InterestsCategory = arts2 };
+            subCategories.Add(Painting);
+            Interest Theater = new Interest { Title = "Theater", ImageUrl = "", InterestsCategory = arts2 };
+            subCategories.Add(Theater);
+            Interest Architecture = new Interest { Title = "Architecture", ImageUrl = "", InterestsCategory = arts2 };
+            subCategories.Add(Architecture);
+            Interest PerformingArts = new Interest { Title = "Performing Arts", ImageUrl = "", InterestsCategory = arts2 };
+            subCategories.Add(PerformingArts);
+            Interest GraphicDesign = new Interest { Title = "Graphic Design", ImageUrl = "", InterestsCategory = arts2 };
+            subCategories.Add(GraphicDesign);
+
+            Interest ClassicMusic = new Interest { Title = "Classic", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(ClassicMusic);
+            Interest RockMusic = new Interest { Title = "Rock", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(RockMusic);
+            Interest AlternativeMusic = new Interest { Title = "Alternative", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(AlternativeMusic);
+            Interest PopMusic = new Interest { Title = "Pop", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(PopMusic);
+            Interest IndieMusic = new Interest { Title = "Indie", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(IndieMusic);
+            Interest MetalMusic = new Interest { Title = "Metal", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(MetalMusic);
+            Interest ClassicRock = new Interest { Title = "Classic Rock", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(ClassicRock);
+            Interest Techno = new Interest { Title = "Techno", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(Techno);
+            Interest Reggae = new Interest { Title = "Reggae", ImageUrl = "", InterestsCategory = music2 };
+            subCategories.Add(Reggae);
+
             subCategories.Add(Thrillers);
             subCategories.Add(ScienceFiction);
             subCategories.Add(Sagas);
@@ -83,8 +144,7 @@ namespace Interext.Migrations
             subCategories.Add(basketball);
             subCategories.Add(tennis);
             subCategories.Add(football);
-            subCategories.Add(tracking);
-            subCategories.Add(mauntainClimbing);
+
 
             subCategories.ForEach(x => context.Interests.AddOrUpdate(y => y.Title, x));
 
