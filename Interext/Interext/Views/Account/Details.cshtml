@@ -11,13 +11,15 @@
 
 <section class="profile">
     <div class="profile-content">
-        <img src="@Model.ImageUrl" />
+        <div class="img-wrapper">
+            <img src="@Model.ImageUrl" />
+        </div>
         <div class="profile-info">
             <h1 class="name">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
             <table class="basic-info">
                 <tr>
                     <td>
-                        Birth date
+                        Birth day
                     </td>
                     <td>@Model.BirthDate</td>
                 </tr>
@@ -40,24 +42,33 @@
             @Model.InterestsToDisplay
         </div>
         <div class="clear"></div>
-        @*@Html.DisplayFor(model => model.UserName)
-
-            @Html.DisplayFor(model => model.FirstName)
-
-            @Html.DisplayFor(model => model.LastName)
-
-            @Html.DisplayFor(model => model.Email)
-
-            @Html.DisplayFor(model => model.Gender)*@
     </div>
 </section>
-<div id="content" class="no-sidebar">
-    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
-        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events);
+<div class="month-events-wrapper">
+    <h2 class="months-main-title">FUTURE EVENTS</h2>
+    <div class="month-events">
+        @foreach (Interext.Models.EventsByMonth eventsByMonth in (List<Interext.Models.EventsByMonth>)ViewData["EventsByMonth"])
+        {
 
+            <h3 class="month-title">@eventsByMonth.Month</h3>
+            <div id="content" class="no-sidebar">
+                <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+                    @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
+
+                </div>
+                <div class="bottom-spacer clear"></div>
+            </div>
+
+        }
     </div>
-    <div class="bottom-spacer clear"></div>
+
 </div>
+<div class="places-wrapper">
+    <h2 class="places-main-title">SUBSCRIBED PLACES</h2>
+    <div class="places">
+    </div>
+</div>
+
 
 
 @*<p>
@@ -65,6 +76,6 @@
         @Html.ActionLink("Back to List", "Index")
     </p>*@
 @*<section class="events">
-    <h2>Your Events:</h2>
-    @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events) ;
-</section>*@
+        <h2>Your Events:</h2>
+        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events) ;
+    </section>*@

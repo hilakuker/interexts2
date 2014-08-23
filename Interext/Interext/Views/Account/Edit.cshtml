@@ -1,0 +1,74 @@
+﻿@model Interext.Models.EditProfileViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventsPageCss")
+    @Styles.Render("~/Content/profilePageCss")
+}
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data", id = "EditProfileForm" }))
+{
+    <section class="profile">
+        <div class="profile-content">
+            <input type="submit" class="btn btn-special save-profile-btn" value="Save profile" />
+            <div class="img-wrapper">
+                <div class="image-preview" style="background-image: url('@Model.ImageUrl')"></div>
+                <div class="btn btn-special fileinput-button choose-image">
+                    <span class="fa fa-picture-o"></span>
+
+                    @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file" })
+                </div>
+            </div>
+            <div class="profile-info">
+                @Html.AntiForgeryToken()
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control first-name" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control last-name" })
+                <table class="basic-info">
+                    <tr>
+                        <td>
+                            Birth day
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth day", @value = "1/1/2004" })
+                            @Html.DropDownListFor(m => m.BirthDateDay, new SelectList(ViewBag.Days))
+                            @Html.DropDownListFor(m => m.BirthDateMonth, new SelectList(ViewBag.Months))
+                            @Html.DropDownListFor(m => m.BirthDateYear, new SelectList(ViewBag.Years))
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Gender
+                        </td>
+                        <td>
+                            @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
+                        <span>Male</span>
+                        @Html.RadioButtonFor(m => m.Gender, "F")
+                        <span>Female</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="fa fa-map-marker"></span>Location
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @type = "text", @id = "locationSearchTextField" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="interests">
+        <h2>Interests:</h2>
+        @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
+    </div>
+    @Html.ValidationSummary(false, "Please fill the required fields")
+    <div class="clear"></div>
+</div>
+</section>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/profile-edit-js")
+}

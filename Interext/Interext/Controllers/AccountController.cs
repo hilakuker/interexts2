@@ -16,6 +16,8 @@ using System.IO;
 using Interext.OtherCalsses;
 using System.Net;
 using System.Globalization;
+using System.Drawing;
+using System.Data.Entity;
 
 namespace Interext.Controllers
 {
@@ -39,9 +41,10 @@ namespace Interext.Controllers
 
         //
         // GET: /Account/Login
-        public async Task<ActionResult> ShowProfile(string returnUrl)
+        public ActionResult ShowProfile(string returnUrl)
         {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = UserManager.FindById(User.Identity.GetUserId());
             ProfileViewModel profile = new ProfileViewModel();
             //profile.UserName = user.UserName;
             profile.FirstName = user.FirstName;
@@ -51,18 +54,86 @@ namespace Interext.Controllers
                 profile.Gender = "Female";
             else
                 profile.Gender = "Male";
-            //add age
-           // profile.Interests = null;
-            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
-            profile.Events = attendingEvents;
+
             profile.ImageUrl = user.ImageUrl;
             profile.BirthDate = getBirthdateAndAge(user.BirthDate.Value);
             profile.Address = user.HomeAddress;
             profile.InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList());
+
+
+            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
+            int thisMonth = DateTime.Today.Month;
+            List<EventsByMonth> eventsByMonth = new List<EventsByMonth>();
+
+            getMonthEvents(thisMonth, 12, attendingEvents, eventsByMonth);
+            getMonthEvents(1, thisMonth - 1, attendingEvents, eventsByMonth);
+
+            ViewData["EventsByMonth"] = eventsByMonth;
+
+            //profile.Events = attendingEvents;
             return View(profile);
         }
 
-       
+        private void getMonthEvents(int fromMonthIndex, int toMonthIndex, List<Event> allEvents, List<EventsByMonth> eventsByMonth)
+        {
+            for (int i = fromMonthIndex; i <= toMonthIndex; i++)
+            {
+                var monthEvents = allEvents.Where(x => x.DateTimeOfTheEvent.Month == i);
+                if (monthEvents.Count() > 0)
+                {
+                    List<Event> monthEventsList = monthEvents.OrderBy(x => x.DateTimeOfTheEvent).ToList();
+                    string monthName = getMonthName(i);
+                    eventsByMonth.Add(new EventsByMonth { Month = monthName, MonthEvents = monthEventsList });
+                }
+            }
+        }
+
+        private string getMonthName(int monthIndex)
+        {
+            string monthName = "";
+            switch (monthIndex)
+            {
+                case 1:
+                    monthName = "January";
+                    break;
+                case 2:
+                    monthName = "February";
+                    break;
+                case 3:
+                    monthName = "March";
+                    break;
+                case 4:
+                    monthName = "April";
+                    break;
+                case 5:
+                    monthName = "May";
+                    break;
+                case 6:
+                    monthName = "June";
+                    break;
+                case 7:
+                    monthName = "July";
+                    break;
+                case 8:
+                    monthName = "August";
+                    break;
+                case 9:
+                    monthName = "September";
+                    break;
+                case 10:
+                    monthName = "October";
+                    break;
+                case 11:
+                    monthName = "November";
+                    break;
+                case 12:
+                    monthName = "December";
+                    break;
+            }
+
+            return monthName;
+        }
+
         private string GetInterestsForDisplay(List<Interest> Interests)
         {
             string interestsForDisplay = "";
@@ -84,11 +155,105 @@ namespace Interext.Controllers
         private string getBirthdateAndAge(DateTime i_BirthDate)
         {
             string finalResult = "";
-            int todayYear = DateTime.Today.Year;
+            // int todayYear = DateTime.Today.Year;
             string birthDateString = i_BirthDate.ToShortDateString();
             finalResult = string.Format("{0} ({1} year old)", birthDateString, caculateAge(i_BirthDate).ToString());
             return finalResult;
         }
+
+
+        public ActionResult Edit()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            EditProfileViewModel profile = new EditProfileViewModel();
+            profile.FirstName = user.FirstName;
+            profile.LastName = user.LastName;
+            if (user.Gender == "F")
+                profile.Gender = "Female";
+            else
+                profile.Gender = "Male";
+
+            profile.ImageUrl = user.ImageUrl;
+            profile.BirthDate = user.BirthDate.Value;
+            profile.BirthDateDay = user.BirthDate.Value.Day;
+            profile.BirthDateMonth = user.BirthDate.Value.Month;
+            profile.BirthDateYear = user.BirthDate.Value.Year;
+            profile.Address = user.HomeAddress;
+
+            ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, db);
+
+            buildDateViewBags();
+            return View(profile);
+        }
+
+        private void buildDateViewBags()
+        {
+            int[] days = new int[31];
+            for (int i = 0; i < 31; i++)
+            {
+                days[i] = i + 1;
+            }
+            ViewBag.Days = days;
+
+            int[] months = new int[12];
+            for (int i = 0; i < 12; i++)
+            {
+                months[i] = i + 1;
+            }
+            ViewBag.Months = months;
+
+            int[] years = new int[121];
+            for (int i = 0; i <= 120; i++)
+            {
+                years[i] = DateTime.Today.Year - i;
+            }
+            
+            ViewBag.Years = years;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditProfileViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (ImageUrl == null)
+            {
+                model.ImageUrl = user.ImageUrl;
+            }
+            else
+            {
+                if (!ImageSaver.IsImage(ImageUrl))
+                {
+                    ModelState.AddModelError("Image Upload", "You can upload only images");
+                }
+            }
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            }
+
+            if (ModelState.IsValid)
+            {
+                ApplicationUser updatedUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
+                updatedUser.FirstName = model.FirstName;
+                updatedUser.LastName = model.LastName;
+                updatedUser.Gender = model.Gender;
+                updatedUser.BirthDate = model.BirthDate.Date;
+                updatedUser.HomeAddress = model.Address;
+                updatedUser.Interests.Clear();
+                updatedUser.Interests = GetSelectedInterests(selectedInterests);
+                uploadAndSetImage(ref updatedUser, ImageUrl);
+                db.SaveChanges();
+                ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(updatedUser.Interests, db);
+                return Redirect("/Account/ShowProfile");
+            }
+            ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, db);
+            buildDateViewBags();
+            return View(model);
+        }
+
 
         //
         // GET: /Account/Login
@@ -153,7 +318,13 @@ namespace Interext.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
-            return View(new RegisterViewModel(){BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1)});
+            buildDateViewBags();
+            RegisterViewModel model = new RegisterViewModel();
+            model.BirthDate = new DateTime(DateTime.Now.Year - 18, 1, 1);
+            model.BirthDateDay = 1;
+            model.BirthDateMonth = 1;
+            model.BirthDateYear = DateTime.Now.Year - 18;
+            return View(model);
         }
 
         private List<Interest> GetSelectedInterests(string selectedInterests)
@@ -174,6 +345,9 @@ namespace Interext.Controllers
             return interests;
         }
 
+
+
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -182,15 +356,22 @@ namespace Interext.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
-            if (ImageUrl.FileName == "")
+            if (ImageUrl == null)
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            else
+            {
+                if (!ImageSaver.IsImage(ImageUrl))
+                {
+                    ModelState.AddModelError("Image Upload", "You can upload only images");
+                }
             }
             if (selectedInterests == "")
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
             }
-                
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser()
@@ -203,14 +384,15 @@ namespace Interext.Controllers
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
                     Age = caculateAge(model.BirthDate)
-                    
+
                 };
+                List<Interest> interests = GetSelectedInterests(selectedInterests);
                 uploadAndSetImage(ref user, ImageUrl);
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);
-                    newUser.Interests = GetSelectedInterests(selectedInterests);
+                    newUser.Interests = interests;
                     db.SaveChanges();
 
                     await SignInAsync(user, isPersistent: false);
@@ -219,10 +401,23 @@ namespace Interext.Controllers
                 }
                 else
                 {
+                    ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(interests, db);
                     AddErrors(result);
                 }
             }
-            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
+            else
+            {
+                if (selectedInterests != "")
+                {
+                    List<Interest> interests = GetSelectedInterests(selectedInterests);
+                    ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(interests, db);
+                }
+                else
+                {
+                    ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
+                }
+            }
+            buildDateViewBags();
             return View(model);
         }
 
@@ -235,7 +430,7 @@ namespace Interext.Controllers
         {
             if (ImageUrl != null)
             {
-               user.ImageUrl =  ImageSaver.SaveUser(user.Id, ImageUrl, Server);
+                user.ImageUrl = ImageSaver.SaveUser(user.Id, ImageUrl, Server);
             }
 
         }
@@ -371,10 +566,17 @@ namespace Interext.Controllers
                 var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
                 var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
                 ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
-                return View("ExternalLoginConfirmation", 
-                    new ExternalLoginConfirmationViewModel { 
-                        Email = email, FirstName = firstName, Gender = gender, ImageUrl = imageURL, LastName = lastName, 
-                        BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1) });
+                buildDateViewBags();
+                return View("ExternalLoginConfirmation",
+                    new ExternalLoginConfirmationViewModel
+                    {
+                        Email = email,
+                        FirstName = firstName,
+                        Gender = gender,
+                        ImageUrl = imageURL,
+                        LastName = lastName,
+                        BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1)
+                    });
             }
         }
 
@@ -431,7 +633,7 @@ namespace Interext.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation
-            (ExternalLoginConfirmationViewModel model, HttpPostedFileBase ImageUrl, 
+            (ExternalLoginConfirmationViewModel model, HttpPostedFileBase ImageUrl,
             string returnUrl, string selectedInterests)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -452,17 +654,17 @@ namespace Interext.Controllers
                 user = createUserFromFacebookInfo(model, ImageUrl);
                 var result = await UserManager.CreateAsync(user);
 
-            //    if (result.Succeeded)
-            //    {
-            //        result = await UserManager.AddLoginAsync(user.Id, info.Login);
-            //        if (result.Succeeded)
-            //        {
-            //            await SignInAsync(user, isPersistent: false);
-            //            return RedirectToLocal(returnUrl);
-            //        }
-            //    }
-            //    AddErrors(result);
-            //}
+                //    if (result.Succeeded)
+                //    {
+                //        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                //        if (result.Succeeded)
+                //        {
+                //            await SignInAsync(user, isPersistent: false);
+                //            return RedirectToLocal(returnUrl);
+                //        }
+                //    }
+                //    AddErrors(result);
+                //}
 
                 //ViewBag.ReturnUrl = returnUrl;
                 //return View(model);
@@ -507,7 +709,7 @@ namespace Interext.Controllers
                 LastName = i_Model.LastName,
                 Email = i_Model.Email,
                 Gender = i_Model.Gender,
-                BirthDate = birthdate, 
+                BirthDate = birthdate,
                 Age = caculateAge(birthdate),
                 HomeAddress = i_Model.Address
             };
@@ -635,8 +837,15 @@ namespace Interext.Controllers
                 UserName = @user.UserName,
                 InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList())
             };
+
             List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
-            profileToShow.Events = attendingEvents;
+            int thisMonth = DateTime.Today.Month;
+            List<EventsByMonth> eventsByMonth = new List<EventsByMonth>();
+
+            getMonthEvents(thisMonth, 12, attendingEvents, eventsByMonth);
+            getMonthEvents(1, thisMonth - 1, attendingEvents, eventsByMonth);
+
+            ViewData["EventsByMonth"] = eventsByMonth;
             return View(profileToShow);
         }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
@@ -692,7 +901,8 @@ namespace Interext.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 
@@ -718,5 +928,8 @@ namespace Interext.Controllers
             }
         }
         #endregion
+
+
+        
     }
 }

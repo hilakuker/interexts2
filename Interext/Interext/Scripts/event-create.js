@@ -27,8 +27,21 @@ function getTodayDate()
 function pageInit() {
     $("#DateOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
     $("#DateOfTheEvent").val(getTodayDate());
-    $("#MinuteTimeOfTheEvent").val("00");
-    $("#HourTimeOfTheEvent").val("00");
+    
+    var minutes = $("#MinuteTimeOfTheEvent");
+    var hour = $("#HourTimeOfTheEvent");
+    if (!$(".time-set").prop("checked"))
+    {
+        $(minutes).attr({ "disabled": "" });
+        $(hour).attr({ "disabled": "" });
+    }
+    if ($(minutes).val() == "") {
+        $(minutes).val("00");
+    }
+    if ($(hour).val() == "") {
+        $(hour).val("00");
+    }
+
     $("#slider").slider({
         range: "min",
         value: 80,
@@ -57,11 +70,13 @@ $(document).ready(function () {
     $("#EventForm").submit(function () {
         if ($("#selectedInterests").val() == "") {
             if ($(".input-validation-error").length == 0) {
-                $(".validation-summary-errors ul").html("");
-                $(".validation-summary-errors").css({"display": "block"});
+
+                $(".validation-summary-valid").css({ "display": "block" });
+                $(".validation-summary-valid ul").html("<li>Please select Interests</li>");
             }
-            
-            $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
+            else {
+                $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
+            }
             return false;
         }
     });

@@ -148,9 +148,6 @@ font-weight: bold;
     width: 90px;
 }
 
-.form-signin .choose-image {
-    padding: 12px 18px 12px 19px;
-}
 
 .form-signin .first-part, .form-signin .second-part {
     float: left;
@@ -218,7 +215,32 @@ div.mousescroll:hover {
     float: right;
     margin-top: 27px;
 }
-
+.form-signin .Gender{
+    height: 44px;
+padding: 6px 0 0 0;
+}
+.form-signin .img-wrapper {
+    position:relative;
+    height:160px;
+    width:160px;
+    margin-bottom: 5px;
+}
+.form-signin .img-wrapper .image-preview {
+    height:160px;
+    width:160px;
+    background-position:center center;
+    background-size:cover;
+    background-image:url("/Content/images/example-images/draft-image.jpg");
+    cursor:pointer;
+}
+.form-signin .img-wrapper .choose-image{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    margin: 0;
+    border-radius:0;
+}
 .Gender span {
     cursor: pointer;
 }
@@ -227,7 +249,7 @@ div.mousescroll:hover {
     border: 2px solid #e22029;
 }
 
-.validation-summary-errors {
+.validation-summary-errors, .validation-summary-valid {
     border: 2px solid #e22029;
     width: 100%;
     text-align: center;
@@ -235,7 +257,7 @@ div.mousescroll:hover {
     padding: 10px;
 }
 
-.validation-summary-errors ul {
+.validation-summary-errors ul, .validation-summary-valid ul {
     list-style:none;
     margin:0;
     padding:0;

@@ -40,8 +40,11 @@ namespace Interext.Models
         public string BackroundColor { get; set; }
         public string BackroundColorOpacity { get; set; }
         public string SideOfText { get; set; }
+
+        public bool NumOfParticipantsSet { get; set; }
         public int? NumOfParticipantsMin { get; set; }
         public int? NumOfParticipantsMax { get; set; }
+        public bool AgeOfParticipantsSet { get; set; }
         public int? AgeOfParticipantsMin { get; set; }
         public int? AgeOfParticipantsMax { get; set; }
         public string GenderParticipant { get; set; }

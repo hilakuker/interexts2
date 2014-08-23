@@ -1,47 +1,71 @@
 ﻿section.profile {
     padding: 30px;
     font-family: "Raleway";
-    background-image: url(/Content/images/example-images/292380.jpg);
+    /*background-image: url(/Content/images/example-images/292380.jpg);
     background-position: center;
+    background-size: cover;*/
+}
+
+section.profile .profile-content {
+    /*background-color: rgba(256,256,256,0.8);*/
+    position: relative;
+}
+
+section.profile .img-wrapper, section.profile .profile-info, section.profile .interests {
+    float: left;
+}
+
+section.profile .img-wrapper {
+    position: relative;
+}
+
+section.profile .img-wrapper img {
+    height: 160px;
+    width: 160px;
+}
+
+section.profile .img-wrapper .image-preview {
+    height: 160px;
+    width: 160px;
+    background-position: center center;
     background-size: cover;
+    cursor: pointer;
 }
 
-    section.profile .profile-content {
-        background-color: rgba(256,256,256,0.8);
-    }
-
-    section.profile img, section.profile .profile-info, section.profile .interests {
-        float: left;
-    }
-section.profile img {
-    height:160px; 
-    width:160px;
+section.profile .img-wrapper .choose-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    margin: 0;
+    border-radius: 0;
 }
 
-    section.profile .profile-info, section.profile .interests {
-        margin-left: 30px;
-    }
+section.profile .profile-info, section.profile .interests {
+    margin-left: 30px;
+}
 
-    section.profile h1, section.profile h2 {
-        font-weight: 300;
-        font-size: 40px;
-        line-height: 60px;
-        font-family: "Raleway";
-    }
+section.profile h1, section.profile h2 {
+    font-weight: 300;
+    font-size: 40px;
+    line-height: 60px;
+    font-family: "Raleway";
+}
 
-    section.profile h2 {
-        font-size: 30px;
-    }
+section.profile h2 {
+    font-size: 30px;
+    margin-top: 5px;
+}
 
-    section.profile .profile-info table.basic-info tr td:first-child {
-        padding-right: 20px;
-        height: 25px;
-        color: #999;
-    }
+section.profile .profile-info table.basic-info tr td:first-child {
+    padding-right: 20px;
+    height: 25px;
+    color: #999;
+}
 
-    section.profile .profile-info table.basic-info .fa-map-marker {
-        margin-right: 5px;
-    }
+section.profile .profile-info table.basic-info .fa-map-marker {
+    margin-right: 5px;
+}
 
 @media only screen and (max-width: 479px) {
     section.profile .profile-info, section.profile .interests {
@@ -57,10 +81,65 @@ section.profile img {
 section.events {
 }
 
-    section.events h2 {
-        font-weight: 300;
-        font-size: 30px;
-        line-height: 60px;
-        font-family: "Raleway";
-        color: #fff;
-    }
+section.events h2 {
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 60px;
+    font-family: "Raleway";
+    color: #fff;
+}
+
+.month-events-wrapper, .places-wrapper {
+    width: 50%;
+    float: left;
+}
+
+.month-events-wrapper .months-main-title {
+    background-color: #222;
+    color: #FFF;
+    font-size: 40px;
+    font-weight: 200;
+    margin-bottom: 10px;
+    padding-left: 30px;
+}
+
+.month-events {
+    width: 100%;
+    padding-left: 30px;
+    box-sizing: border-box;
+}
+
+.month-events .month-title {
+    font-size: 30px;
+    font-weight: 200;
+    margin-bottom: 10px;
+}
+
+.places-wrapper .places-main-title {
+    background-color: #bfbfbf;
+    color: #000;
+    font-size: 40px;
+    font-weight: 200;
+    margin-bottom: 10px;
+    padding-left: 30px;
+}
+
+.places {
+    width: 50%;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+
+.save-profile-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.validation-summary-errors, .validation-summary-valid {
+    width: 250px !important;
+    margin: 0;
+    position: absolute;
+    right: 116px;
+    bottom: 0;
+}

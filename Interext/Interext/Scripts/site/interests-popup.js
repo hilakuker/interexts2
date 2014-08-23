@@ -1,14 +1,42 @@
-﻿var firsttime = true;
+﻿
 $(".open-popup").each(function () {
+    //init
+    var dataForPopupElement = $(this).parent().find(".data-for-popup");
+    var dataForPopup = dataForPopupElement.html();
+    var popupContentElement = $(".popup-content");
+    $(popupContentElement).html(dataForPopup);
+    $(dataForPopupElement).html("");
+    init();
+    //end init
+
+    function init()
+    {
+        updateSelectedInterests();
+        $(".interests-list li").each(function () {
+
+            var numberOfCheckedInCategory = $(this).find("ul li input[type='checkbox']:checked").length;
+            if (numberOfCheckedInCategory > 0)
+            {
+                $(this).find("ul").slideDown();
+            }
+        });
+    }
+
+    function updateSelectedInterests() {
+        var allIds = "";
+        $(popupContentElement).find("input[type='checkbox']").each(function () {
+            var ifIsChecked = $(this).prop("checked");
+            if (ifIsChecked == true) {
+                var id = $(this).attr("data-id");
+                allIds += id + ",";
+            }
+        });
+        $("#selectedInterests").val(allIds);
+
+    }
+
     $(this).on("click", function () {
-        var dataForPopupElement = $(this).parent().find(".data-for-popup");
-        var dataForPopup = dataForPopupElement.html();
-        var popupContentElement = $(".popup-content");
-        if (firsttime) {
-            $(popupContentElement).html(dataForPopup);
-            $(dataForPopupElement).html("");
-            firsttime = false;
-        }
+        
         var hiddenSection = $('section.hidden-popup-container');
         hiddenSection.fadeIn()
             // unhide section.hidden
@@ -24,19 +52,6 @@ $(".open-popup").each(function () {
             .appendTo('body');
         $(".popup").click(function () { return false; });
 
-
-        function updateSelectedInterests() {
-            var allIds = "";
-            $(popupContentElement).find("input[type='checkbox']").each(function () {
-                var ifIsChecked = $(this).prop("checked");
-                if (ifIsChecked == true) {
-                    var id = $(this).attr("data-id");
-                    allIds += id + ",";
-                }
-            });
-            $("#selectedInterests").val(allIds);
-
-        }
 
         $('span.close').off("click").on("click", function () {
             $(hiddenSection).fadeOut();

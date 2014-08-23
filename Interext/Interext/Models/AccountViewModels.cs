@@ -27,6 +27,10 @@ namespace Interext.Models
         [BirthdateValidation(ErrorMessage = "Birth Day cannot be bigger than Today's date")]
         public DateTime BirthDate { get; set; }
 
+        public int BirthDateDay { get; set; }
+        public int BirthDateMonth { get; set; }
+        public int BirthDateYear { get; set; }
+
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
@@ -104,13 +108,13 @@ namespace Interext.Models
 
         public DateTime BirthDate { get; set; }
 
-        public string BirthDateDay { get; set; }
-        public string BirthDateMonth { get; set; }
-        public string BirthDateYear { get; set; }
+        public int BirthDateDay { get; set; }
+        public int BirthDateMonth { get; set; }
+        public int BirthDateYear { get; set; }
 
 
-        [Display(Name = "Image Url")]
-        [Required(ErrorMessage = "Please upload profile image")]
+        //[Display(Name = "Image Url")]
+        //[Required(ErrorMessage = "Please upload profile image")]
         public string ImageUrl { get; set; }
 
 
@@ -160,5 +164,37 @@ namespace Interext.Models
         public virtual ICollection<Event> Events { get; set; }
         public string Address { get; set; }
         public string InterestsToDisplay { get; set; }
+    }
+
+    public class EditProfileViewModel
+    {
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = " ")]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Date, ErrorMessage = "Birth day is incorrect.")]
+        [BirthdateValidation(ErrorMessage = "Birth Day cannot be bigger than Today's date")]
+
+        public DateTime BirthDate { get; set; }
+
+        public int BirthDateDay { get; set; }
+        public int BirthDateMonth { get; set; }
+        public int BirthDateYear { get; set; }
+
+        public string ImageUrl { get; set; }
+
+
+        [Required(ErrorMessage = "Gender field is required.")]
+        public string Gender { get; set; }
+
+
+        [Required(ErrorMessage = " ")]
+        public string Address { get; set; }
     }
 }

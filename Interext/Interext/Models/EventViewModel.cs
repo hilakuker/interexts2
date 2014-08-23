@@ -32,13 +32,10 @@ namespace Interext.Models
         //[EventTimeValidation("DateTimeOfTheEvent")]
         public DateTime DateTimeOfTheEvent { get; set; }
 
-        //[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = " ")]
         public string DateOfTheEvent { get; set; }
-        //[Required(ErrorMessage = " ")]
-        public string HourTimeOfTheEvent { get; set; }
 
-        //[Required(ErrorMessage = " ")]
+        public string HourTimeOfTheEvent { get; set; }
         public string MinuteTimeOfTheEvent { get; set; }
 
         public bool TimeSet { get; set; }
@@ -55,6 +52,8 @@ namespace Interext.Models
         public Dictionary<string, bool> SideOfTextOptions { get; set; }
 
 
+        public bool NumOfParticipantsSet { get; set; }
+
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
         public int? NumOfParticipantsMin { get; set; }
@@ -63,6 +62,7 @@ namespace Interext.Models
         [MinMaxValidation("NumOfParticipantsMin", AllowEquality = true)]
         public int? NumOfParticipantsMax { get; set; }
 
+        public bool AgeOfParticipantsSet { get; set; }
 
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
         [Range(1, 100)]
@@ -81,5 +81,11 @@ namespace Interext.Models
         public string InterestsToDisplay { get; set; }
     }
 
+
+    public class EventsByMonth
+    {
+        public string Month { get; set; }
+        public List<Event> MonthEvents { get; set; }
+    }
 
 }

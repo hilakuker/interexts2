@@ -193,7 +193,7 @@ textarea {
 }
 
 #header header {
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 #header #slide-menu {
@@ -1301,7 +1301,7 @@ dd {
     border-right: 1px solid #7a7a7a;
 }
 
-#topMenuForm li .search-txt-container .fa.fa-gear {
+#topMenuForm li .search-txt-container .fa.fa-reorder {
     border-radius: 0 3px 3px 0;
     background-color: #68D999;
     height: 38px;
@@ -1315,7 +1315,7 @@ dd {
     border-left: 1px solid #fff;
 }
 
-#topMenuForm li .search-txt-container .fa.fa-gear:hover, #topMenuForm li .search-txt-container .fa.fa-search:hover {
+#topMenuForm li .search-txt-container .fa.fa-reorder:hover, #topMenuForm li .search-txt-container .fa.fa-search:hover {
     color: #000;
     text-shadow: 2px 2px #fff;
 }
@@ -1540,7 +1540,7 @@ div.mousescroll:hover {
     border: 2px solid #e22029 !important;
 }
 
-.validation-summary-errors {
+.validation-summary-errors, .validation-summary-valid {
     border: 2px solid #e22029 !important;
     width: 100% !important;
     text-align: center !important;
@@ -1548,6 +1548,6 @@ div.mousescroll:hover {
     padding: 10px 0 !important;
 
 }
-.validation-summary-errors ul li{
+.validation-summary-errors ul li, .validation-summary-valid ul li{
     list-style:none;
 }

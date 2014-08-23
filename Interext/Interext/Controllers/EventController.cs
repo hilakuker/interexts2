@@ -72,6 +72,9 @@ namespace Interext.Controllers
                 Title = @event.Title,
                 Description = @event.Description,
                 Id = @event.Id,
+                TimeSet = @event.TimeSet,
+                AgeOfParticipantsSet = @event.AgeOfParticipantsSet,
+                NumOfParticipantsSet = @event.NumOfParticipantsSet, 
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
                 //UsersAttending = @event.UsersAttending
             };
@@ -259,12 +262,19 @@ namespace Interext.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
+        public ActionResult Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
             if (ImageUrl == null)
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            else
+            {
+                if (!ImageSaver.IsImage(ImageUrl))
+                {
+                    ModelState.AddModelError("Image Upload", "You can upload only images");
+                }
             }
             if (selectedInterests == "")
             {
@@ -288,8 +298,10 @@ namespace Interext.Controllers
                     CreatorUser = user,
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
+                    AgeOfParticipantsSet = true,
                     NumOfParticipantsMax = model.NumOfParticipantsMax,
                     NumOfParticipantsMin = model.NumOfParticipantsMin,
+                    NumOfParticipantsSet = true,
                     ImageUrl = model.ImageUrl,
                     GenderParticipant = model.GenderParticipant,
                     BackroundColor = model.BackroundColor,
@@ -306,6 +318,14 @@ namespace Interext.Controllers
                     Interests = GetSelectedInterests(selectedInterests),
                     EventStatus = e_EventStatus.Active
                 };
+                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin== null)
+                {
+                    model.NumOfParticipantsSet = false;
+                }
+                if (model.AgeOfParticipantsMax == null && model.AgeOfParticipantsMin == null)
+                {
+                    model.AgeOfParticipantsSet = false;
+                }
                 db.Events.Add(eventToCreate);
                 try
                 {
@@ -502,6 +522,13 @@ namespace Interext.Controllers
             if (ImageUrl == null)
             {
                 ModelState.AddModelError("Image Upload", "Image Upload is required");
+            }
+            else
+            {
+                if (!ImageSaver.IsImage(ImageUrl))
+                {
+                    ModelState.AddModelError("Image Upload", "You can upload only images");
+                }
             }
             if (selectedInterests == "")
             {

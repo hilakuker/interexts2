@@ -62,7 +62,8 @@ namespace Interext
             bundles.Add(new ScriptBundle("~/bundles/register-approval").Include(
             "~/Scripts/intro/register-approval.js"
             ));
-            
+            bundles.Add(new ScriptBundle("~/bundles/profile-edit-js").Include(
+                       "~/Scripts/site/profile-edit.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/colorPickerJs").Include(
                         "~/Scripts/colorpicker/colorpicker.js",

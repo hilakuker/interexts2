@@ -19,61 +19,30 @@
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
                 @Html.HiddenFor(m => m.BirthDate, new { @class = "form-control", @placeholder = "Birth day", @value = "1/1/2004" })
                 <div class="birthdate">Birth day: </div>
-                <select id="BirthDateDay" class="form-control birth-day">
-                    @for (int i = 1; i <= 31; i++)
-                    {
-                        if (Model.BirthDate.Day == i)
-                        {
-                            <option value="@i" selected>@i</option>
-                        }
-                        else
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    }
-                </select>
-                <select id="BirthDateMonth" class="form-control birth-month">
-                    @for (int i = 1; i <= 12; i++)
-                    {
-                        if (Model.BirthDate.Month == i)
-                        {
-                            <option value="@i" selected>@i</option>
-                        }
-                        else
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    }
-                </select>
-                <select id="BirthDateYear" class="form-control birth-year">
-                    @for (int i = DateTime.Today.Year; i >= DateTime.Today.Year - 120; i--)
-                    {
-                        if (Model.BirthDate.Year == i)
-                        {
-                            <option value="@i" selected>@i</option>
-                        }
-                        else
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    }
-                </select>
+                @Html.DropDownListFor(m => m.BirthDateDay, new SelectList(ViewBag.Days), new { @class = "form-control birth-day" })
+                @Html.DropDownListFor(m => m.BirthDateMonth, new SelectList(ViewBag.Months), new { @class = "form-control birth-month" })
+                @Html.DropDownListFor(m => m.BirthDateYear, new SelectList(ViewBag.Years), new { @class = "form-control birth-year" })
                 @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Where do you live?", @type = "text", @id = "locationSearchTextField" })
-                <div class="Gender left">
+                <div class="Gender">
                     Gender:
-                    <br />
                     @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
                     <span>Male</span>
                     @Html.RadioButtonFor(m => m.Gender, "F")
                     <span>Female</span>
                 </div>
 
-                <div class="right btn btn-dark fileinput-button choose-image">
-                    <span class="fa fa-picture-o"></span>
-                    <span>Upload image</span>
-                    @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file" })
+                <div class="img-wrapper">
+                    <div class="image-preview"></div>
+                    <div class="btn btn-special fileinput-button choose-image">
+                        <span class="fa fa-picture-o"></span>
+
+                        @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file" })
+                    </div>
                 </div>
 
+
+               
+                
                 <button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>
             </div>
             <div class="second-part">
@@ -110,6 +79,8 @@
             <div class="clear"></div>
 
         </div>
+        
+         @Html.ValidationSummary(false, "Please fill the required fields")
     }
 </section>
 @section Scripts {

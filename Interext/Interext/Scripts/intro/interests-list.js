@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    init();
 
     function updateSelectedInterests() {
         var allIds = "";
@@ -11,6 +12,16 @@
         });
         $("#selectedInterests").val(allIds);
 
+    }
+    function init() {
+        updateSelectedInterests();
+        $(".interests-list li").each(function () {
+
+            var numberOfCheckedInCategory = $(this).find("ul li input[type='checkbox']:checked").length;
+            if (numberOfCheckedInCategory > 0) {
+                $(this).find("ul").slideDown();
+            }
+        });
     }
 
     $(".main-category").each(function () {

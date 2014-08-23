@@ -23,9 +23,12 @@
                             <div>
                                 @Model.DateOfTheEventNoYear
                             </div>
+                            @if (Model.TimeSet)
+                            { 
                             <div class="event-time">
                                 <span class="fa fa-clock-o"></span> @Model.DateTimeOfTheEvent.Hour.@Model.DateTimeOfTheEvent.Minute
                             </div>
+                            }
                             <div class="event-location">
                                 <span class="fa fa-map-marker"></span>&nbsp;@Model.Place<br />
                             </div>
@@ -40,6 +43,8 @@
                             <div class="clear"></div>
                         </div>
                         <table class="event-restrictions">
+                            @if (Model.AgeOfParticipantsSet)
+                            { 
                             <tr>
                                 <td>Ages</td>
                                 <td>
@@ -49,6 +54,9 @@
                                     {<span>+</span>}
                                 </td>
                             </tr>
+                            }
+                            @if (Model.NumOfParticipantsSet)
+                            {
                             <tr>
                                 <td>Number Of Participants</td>
                                 <td>
@@ -58,6 +66,7 @@
                                     {<span>+</span>}
                                 </td>
                             </tr>
+                            }
                             @if (Model.GenderParticipant != "Both")
                             {
                                 <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>

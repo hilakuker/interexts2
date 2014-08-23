@@ -21,7 +21,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".search-txt-container .fa-gear").on("click", function () {
+    $(".search-txt-container .fa-reorder").on("click", function () {
         var pathname = window.location.pathname.toLowerCase();
         if (pathname == "/" || pathname == "/home/index") {
             $("#searchEventsForm").parent().stop(true, true).slideDown('slow', function () {
@@ -39,9 +39,11 @@ $(document).ready(function () {
         }
     });
     $(".fa-search").click(function () {
+        
         var pathname = window.location.pathname.toLowerCase();
         if (pathname == "/" || pathname == "/home/index") {
             $(".search-btn").click();
+            $(".fa-reorder").click();
         }
         else {
             var searchWord = $(".search-txt-container input[type='text']").val();
@@ -81,7 +83,7 @@ $(document).ready(function () {
     });
 
     if (getParameterByName("advanced") == "1") {
-        $(".search-txt-container .fa-gear").click();
+        $(".search-txt-container .fa-reorder").click();
     }
     
 });
