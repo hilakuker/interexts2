@@ -15,4 +15,12 @@ namespace Interext.Models
         public DateTime CreatedTime { get; set; }
         public bool Handled { get; set; }
     }
+    public class ReportsIndexViewModel
+    {
+        public ReportsIndexViewModel()
+        {
+            Reports = new List<ReportsViewModel>();
+        }
+        public List<ReportsViewModel> Reports { get; set; }
+    }
 }

@@ -1551,3 +1551,15 @@ div.mousescroll:hover {
 .validation-summary-errors ul li, .validation-summary-valid ul li{
     list-style:none;
 }
+
+table {
+    margin-top:50px;
+    border-collapse: collapse;
+    width:100% !important;
+}
+
+td {
+    border: 1px solid black;
+    vertical-align: bottom;
+    padding: 15px;
+}

@@ -13,19 +13,14 @@ namespace Interext.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            var notHandledReports = db.ReportedUrl.Where(x => x.ReportStatus == e_reportStatus.ToBeHandled).ToList();
-            var notHandledReportsView = new List<ReportsViewModel>();
-            foreach (ReportLinks report in notHandledReports)
-            {
-                notHandledReportsView.Add(new ReportsViewModel() 
-                { CreatedTime = report.CreatedTime, Handled = false, ReportedUrl = report.ReportedUrl, Id = report.Id});
-            }
+            ReportsIndexViewModel notHandledReportsView = getNotReportedLink();
             return View(notHandledReportsView);
         }
+
         [HttpPost]
-        public ActionResult Index(List<ReportsViewModel> model)
+        public ActionResult Index(ReportsIndexViewModel model)
         {
-            foreach (ReportsViewModel report in model)
+            foreach (ReportsViewModel report in model.Reports)
             {
                 if (report.Handled)
                 {
@@ -34,7 +29,18 @@ namespace Interext.Controllers
                 }
             }
             db.SaveChanges();
-            return View();
+            return View(getNotReportedLink());
+        }
+        private ReportsIndexViewModel getNotReportedLink()
+        {
+            var notHandledReports = db.ReportedUrl.Where(x => x.ReportStatus == e_reportStatus.ToBeHandled).ToList();
+            ReportsIndexViewModel notHandledReportsView = new ReportsIndexViewModel();
+            foreach (ReportLinks report in notHandledReports)
+            {
+                notHandledReportsView.Reports.Add(
+                    new ReportsViewModel() { CreatedTime = report.CreatedTime, Handled = false, ReportedUrl = report.ReportedUrl, Id = report.Id });
+            }
+            return notHandledReportsView;
         }
     }
 }

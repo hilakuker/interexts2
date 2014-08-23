@@ -17,6 +17,7 @@ namespace Interext
                         "~/Scripts/jquery.unobtrusive-ajax.js",
                          "~/Scripts/jquery.validate*"
                         ));
+
             bundles.Add(new ScriptBundle("~/bundles/shared-js").Include(
                  "~/Scripts/shared/scroller/scroller.js"
                 ));
@@ -24,6 +25,9 @@ namespace Interext
             bundles.Add(new ScriptBundle("~/bundles/googlemaps").Include(
               "~/Scripts/googlemaps.js"
               ));
+
+            bundles.Add(new ScriptBundle("~/bundles/admin-table").Include(
+                "~/Scripts/admin-table.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/externalLogin").Include(
                   "~/Scripts/externalLogin.js",
