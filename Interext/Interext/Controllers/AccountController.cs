@@ -564,7 +564,20 @@ namespace Interext.Controllers
                 var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
                 string gender = getGender(externalIdentity);
                 var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
-                var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
+                var imageURL = string.Format(@"https://graph.facebook.com/{0}/picture?height=160&type=normal&width=160", userID);
+                var birthdayObj = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.DateOfBirth);
+                DateTime birthday;
+                if (birthdayObj != null)
+                {
+                    if (!DateTime.TryParse(birthdayObj.Value, out birthday))
+                    {
+                        birthday = new DateTime(DateTime.Now.Year - 10, 1, 1);
+                    }
+                }
+                else
+                {
+                    birthday = new DateTime(DateTime.Now.Year - 10, 1, 1);
+                }
                 ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
                 buildDateViewBags();
                 return View("ExternalLoginConfirmation",
@@ -575,7 +588,10 @@ namespace Interext.Controllers
                         Gender = gender,
                         ImageUrl = imageURL,
                         LastName = lastName,
-                        BirthDate = new DateTime(DateTime.Now.Year - 10, 1, 1)
+                        BirthDate = birthday,
+                        BirthDateDay = birthday.Day,
+                        BirthDateMonth = birthday.Month,
+                        BirthDateYear = birthday.Year
                     });
             }
         }
@@ -641,33 +657,22 @@ namespace Interext.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            // Get the information about the user from the external login provider
+            var info = await AuthenticationManager_GetExternalLoginInfoAsync_Workaround();
+            if (info == null)
+            {
+                return View("ExternalLoginFailure");
+            }
+            if (selectedInterests == "")
+            {
+                ModelState.AddModelError("Interests select", "You need to select interests");
+            }
 
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager_GetExternalLoginInfoAsync_Workaround();
                 ApplicationUser user;
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
                 user = createUserFromFacebookInfo(model, ImageUrl);
                 var result = await UserManager.CreateAsync(user);
-
-                //    if (result.Succeeded)
-                //    {
-                //        result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                //        if (result.Succeeded)
-                //        {
-                //            await SignInAsync(user, isPersistent: false);
-                //            return RedirectToLocal(returnUrl);
-                //        }
-                //    }
-                //    AddErrors(result);
-                //}
-
-                //ViewBag.ReturnUrl = returnUrl;
-                //return View(model);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
@@ -686,7 +691,23 @@ namespace Interext.Controllers
                     AddErrors(result);
                 }
             }
-            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
+            else
+            {
+                if (selectedInterests != "")
+                {
+                    List<Interest> interests = GetSelectedInterests(selectedInterests);
+                    ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(interests, db);
+                }
+                else
+                {
+                    ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(db);
+                }
+
+                var externalIdentity = getExternalIdentity();
+                var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
+                model.ImageUrl = string.Format(@"https://graph.facebook.com/{0}/picture?height=160&type=normal&width=160", userID);
+                buildDateViewBags();
+            }
             return View(model);
         }
 
@@ -694,11 +715,6 @@ namespace Interext.Controllers
         {
             ApplicationUser userToReturn;
             var externalIdentity = getExternalIdentity();
-            var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-
-            var firstName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:first_name").Value;
-            var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
-            string gender = getGender(externalIdentity);
             var userID = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:id").Value;
 
             var birthdate = i_Model.BirthDate;
@@ -715,7 +731,7 @@ namespace Interext.Controllers
             };
             if (ImageUrl == null)
             {
-                userToReturn.ImageUrl = string.Format(@"https://graph.facebook.com/{0}/picture?type=normal", userID);
+                userToReturn.ImageUrl = string.Format(@"https://graph.facebook.com/{0}/picture?height=160&type=normal&width=160", userID);
             }
             else
             {

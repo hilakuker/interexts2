@@ -30,7 +30,7 @@ function updateImageDraft(input) {
 $(document).ready(function () {
     $("#RegisterForm").submit(function () {
         var isValid = true;
-        if ($("#ImageUrl").val() == "") {
+        if ($("#ImageUrl:not(.from-facebook)").val() == "") {
 
             if ($(".input-validation-error").length == 0) {
 
@@ -57,12 +57,12 @@ $(document).ready(function () {
 
                 $(".validation-summary-valid").css({ "display": "block" });
                 if ($(".validation-summary-valid ul li.interests").length == 0) {
-                    $(".validation-summary-valid ul").html("<li class=\"interests\">Please select Interests</li>");
+                    $(".validation-summary-valid ul").append("<li class=\"interests\">Please select Interests</li>");
                 }
             }
             else {
                 if ($(".validation-summary-errors ul li.interests").length == 0) {
-                    $(".validation-summary-errors ul").html("<li class=\"interests\">Please select Interests</li>");
+                    $(".validation-summary-errors ul").append("<li class=\"interests\">Please select Interests</li>");
                 }
             }
             isValid = false;

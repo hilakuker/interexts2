@@ -77,7 +77,7 @@ namespace Interext.OtherCalsses
                     //the category is not in the list, so check if all its subcategories are in the list
                     //if so, add it to the list
                     var allSubCategoriesOfTheCategory = db.Interests.Where(x => x.InterestsCategory.Id == categoryId);
-                    var allSubCategoriesOfTheCategoriesChecked = interests.Where(x => x.InterestsCategory.Id == categoryId);
+                    var allSubCategoriesOfTheCategoriesChecked = interests.Where(x => ((x.InterestsCategory!=null) ? x.InterestsCategory.Id == categoryId : true));
                     if (allSubCategoriesOfTheCategory.Count() == allSubCategoriesOfTheCategoriesChecked.Count())
                     {
                         //all the sub categories are checked, but the category itself is not. Add it to the list

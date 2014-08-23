@@ -18,8 +18,8 @@ namespace Interext.Models
 
         public string Description { get; set; }
 
-        [Display(Name = "Image Url")]
-        [Required(ErrorMessage = "Please upload profile image")]
+        //[Display(Name = "Image Url")]
+        //[Required(ErrorMessage = "Please upload profile image")]
         public string ImageUrl { get; set; }
         public ApplicationUser CreatorUser { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Interext.Models.Event>
 
 @if (Model.Count() == 0)
-{ 
+{
     <div class="no-events">
-        Sorry there are no events found.<br/>
+        Sorry there are no events found.<br />
         <a href="/">Go back to events wall</a>
     </div>
 }
@@ -15,18 +15,28 @@
             <div class="event-date">@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Day).@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Month)</div>
             <div class="event-title">@Html.DisplayFor(modelItem => item.Title)</div>
             <div class="event-location"><span class="fa fa-map-marker"></span>@Html.DisplayFor(modelItem => item.Place)</div>
-            <div class="event-num-of-participants-container">
-                Number of participants: <span>@Html.DisplayFor(modelItem => item.NumOfParticipantsMin)@if (item.NumOfParticipantsMax != null)
-                {<span>-</span>@Html.DisplayFor(modelItem => item.NumOfParticipantsMax)}
-                else
-                {<span>+</span>}</span>
-            </div>
-            <div class="event-age-of-participants-container">
-                Age: <span>@Html.DisplayFor(modelItem => item.AgeOfParticipantsMin)@if (item.AgeOfParticipantsMax != null)
-                {<span>-</span>@Html.DisplayFor(modelItem => item.AgeOfParticipantsMax)}
-                else
-                {<span>+</span>}</span>
-            </div>
+            @if (item.NumOfParticipantsSet)
+            {
+                <div class="event-num-of-participants-container">
+                    Number of participants: <span>
+                        @Html.DisplayFor(modelItem => item.NumOfParticipantsMin)@if (item.NumOfParticipantsMax != null)
+                        {<span>-</span>@Html.DisplayFor(modelItem => item.NumOfParticipantsMax)}
+                        else
+                        {<span>+</span>}
+                    </span>
+                </div>
+            }
+            @if (item.AgeOfParticipantsSet)
+            {
+                <div class="event-age-of-participants-container">
+                    Age: <span>
+                        @Html.DisplayFor(modelItem => item.AgeOfParticipantsMin)@if (item.AgeOfParticipantsMax != null)
+                        {<span>-</span>@Html.DisplayFor(modelItem => item.AgeOfParticipantsMax)}
+                        else
+                        {<span>+</span>}
+                    </span>
+                </div>
+            }
             @if (item.GenderParticipant != "Both")
             {
                 <div class="event-gender-container">Gender: <span>@Html.DisplayFor(modelItem => item.GenderParticipant)</span></div>

@@ -78,7 +78,6 @@ namespace Interext.Controllers
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
                 //UsersAttending = @event.UsersAttending
             };
-
             List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where(e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).ToList();
             //ViewData["AttendingUsers"] = attendingUsers;
             eventToShow.UsersAttending = attendingUsers;
@@ -167,8 +166,17 @@ namespace Interext.Controllers
                 }
                 else
                 {
+
                     int count = allInterests.Where(x => x.Id == item.Id).Count();
                     interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+
+                    //Interest category = item.InterestsCategory;
+                    //if (interestsStatistics.Where(x => x.categoryId == category.Id).Count() == 0)
+                    //{
+                    //    int count = allInterests.Where(x => ((x.InterestsCategory != null) ? x.InterestsCategory.Id == category.Id : true)).Count();
+                    //    interestsStatistics.Add(new StatisticItem { number = count, title = category.Title, categoryId = category.Id });
+                    //}
+                    
                 }
             }
             interestsStatistics = interestsStatistics.OrderByDescending(x => x.number).Take(10).ToList();
@@ -320,11 +328,11 @@ namespace Interext.Controllers
                 };
                 if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin== null)
                 {
-                    model.NumOfParticipantsSet = false;
+                    eventToCreate.NumOfParticipantsSet = false;
                 }
                 if (model.AgeOfParticipantsMax == null && model.AgeOfParticipantsMin == null)
                 {
-                    model.AgeOfParticipantsSet = false;
+                    eventToCreate.AgeOfParticipantsSet = false;
                 }
                 db.Events.Add(eventToCreate);
                 try
@@ -503,6 +511,7 @@ namespace Interext.Controllers
                 Title = @event.Title,
                 PlaceLongitude = @event.PlaceLongitude,
                 PlaceLatitude = @event.PlaceLatitude,
+                TimeSet = @event.TimeSet,
                 AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(@event.Interests, db),
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
             };
@@ -519,20 +528,17 @@ namespace Interext.Controllers
         {
             List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
             Event @event = db.Events.Find(model.Id);
-            if (ImageUrl == null)
-            {
-                ModelState.AddModelError("Image Upload", "Image Upload is required");
-            }
-            else
-            {
-                if (!ImageSaver.IsImage(ImageUrl))
-                {
-                    ModelState.AddModelError("Image Upload", "You can upload only images");
-                }
-            }
             if (selectedInterests == "")
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
+            }
+            if (model.TimeSet == true && model.DateTimeOfTheEvent < DateTime.Now)
+            {
+                ModelState.AddModelError("Event Date time", "Event date cannot occur in the past.");
+            }
+            if (model.TimeSet == false && model.DateTimeOfTheEvent.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("Event Date", "Event date cannot occur in the past.");
             }
             if (ModelState.IsValid)
             {
@@ -551,13 +557,25 @@ namespace Interext.Controllers
                 @event.AgeOfParticipantsMin = model.AgeOfParticipantsMin;
                 @event.BackroundColor = model.BackroundColor.Replace("rgb(", "");
                 @event.BackroundColor = @event.BackroundColor.Replace(")", "");
+                @event.BackroundColorOpacity = model.BackroundColorOpacity;
                 @event.DateTimeOfTheEvent = model.DateTimeOfTheEvent;
                 @event.Description = model.Description;
                 @event.GenderParticipant = model.GenderParticipant;
                 @event.PlaceLatitude = model.PlaceLatitude;
                 @event.PlaceLongitude = model.PlaceLongitude;
+                @event.Interests.Clear();
                 @event.Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db);
-
+                @event.NumOfParticipantsSet = true;
+                @event.AgeOfParticipantsSet = true;
+                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
+                {
+                    @event.NumOfParticipantsSet = false;
+                }
+                if (model.AgeOfParticipantsMax == null && model.AgeOfParticipantsMin == null)
+                {
+                    @event.AgeOfParticipantsSet = false;
+                }
+                @event.TimeSet = model.TimeSet;
                 setSideOfText(@event.SideOfText, model);
                 setGenderOptions(@event.GenderParticipant, model);
                 db.Entry(@event).State = EntityState.Modified;
@@ -588,12 +606,16 @@ namespace Interext.Controllers
                 {
                     model.AllInterests = InterestsFromObjects.InitAllInterests(db);
                 }
+                model.InterestsToDisplay = selectedInterests;
+                model.CreatorUser = @event.CreatorUser;
+                model.ImageUrl = @event.ImageUrl;
+                model.BackroundColor = model.BackroundColor.Replace("rgb(", "");
+                model.BackroundColor = model.BackroundColor.Replace(")", "");
             }
-            InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
-            setSideOfText(model.SideOfText, model);
-            setGenderOptions(model);
-            model.InterestsToDisplay = selectedInterests;
-            model.CreatorUser = @event.CreatorUser;
+            //InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
+            //setSideOfText(model.SideOfText, model);
+            //setGenderOptions(model);
+            
             return View(model);
         }
 

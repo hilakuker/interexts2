@@ -26,7 +26,7 @@
                             @if (Model.TimeSet)
                             { 
                             <div class="event-time">
-                                <span class="fa fa-clock-o"></span> @Model.DateTimeOfTheEvent.Hour.@Model.DateTimeOfTheEvent.Minute
+                                <span class="fa fa-clock-o"></span> @Model.DateTimeOfTheEvent.ToString("H:mm")
                             </div>
                             }
                             <div class="event-location">

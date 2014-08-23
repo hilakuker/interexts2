@@ -18,5 +18,7 @@ namespace Interext.Models
     {
         public int number { get; set; }
         public string title { get; set; }
+
+        public int categoryId { get; set; }
     }
 }

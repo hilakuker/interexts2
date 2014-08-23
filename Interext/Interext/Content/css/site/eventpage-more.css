@@ -45,11 +45,12 @@
     font-size: 20px;
     text-align: right;
     margin-top: -24px;
+    margin-bottom:-8px;
 }
 .event-page-content .event-date .event-location {
     font-size: 18px;
     text-align: right;
-    margin-top: -32px;
+    margin-top: -24px;
 }
 
 .event-page-content .event-details {

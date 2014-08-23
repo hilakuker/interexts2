@@ -9,8 +9,6 @@
     logging in.
     @using (Html.BeginForm("ExternalLoginConfirmation", "Account", FormMethod.Post, new { enctype = "multipart/form-data", id = "RegisterForm" }))
     {
-        @*@using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = "Post", OnFailure = "onRegisterFailed", OnSuccess = "onRegisterSuccess" }, new { id = "registerForm", enctype = "multipart/form-data" }))
-            {*@
         <div class="all-parts">
             <div class="first-part">
                 <h1 class="form-signin-heading flipping-hover-area">Register to INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
@@ -27,20 +25,20 @@
                 @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Where do you live?", @type = "text", @id = "locationSearchTextField" })
                 <div class="Gender left">
                     Gender:
-                    <br />
+                   
                     @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })
                     <span>Male</span>
                     @Html.RadioButtonFor(m => m.Gender, "F")
                     <span>Female</span>
                 </div>
-
+                <div class="clear"></div>
  
-                <div class="img-wrapper">
+                <div class="img-wrapper for-facebook">
                     <div class="image-preview" style="background-image:url('@Model.ImageUrl')"></div>
                     <div class="btn btn-special fileinput-button choose-image">
                         <span class="fa fa-picture-o"></span>
 
-                        @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file" })
+                        @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @class = "from-facebook" })
                     </div>
                 </div>
                 <button class="btn btn-lg btn-special btn-block next-button" type="button">Next</button>

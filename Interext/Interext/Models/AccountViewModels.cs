@@ -9,15 +9,18 @@ namespace Interext.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
-        [Display(Name = "Username")]
+        [Display(Name = "User name")]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = " ")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
+        [Required(ErrorMessage = " ")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = " ")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -34,12 +37,12 @@ namespace Interext.Models
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Gender field is required.")]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
+        [Required(ErrorMessage = " ")]
         [Display(Name = "Address")]
-        [Required]
         public string Address { get; set; }
     }
 

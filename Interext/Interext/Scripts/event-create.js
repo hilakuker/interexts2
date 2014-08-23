@@ -41,10 +41,10 @@ function pageInit() {
     if ($(hour).val() == "") {
         $(hour).val("00");
     }
-
+    var initOpacity = ($("#BackroundColorOpacity").val()*100);
     $("#slider").slider({
         range: "min",
-        value: 80,
+        value: initOpacity,
         min: 1,
         max: 100,
         slide: function (event, ui) {
@@ -68,17 +68,51 @@ function pageInit() {
 
 $(document).ready(function () {
     $("#EventForm").submit(function () {
+        var isValid = true;
+        if ($("#ImageUrl:not(.from-edit)").val() == "") {
+
+            if ($(".input-validation-error").length == 0) {
+
+                $(".validation-summary-valid").css({ "display": "block" });
+                if ($(".validation-summary-valid ul li.image-upload").length == 0) {
+                    $(".validation-summary-valid ul").append("<li class=\"image-upload\">Please upload event image</li>");
+                }
+            }
+            else {
+
+                if ($(".validation-summary-errors ul li.image-upload").length == 0) {
+                    $(".validation-summary-errors ul").append("<li class=\"image-upload\">Please upload event image</li>");
+                }
+            }
+            isValid = false;
+        }
+        else {
+            $("li.image-upload").each(function () {
+                $(this).remove();
+            })
+        }
         if ($("#selectedInterests").val() == "") {
             if ($(".input-validation-error").length == 0) {
 
                 $(".validation-summary-valid").css({ "display": "block" });
-                $(".validation-summary-valid ul").html("<li>Please select Interests</li>");
+                if ($(".validation-summary-valid ul li.interests").length == 0) {
+                    $(".validation-summary-valid ul").append("<li class=\"interests\">Please select Interests</li>");
+                }
             }
             else {
-                $(".validation-summary-errors ul").append("<li>Please select Interests</li>");
+                if ($(".validation-summary-errors ul li.interests").length == 0) {
+                    $(".validation-summary-errors ul").append("<li class=\"interests\">Please select Interests</li>");
+                }
             }
-            return false;
+            isValid = false;
         }
+        else {
+            $("li.interests").each(function () {
+                $(this).remove();
+            })
+        }
+        if (!isValid)
+            return isValid;
     });
 
     $(".time-set").click(function () {
@@ -110,6 +144,7 @@ $(document).ready(function () {
     $("#HourTimeOfTheEvent").focus(function () {
         $(this).val("");
     });
+    updateDraftGender();
 });
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {

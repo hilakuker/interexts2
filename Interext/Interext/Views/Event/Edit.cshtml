@@ -11,7 +11,7 @@
 <div id="content" class="right-sidebar">
     <div class="event-page-content create-page">
         <article>
-            @using (Html.BeginForm("Edit", "Event", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit", "Event", FormMethod.Post, new { @enctype = "multipart/form-data", id = "EventForm" }))
             {
                 @Html.Hidden("id", Request["id"])
                 @Html.AntiForgeryToken()
@@ -29,11 +29,12 @@
                             <input type="text" id="DateOfTheEvent" name="DateOfTheEvent" class="form-control" placeholder="Date of the event" value="@Model.DateOfTheEvent" />
                             <span class="fa fa-calendar insert-image-button"></span>
                         </div>
-                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @value = "00", @id = "MinuteTimeOfTheEvent", @placeholder = "00" })<span class="colon">:</span>
-                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @value = "00", @id = "HourTimeOfTheEvent", @placeholder = "00" })
+                        @Html.TextBoxFor(m => m.MinuteTimeOfTheEvent, new { @class = "form-control minute-control", @id = "MinuteTimeOfTheEvent" })<span class="colon">:</span>
+                        @Html.TextBoxFor(m => m.HourTimeOfTheEvent, new { @class = "form-control hour-control", @id = "HourTimeOfTheEvent" })
                         <span class="time-title">Time:</span>
-                        @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id = "DateTimeOfTheEvent" })
+                        @Html.CheckBoxFor(m => m.TimeSet, new { @class = "time-set" })
                         <div class="clear"></div>
+                        @Html.HiddenFor(m => m.DateTimeOfTheEvent, new { @id = "DateTimeOfTheEvent" })
                         <div class="input-with-image-wrapper">
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
                             @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
@@ -47,7 +48,7 @@
                         <span class="btn btn-dark fileinput-button choose-image">
                             <span class="fa fa-picture-o"></span>
                             <span>Upload image</span>
-                            @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl" })
+                            @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl", @class = "from-edit" })
                         </span>
                         or
                         <span class="btn btn-disabled fileinput-button choose-from-stock">
@@ -133,10 +134,9 @@
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
                             <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>
                             <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null){<span>-</span>@Model.AgeOfParticipantsMax}else{<span>+</span>}</span></div>
-                            @if (Model.GenderParticipant != "Both")
-                            {
-                                <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
-                            }
+                            
+                            <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
+                            
                             <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl" /></div>
                         </a>
                     </div>
