@@ -164,6 +164,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterestsController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Models\PlaceRatingUser.cs" />
     <Compile Include="Models\PlaceViewModel.cs" />
     <Compile Include="Models\ReportLinks.cs" />
+    <Compile Include="Models\ReportsViewModel.cs" />
     <Compile Include="Models\Statistics.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -723,6 +725,7 @@
     <Content Include="Views\Account\RegisterApproval.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\events\" />

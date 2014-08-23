@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Interext.Models.ReportsViewModel>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventPageCss")
+}
+<div>
+    @Html.BeginForm("Index", "Admin")
+    {
+    <div class="clear"></div>
+    <table style="width:300px">
+        <tr>
+            <td>Url</td>
+            <td>Report Time</td>
+            <td>Handled? <input type="checkbox" id="checkAll">CheckAll</td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a href="@item.ReportedUrl" target="_blank"></a></td>
+                <td>@item.CreatedTime.ToShortDateString</td>
+                <td>@Html.CheckBoxFor(item.Handled)</td>
+            </tr>
+        }
+    </table>
+    <input type="submit" value="Save" class="btn btn-special" />
+    }
+</div>
+@section Scripts {
+}
