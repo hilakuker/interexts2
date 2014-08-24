@@ -11,7 +11,14 @@
 
 <section class="profile">
     <div class="profile-content">
-        <a href="/Account/Edit" class="btn btn-dark save-profile-btn">Edit profile</a>
+        <a href="/Account/Edit" class="btn btn-dark save-profile-btn">Edit Profile</a>
+        @using (Ajax.BeginForm("DeleteUser", new { Id = ViewData["Id"] },
+            new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteAccountFailure", OnSuccess = "onDeleteAccountSuccess" },
+            new { id = "deleteAccountForm" }))
+        {
+            <input type="submit" class="btn btn-dark delete-profile-btn" value="Delete Profile" />
+        }
+        @*@Html.ActionLink("Delete Profile", "DeleteUser", "Account", new { @class = "btn btn-dark delete-profile-btn" }))*@
         <div class="img-wrapper">
             <img src="@Model.ImageUrl" />
         </div>
@@ -71,11 +78,11 @@
     </div>
 </div>
 
-@*<p>
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>*@
-@*<section class="events">
-        <h2>Your Events:</h2>
-        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model.Events) ;
-    </section>*@
+<div id="dialog-confirm" title="Delete this account?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+        </span>The account will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/showProfileJs")
+}

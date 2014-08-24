@@ -160,7 +160,14 @@ namespace Interext.Controllers
             finalResult = string.Format("{0} ({1} year old)", birthDateString, caculateAge(i_BirthDate).ToString());
             return finalResult;
         }
-
+        public ActionResult DeleteUser()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var userFromDb = db.Users.Find(user.Id);
+            userFromDb.AccountIsActive = false;
+            db.SaveChanges();
+            return LogOff();
+        }
 
         public ActionResult Edit()
         {
@@ -283,6 +290,11 @@ namespace Interext.Controllers
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
+                else if (!user.AccountIsActive)
+                {
+                    ViewBag.Message = "Would you like to reactivate your account?";
+                    return View();
+                }
                 else
                 {
                     ModelState.AddModelError("", "Invalid email or password.");
@@ -383,8 +395,8 @@ namespace Interext.Controllers
                     Gender = model.Gender,
                     BirthDate = model.BirthDate.Date,
                     HomeAddress = model.Address,
-                    Age = caculateAge(model.BirthDate)
-
+                    Age = caculateAge(model.BirthDate),
+                    AccountIsActive = true
                 };
                 List<Interest> interests = GetSelectedInterests(selectedInterests);
                 uploadAndSetImage(ref user, ImageUrl);
@@ -548,10 +560,14 @@ namespace Interext.Controllers
 
             // Sign in the user with this external login provider if the user already has a login
             var user = await UserManager.FindAsync(loginInfo.Login);
-            if (user != null)
+            if (user != null && user.AccountIsActive)
             {
                 await SignInAsync(user, isPersistent: false);
                 return RedirectToLocal(returnUrl);
+            }
+            else if (user.AccountIsActive == false)
+            {
+                return RedirectToAction("Login");
             }
             else
             {
@@ -727,7 +743,8 @@ namespace Interext.Controllers
                 Gender = i_Model.Gender,
                 BirthDate = birthdate,
                 Age = caculateAge(birthdate),
-                HomeAddress = i_Model.Address
+                HomeAddress = i_Model.Address,
+                AccountIsActive = true
             };
             if (ImageUrl == null)
             {

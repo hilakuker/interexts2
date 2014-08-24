@@ -3,6 +3,15 @@
 @{
     ViewBag.Title = "Log in";
 }
+@if (ViewBag.Message != null)
+{
+    <script>
+            $(document).ready(function () {
+
+                alert('@ViewBag.Message');
+            });
+    </script>
+}
 <section id="loginForm" class="form-signin">
     <h1 class="form-signin-heading flipping-hover-area">INTERE<span class="flipping-text"><span data-title="X">X</span></span>TS</h1>
     <div class="slogin">

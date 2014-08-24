@@ -173,7 +173,8 @@ namespace Interext.Migrations
                     BirthDate = new DateTime(1987, 12, 13),
                     Gender = "Female",
                     Age = 26,
-                    UserName = GenerateUserName("admin@123.com")
+                    UserName = GenerateUserName("admin@123.com"),
+                    AccountIsActive = true
                 };
                 UserManager.Create(user, "123456");
                 ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);

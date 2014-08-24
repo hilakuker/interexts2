@@ -78,7 +78,8 @@ namespace Interext.Controllers
                 InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
                 //UsersAttending = @event.UsersAttending
             };
-            List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where(e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).ToList();
+            List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
+                (e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).Where(e=>e.AccountIsActive).ToList();
             //ViewData["AttendingUsers"] = attendingUsers;
             eventToShow.UsersAttending = attendingUsers;
             if (user.Id == eventToShow.CreatorUser.Id)
@@ -86,6 +87,8 @@ namespace Interext.Controllers
                 eventToShow.CurrentUserIsCreator = true;
                 ViewData["UserAlreadyAttending"] = false;
             }
+            else if (User.IsInRole("Admin"))
+            { eventToShow.CurrentUserIsCreator = true; }
             else
             {
                 eventToShow.CurrentUserIsCreator = false;

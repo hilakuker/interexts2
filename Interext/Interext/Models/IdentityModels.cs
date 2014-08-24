@@ -22,6 +22,8 @@ namespace Interext.Models
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual ICollection<EventVsAttendingUser> EventVsAttentingUsers { get; set; }
         public string HomeAddress { get; set; }
+       [Required]
+        public bool AccountIsActive { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

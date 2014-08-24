@@ -26,6 +26,10 @@ namespace Interext
               "~/Scripts/googlemaps.js"
               ));
 
+            bundles.Add(new ScriptBundle("~/bundles/showProfileJs").Include(
+              "~/Scripts/ShowProfile.js"
+              ));
+
             bundles.Add(new ScriptBundle("~/bundles/admin-table").Include(
                 "~/Scripts/admin-table.js"));
 

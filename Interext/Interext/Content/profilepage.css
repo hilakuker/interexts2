@@ -136,6 +136,12 @@ section.events h2 {
     right: 0;
 }
 
+.delete-profile-btn {
+    position: absolute;
+    bottom: 0;
+    right: 8%;
+}
+
 .validation-summary-errors, .validation-summary-valid {
     width: 250px !important;
     margin: 0;

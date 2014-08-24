@@ -1552,13 +1552,14 @@ div.mousescroll:hover {
     list-style:none;
 }
 
-table {
-    margin-top:50px;
+.admin-table {
+    margin-top: 50px;
     border-collapse: collapse;
-    width:100% !important;
+    width: 100% !important;
+    margin-bottom: 50px;
 }
 
-td {
+.admin-table td {
     border: 1px solid black;
     vertical-align: bottom;
     padding: 15px;
