@@ -13,7 +13,7 @@ namespace Interext.OtherCalsses
     public class MinMaxValidationAttribute : ValidationAttribute, IClientValidatable
     {
         private const string lessThanErrorMessage = "Maximum value must be bigger than Minumum value.";
-        private const string lessThanOrEqualToErrorMessage = "Maximum value must be bigger than Minumu value.";
+        private const string lessThanOrEqualToErrorMessage = "Maximum value must be bigger than Minumum value.";
 
         public string OtherProperty { get; private set; }
 

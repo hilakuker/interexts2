@@ -29,7 +29,6 @@ namespace Interext.Models
         public double PlaceLatitude { get; set; }
 
         [Required(ErrorMessage = " ")]
-        //[EventTimeValidation("DateTimeOfTheEvent")]
         public DateTime DateTimeOfTheEvent { get; set; }
 
         [Required(ErrorMessage = " ")]
