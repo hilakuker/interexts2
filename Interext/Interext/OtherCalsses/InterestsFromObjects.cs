@@ -33,7 +33,11 @@ namespace Interext.OtherCalsses
             List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
             foreach (var item in categories)
             {
-                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
+                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), ImagesForStack = new List<string>(), IsSelected = false };
+                foreach (string image in item.ImagesForStack)
+                {
+                    category.ImagesForStack.Add(image);
+                }
                 foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
                 {
                     InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
@@ -110,7 +114,8 @@ namespace Interext.OtherCalsses
                             Id = item.Id,
                             ImageUrl = item.ImageUrl,
                             Title = item.Title,
-                            SubInterests = new List<InterestViewModel>()
+                            SubInterests = new List<InterestViewModel>(),
+                             ImagesForStack = new List<string>()
                         };
                 if (interestsList.Where(x => x.Id == item.Id) == null)
                 {
@@ -119,6 +124,10 @@ namespace Interext.OtherCalsses
                 else
                 {
                     category.IsSelected = true;
+                }
+                foreach (string imageFromStack in item.ImagesForStack)
+                {
+                    category.ImagesForStack.Add(imageFromStack);
                 }
                 foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
                 {

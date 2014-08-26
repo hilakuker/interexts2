@@ -14,7 +14,9 @@ section.profile .profile-content {
 section.profile .img-wrapper, section.profile .profile-info, section.profile .interests {
     float: left;
 }
-
+    section.profile .interests {
+        width:450px;
+    }
 section.profile .img-wrapper {
     position: relative;
 }

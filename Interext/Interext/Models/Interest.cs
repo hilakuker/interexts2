@@ -16,6 +16,8 @@ namespace Interext.Models
         public Interest InterestsCategory { get; set; }
         public string ImageUrl { get; set; }
 
+        public virtual ICollection<string> ImagesForStack { get; set; }
+
         public virtual ICollection<Event> Events { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
@@ -31,6 +33,7 @@ namespace Interext.Models
         public string Title { get; set; }
         public string ImageUrl { get; set; }
         public virtual ICollection<InterestViewModel> SubInterests { get; set; }
+        public virtual ICollection<string> ImagesForStack { get; set; }
         public bool IsSelected { get; set; }
     }
 }

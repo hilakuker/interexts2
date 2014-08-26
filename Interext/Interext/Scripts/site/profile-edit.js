@@ -15,28 +15,28 @@
 
     $("#EditProfileForm").submit(function () {
         var isValid = true;
-        if ($("#ImageUrl").val() == "") {
+        //if ($("#ImageUrl").val() == "") {
 
-            if ($(".input-validation-error").length == 0) {
+        //    if ($(".input-validation-error").length == 0) {
 
-                $(".validation-summary-valid").css({ "display": "block" });
-                if ($(".validation-summary-valid ul li.image-upload").length == 0) {
-                    $(".validation-summary-valid ul").append("<li class=\"image-upload\">Please upload plofile image</li>");
-                }
-            }
-            else {
+        //        $(".validation-summary-valid").css({ "display": "block" });
+        //        if ($(".validation-summary-valid ul li.image-upload").length == 0) {
+        //            $(".validation-summary-valid ul").append("<li class=\"image-upload\">Please upload plofile image</li>");
+        //        }
+        //    }
+        //    else {
 
-                if ($(".validation-summary-errors ul li.image-upload").length == 0) {
-                    $(".validation-summary-errors ul").append("<li class=\"image-upload\">Please upload plofile image</li>");
-                }
-            }
-            isValid = false;
-        }
-        else {
-            $("li.image-upload").each(function () {
-                $(this).remove();
-            })
-        }
+        //        if ($(".validation-summary-errors ul li.image-upload").length == 0) {
+        //            $(".validation-summary-errors ul").append("<li class=\"image-upload\">Please upload plofile image</li>");
+        //        }
+        //    }
+        //    isValid = false;
+        //}
+        //else {
+        //    $("li.image-upload").each(function () {
+        //        $(this).remove();
+        //    })
+        //}
         if ($("#selectedInterests").val() == "") {
             if ($(".input-validation-error").length == 0) {
 

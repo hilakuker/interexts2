@@ -1424,7 +1424,7 @@ dd {
     display: none;
 }
 
-section.hidden-popup-container {
+section.hidden-popup-container, section.hidden-popup-container-for-stock {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -1440,6 +1440,11 @@ section article.popup {
     border-radius: 3px;
     padding: 5px 7px;
     margin: 10% auto;
+}
+
+section.hidden-popup-container-for-stock article.popup {
+     width: 680px;
+    height: 500px;
 }
 
 section article.popup .close {

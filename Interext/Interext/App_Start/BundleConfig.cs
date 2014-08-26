@@ -56,14 +56,15 @@ namespace Interext
 
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
                         "~/Scripts/event-create.js",
-                        "~/Scripts/numberVlidation.js"));
+                        "~/Scripts/shared/number-validation.js",
+                        "~/Scripts/stack-popup.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/placeJs").Include(
             "~/Scripts/place.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/register").Include(
             "~/Scripts/register.js",
-            "~/Scripts/numberVlidation.js",
+           "~/Scripts/shared/number-validation.js",
             "~/Scripts/intro/interests-list.js"
             ));
 
