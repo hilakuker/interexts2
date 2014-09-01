@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Interext.Models.Comment>
+@foreach (var item in Model)
+{
+    <div class="comment-item">
+        <a href="/"><img src="@item.Author.ImageUrl" class="comment-person-img" /></a>
+        <div class="comment-container">
+            <div class="person-name">@item.Author.FirstName @item.Author.LastName</div>
+            <div class="comment-text">@item.Text</div>
+            <div class="time">@item.DateTimeCreated.ToString("MMMM dd") at @item.DateTimeCreated.ToString("h:mm tt")</div>
+        </div>
+        <div class="clear"></div>
+
+        @using (Ajax.BeginForm("DeleteComment", new { Id = @item.Id, EventId = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comments-items", OnFailure = "onDeleteCommentFailure", OnSuccess = "onDeleteCommentSuccess" }, new { id = "deleteCommentForm" }))
+        {
+            <span class="btn fileinput-button delete-comment">
+                <span class="fa fa-times"></span>
+                <span></span>
+                <input type="submit" />
+            </span>
+        }
+    </div>
+}

@@ -22,22 +22,7 @@ namespace Interext.Controllers
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this._db));
 
         }
-        private List<InterestViewModel> InitAllInterests()
-        {
-            List<InterestViewModel> allInterests = new List<InterestViewModel>();
-            List<Interest> categories = _db.Interests.Where(x => x.InterestsCategory == null).ToList();
-            foreach (var item in categories)
-            {
-                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), IsSelected = false };
-                foreach (var subitem in _db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
-                {
-                    InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
-                    category.SubInterests.Add(subcategory);
-                }
-                allInterests.Add(category);
-            }
-            return allInterests;
-        }
+        
         public ActionResult Index(string searchword, string advanced)
         {
             if (User.Identity.IsAuthenticated)

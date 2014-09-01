@@ -43,6 +43,7 @@ namespace Interext.Models
         public DbSet<Interest> Interests { get; set; }
         public DbSet<PlaceRatingUser> PlaceRatingUsers { get; set; }
         public DbSet<EventVsAttendingUser> EventVsAttendingUsers { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<ReportLinks> ReportedUrl { get; set; }
     }
 }

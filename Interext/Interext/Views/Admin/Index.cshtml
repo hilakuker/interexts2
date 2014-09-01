@@ -19,7 +19,7 @@
                     <td>Url</td>
                     <td>Report Time</td>
                     <td>
-                        Handled?
+                        Handled? <br/>
                         <input type="checkbox" id="checkAll"> CheckAll
                     </td>
                 </tr>
@@ -27,17 +27,17 @@
                 {
                     <tr>
                         <td><a href="@Model.Reports[count].ReportedUrl" target="_blank">@Model.Reports[count].ReportedUrl</a></td>
-                        <td>@Model.Reports[count].CreatedTime.ToShortDateString()</td>
+                        <td>@Model.Reports[count].CreatedTime.ToString()</td>
                         <td>@Html.CheckBoxFor(m => m.Reports[count].Handled)</td>
                         @Html.HiddenFor(m => m.Reports[count].Id)
                     </tr>
                 }
             </table>
-            <input type="submit" value="Save" class="btn btn-special" />
+            <input type="submit" value="Save Changes" class="btn btn-special" />
         }
         else
         {
-            <span>There are no unhandled reports</span>
+            <div class="no-reports">There are no unhandled reports</div>
         }
     }
 </div>

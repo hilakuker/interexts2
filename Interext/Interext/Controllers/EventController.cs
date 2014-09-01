@@ -74,14 +74,27 @@ namespace Interext.Controllers
                 Id = @event.Id,
                 TimeSet = @event.TimeSet,
                 AgeOfParticipantsSet = @event.AgeOfParticipantsSet,
-                NumOfParticipantsSet = @event.NumOfParticipantsSet, 
-                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
+                NumOfParticipantsSet = @event.NumOfParticipantsSet,
+                InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(@event.Interests.ToList())
                 //UsersAttending = @event.UsersAttending
             };
             List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
-                (e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).Where(e=>e.AccountIsActive).ToList();
-            //ViewData["AttendingUsers"] = attendingUsers;
+                (e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).Where(e => e.AccountIsActive).ToList();
             eventToShow.UsersAttending = attendingUsers;
+            eventToShow.Comments = new List<Comment>();
+            foreach (Comment item in @event.Comments)
+            {
+                if (user.Id == item.Author.Id || user.Id == eventToShow.CreatorUser.Id || User.IsInRole("Admin"))
+                {
+                    item.ShowDeleteButton = true;
+                }
+                else
+                {
+                    item.ShowDeleteButton = false;
+                }
+                eventToShow.Comments.Add(item);
+            }
+
             if (user.Id == eventToShow.CreatorUser.Id)
             {
                 eventToShow.CurrentUserIsCreator = true;
@@ -147,44 +160,113 @@ namespace Interext.Controllers
         {
             List<StatisticItem> interestsStatistics = new List<StatisticItem>();
 
-            List<Interest> allInterests = new List<Interest>();
+
             foreach (ApplicationUser user in attenders)
             {
                 if (user.Interests.Count > 0)
                 {
-                    allInterests.AddRange(user.Interests);
-                }
-            }
-            var d1 = allInterests.Distinct();
-            List<Interest> uniqueInterests = d1.ToList();
-            foreach (Interest item in uniqueInterests)
-            {
-                if (item.InterestsCategory == null)
-                {
-                    if (db.Interests.Where(x => x.InterestsCategory.Id == item.Id).Count() == 0)
+                    List<Interest> mainCategoriesOfTheSubCategories = new List<Interest>();
+                    foreach (Interest subCategory in user.Interests.Where(x => x.InterestsCategory != null))
                     {
-                        int count = allInterests.Where(x => x.Id == item.Id).Count();
-                        interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+                        Interest category = db.Interests.SingleOrDefault(x => x.Id == subCategory.InterestsCategory.Id);
+                        mainCategoriesOfTheSubCategories.Add(category);
+                    }
+                    mainCategoriesOfTheSubCategories = mainCategoriesOfTheSubCategories.Distinct().ToList();
+                    foreach (Interest item in mainCategoriesOfTheSubCategories)
+                    {
+                        StatisticItem statisticItem = interestsStatistics.SingleOrDefault(x => x.categoryId == item.Id);
+                        if (statisticItem == null)
+                        {
+                            //insert the category for the first time
+                            interestsStatistics.Add(new StatisticItem { categoryId = item.Id, number = 1, title = item.Title });
+                        }
+                        else
+                        {
+                            statisticItem.number++;
+                        }
                     }
                 }
-                else
-                {
-
-                    int count = allInterests.Where(x => x.Id == item.Id).Count();
-                    interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
-
-                    //Interest category = item.InterestsCategory;
-                    //if (interestsStatistics.Where(x => x.categoryId == category.Id).Count() == 0)
-                    //{
-                    //    int count = allInterests.Where(x => ((x.InterestsCategory != null) ? x.InterestsCategory.Id == category.Id : true)).Count();
-                    //    interestsStatistics.Add(new StatisticItem { number = count, title = category.Title, categoryId = category.Id });
-                    //}
-                    
-                }
             }
-            interestsStatistics = interestsStatistics.OrderByDescending(x => x.number).Take(10).ToList();
+
+            interestsStatistics = interestsStatistics.OrderByDescending(x => x.number).Take(5).ToList();
             return interestsStatistics;
         }
+
+        private List<SubCategoriesStatistics> LoadSubInterestsStatistics(List<ApplicationUser> attenders, List<StatisticItem> mainCategoriesStatistics)
+        {
+            List<SubCategoriesStatistics> subCategoriesStatisticsList = new List<SubCategoriesStatistics>();
+
+            List<Interest> allSubInterests = new List<Interest>();
+            int numberOfUsers = attenders.Count();
+            foreach (ApplicationUser user in attenders)
+            {
+                if (user.Interests.Count > 0)
+                {
+                    allSubInterests.AddRange(user.Interests.Where(x => x.InterestsCategory != null));
+                }
+            }
+
+            foreach (StatisticItem mainCategory in mainCategoriesStatistics)
+            {
+                SubCategoriesStatistics subCategoriesStatistics = new SubCategoriesStatistics { categoryId = mainCategory.categoryId, categoryTitle = mainCategory.title, subCategories = new List<StatisticItem>() };
+
+                var biggestSubCategories = allSubInterests.Where(x => x.InterestsCategory.Id == mainCategory.categoryId).GroupBy(x => new { x.Id, x.Title }).Select(x => new { x.Key, Count = x.Count() }).OrderByDescending(x => x.Count).Take(3);
+                foreach (var item in biggestSubCategories)
+                {
+                    StatisticItem s = new StatisticItem();
+                    s.categoryId = item.Key.Id;
+                    s.title = item.Key.Title;
+                    float persentage = (float)item.Count / (float)numberOfUsers;
+                    s.number = (int)(persentage * 100);
+                    subCategoriesStatistics.subCategories.Add(s);
+                }
+                subCategoriesStatisticsList.Add(subCategoriesStatistics);
+            }
+            return subCategoriesStatisticsList;
+        }
+        //private List<StatisticItem> LoadInterestsStatistics(List<ApplicationUser> attenders)
+        //{
+        //    List<StatisticItem> interestsStatistics = new List<StatisticItem>();
+
+        //    List<Interest> allInterests = new List<Interest>();
+        //    foreach (ApplicationUser user in attenders)
+        //    {
+        //        if (user.Interests.Count > 0)
+        //        {
+        //            allInterests.AddRange(user.Interests);
+        //        }
+        //    }
+        //    var d1 = allInterests.Distinct();
+        //    List<Interest> uniqueInterests = d1.ToList();
+        //    foreach (Interest item in uniqueInterests)
+        //    {
+        //        if (item.InterestsCategory == null)
+        //        {
+        //            if (db.Interests.Where(x => x.InterestsCategory.Id == item.Id).Count() == 0)
+        //            {
+        //                int count = allInterests.Where(x => x.Id == item.Id).Count();
+        //                interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+        //            }
+        //        }
+        //        else
+        //        {
+
+        //            int count = allInterests.Where(x => x.Id == item.Id).Count();
+        //            interestsStatistics.Add(new StatisticItem { number = count, title = item.Title });
+
+        //            //Interest category = item.InterestsCategory;
+        //            //if (interestsStatistics.Where(x => x.categoryId == category.Id).Count() == 0)
+        //            //{
+        //            //    int count = allInterests.Where(x => ((x.InterestsCategory != null) ? x.InterestsCategory.Id == category.Id : true)).Count();
+        //            //    interestsStatistics.Add(new StatisticItem { number = count, title = category.Title, categoryId = category.Id });
+        //            //}
+
+        //        }
+        //    }
+        //    interestsStatistics = interestsStatistics.OrderByDescending(x => x.number).Take(5).ToList();
+        //    return interestsStatistics;
+        //}
+
 
         private Statistics LoadStatistics(List<ApplicationUser> attenders)
         {
@@ -192,26 +274,11 @@ namespace Interext.Controllers
             statistics.Gender = LoadGenderStatistics(attenders);
             statistics.Age = LoadAgeStatistics(attenders);
             statistics.Interests = LoadInterestsStatistics(attenders);
+            statistics.SubCategoriesInterests = LoadSubInterestsStatistics(attenders, statistics.Interests);
 
             return statistics;
         }
-        private string GetInterestsForDisplay(List<Interest> Interests)
-        {
-            string interestsForDisplay = "";
-            foreach (var interest in Interests)
-            {
-                //add sub categories only if their category is not in the interests list
-                if (Interests.Where(x => x.Id == interest.InterestsCategory.Id) == null || interest.InterestsCategory == null)
-                {
-                    interestsForDisplay += interest.Title + ", ";
-                }
-            }
-            if (interestsForDisplay != "")
-            {
-                interestsForDisplay = interestsForDisplay.Remove(interestsForDisplay.Count() - 2, 2);
-            }
-            return interestsForDisplay;
-        }
+
 
         private string setDisplayDateFormat(DateTime dateTime)
         {
@@ -261,36 +328,44 @@ namespace Interext.Controllers
 
             return interests;
         }
-
+        private string defaultDraftImage = "/Content/images/example-images/draft-image.jpg";
         public ActionResult Create()
         {
             EventViewModel model = new EventViewModel();
-            //model.Title = "dd";
             model.AllInterests = InterestsFromObjects.InitAllInterests(db);
-            //ViewBag.AllInterests = InitAllInterests();
+            ViewBag.DraftImage = defaultDraftImage;
             return View(model);
-            //return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
         {
             List<ModelError> errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
-            if (ImageUrl == null)
+            if (model.isImageFromStock)
             {
-                ModelState.AddModelError("Image Upload", "Image Upload is required");
+                if (String.IsNullOrEmpty(model.ImageFromStock))
+                {
+                    ModelState.AddModelError("Image Upload", "Image Upload is required");
+                }
             }
             else
             {
-                if (!ImageSaver.IsImage(ImageUrl))
+                if (ImageUrl == null)
                 {
-                    ModelState.AddModelError("Image Upload", "You can upload only images");
+                    ModelState.AddModelError("Image Upload", "Image Upload is required");
+                }
+                else
+                {
+                    if (!ImageSaver.IsImage(ImageUrl))
+                    {
+                        ModelState.AddModelError("Image Upload", "You can upload only images");
+                    }
                 }
             }
             if (selectedInterests == "")
             {
                 ModelState.AddModelError("Interests select", "You need to select interests");
-            } 
+            }
             if (model.TimeSet == true && model.DateTimeOfTheEvent < DateTime.Now)
             {
                 ModelState.AddModelError("Event Date time", "Event date cannot occur in the past.");
@@ -299,7 +374,7 @@ namespace Interext.Controllers
             {
                 ModelState.AddModelError("Event Date", "Event date cannot occur in the past.");
             }
-            
+
             if (ModelState.IsValid)
             {
                 var user = UserManager.FindById(User.Identity.GetUserId());
@@ -313,7 +388,6 @@ namespace Interext.Controllers
                     NumOfParticipantsMax = model.NumOfParticipantsMax,
                     NumOfParticipantsMin = model.NumOfParticipantsMin,
                     NumOfParticipantsSet = true,
-                    ImageUrl = model.ImageUrl,
                     GenderParticipant = model.GenderParticipant,
                     BackroundColor = model.BackroundColor,
                     BackroundColorOpacity = model.BackroundColorOpacity,
@@ -327,9 +401,10 @@ namespace Interext.Controllers
                     PlaceLatitude = model.PlaceLatitude,
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),
-                    EventStatus = e_EventStatus.Active
+                    EventStatus = e_EventStatus.Active,
+                    isImageFromStock = model.isImageFromStock
                 };
-                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin== null)
+                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
                 {
                     eventToCreate.NumOfParticipantsSet = false;
                 }
@@ -337,13 +412,24 @@ namespace Interext.Controllers
                 {
                     eventToCreate.AgeOfParticipantsSet = false;
                 }
+                if (model.isImageFromStock)
+                {
+                    eventToCreate.ImageUrl = model.ImageFromStock;
+                }
+                else
+                {
+                    eventToCreate.ImageUrl = model.ImageUrl;
+                }
+
                 db.Events.Add(eventToCreate);
                 try
                 {
                     db.SaveChanges();
-                    saveImage(ref eventToCreate, ImageUrl);
-
-                    EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId=eventToCreate.Id, UserId=user.Id, Event = eventToCreate, AttendingUser = user };
+                    if (!model.isImageFromStock)
+                    {
+                        saveImage(ref eventToCreate, ImageUrl);
+                    }
+                    EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId = eventToCreate.Id, UserId = user.Id, Event = eventToCreate, AttendingUser = user };
                     db.EventVsAttendingUsers.Add(eventVsAttendingUser);
 
                     db.SaveChanges();
@@ -367,6 +453,14 @@ namespace Interext.Controllers
                 else
                 {
                     model.AllInterests = InterestsFromObjects.InitAllInterests(db);
+                }
+                if (model.isImageFromStock)
+                {
+                    ViewBag.DraftImage = model.ImageFromStock;
+                }
+                else
+                {
+                    ViewBag.DraftImage = defaultDraftImage;
                 }
             }
             return View(model);
@@ -420,9 +514,9 @@ namespace Interext.Controllers
                 {
                     return false;
                 }
-                EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser {EventId=@event.Id, UserId=user.Id, Event = @event, AttendingUser = user};
+                EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId = @event.Id, UserId = user.Id, Event = @event, AttendingUser = user };
                 db.EventVsAttendingUsers.Add(eventVsAttendingUser);
-               // @event.UsersAttending.Add(user);
+                // @event.UsersAttending.Add(user);
                 db.SaveChanges();
                 return true;
             }
@@ -447,7 +541,7 @@ namespace Interext.Controllers
                     return false;
                 }
 
-                EventVsAttendingUser eventVsAttendingUser = db.EventVsAttendingUsers.SingleOrDefault(x=>x.Event.Id == @event.Id && x.AttendingUser.Id == user.Id);
+                EventVsAttendingUser eventVsAttendingUser = db.EventVsAttendingUsers.SingleOrDefault(x => x.Event.Id == @event.Id && x.AttendingUser.Id == user.Id);
                 if (eventVsAttendingUser != null)
                 {
                     db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
@@ -486,8 +580,8 @@ namespace Interext.Controllers
             {
                 return HttpNotFound();
             }
-            string hour = @event.DateTimeOfTheEvent.Hour.ToString();
-            string minute = @event.DateTimeOfTheEvent.Minute.ToString();
+            string hour = @event.DateTimeOfTheEvent.ToString("HH");
+            string minute = @event.DateTimeOfTheEvent.ToString("mm");
             string dateString = @event.DateTimeOfTheEvent.Date.ToString();
             EventViewModel model = new EventViewModel()
             {
@@ -497,7 +591,7 @@ namespace Interext.Controllers
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
                 DateOfTheEvent = @event.DateTimeOfTheEvent.ToShortDateString(),
-                DateOfTheEventNoYear = string.Format("{0}.{1}", 
+                DateOfTheEventNoYear = string.Format("{0}.{1}",
                 @event.DateTimeOfTheEvent.Day.ToString(), @event.DateTimeOfTheEvent.Month.ToString()),
                 DateTimeOfTheEvent = @event.DateTimeOfTheEvent,
                 HourTimeOfTheEvent = hour,
@@ -516,8 +610,13 @@ namespace Interext.Controllers
                 PlaceLatitude = @event.PlaceLatitude,
                 TimeSet = @event.TimeSet,
                 AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(@event.Interests, db),
-                InterestsToDisplay = GetInterestsForDisplay(@event.Interests.ToList())
+                InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(@event.Interests.ToList())
             };
+            if (@event.isImageFromStock)
+            {
+                model.ImageFromStock = @event.ImageUrl;
+                model.isImageFromStock = true;
+            }
             // setAllInterests(@event, model);
             setSideOfText(@event.SideOfText, model);
             setGenderOptions(@event.GenderParticipant, model);
@@ -550,9 +649,17 @@ namespace Interext.Controllers
                 @event.Title = model.Title;
                 @event.SideOfText = model.SideOfText;
                 @event.Place = model.Place;
+                @event.isImageFromStock = model.isImageFromStock;
                 if (model.ImageUrl != null)
                 {
                     saveImage(ref @event, ImageUrl);
+                }
+                else
+                {
+                    if (@event.isImageFromStock)
+                    {
+                        @event.ImageUrl = model.ImageFromStock;
+                    }
                 }
                 @event.NumOfParticipantsMax = model.NumOfParticipantsMax;
                 @event.NumOfParticipantsMin = model.NumOfParticipantsMin;
@@ -594,7 +701,7 @@ namespace Interext.Controllers
                         ModelState.AddModelError("", error.ValidationErrors.ToString());
                     }
                 }
-                
+
             }
             else
             {
@@ -611,14 +718,19 @@ namespace Interext.Controllers
                 }
                 model.InterestsToDisplay = selectedInterests;
                 model.CreatorUser = @event.CreatorUser;
-                model.ImageUrl = @event.ImageUrl;
+                if (model.isImageFromStock)
+                {
+                    model.ImageUrl = model.ImageFromStock;
+                }
+                else
+                {
+                    model.ImageUrl = @event.ImageUrl;
+                }
                 model.BackroundColor = model.BackroundColor.Replace("rgb(", "");
                 model.BackroundColor = model.BackroundColor.Replace(")", "");
             }
-            //InterestsFromObjects.LoadAllInterestsFromEventView(selectedInterests, model, db);
-            //setSideOfText(model.SideOfText, model);
-            //setGenderOptions(model);
-            
+
+
             return View(model);
         }
 
@@ -661,7 +773,14 @@ namespace Interext.Controllers
                 @event.EventStatus = e_EventStatus.Deleted;
                 @event.CreatorUser = @event.CreatorUser;
                 db.Entry(@event).State = EntityState.Modified;
+                List<EventVsAttendingUser> eventVsAttendingUsers = db.EventVsAttendingUsers.Where(x => x.Event.Id == @event.Id).ToList();
+                foreach (var eventVsAttendingUser in eventVsAttendingUsers)
+                {
+                    db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
+                }
+
                 db.SaveChanges();
+
                 return true;
 
             }
@@ -704,5 +823,65 @@ namespace Interext.Controllers
             return View(userList);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveComment(string comment, string Id)
+        {
+            List<Comment> model = null;
+
+            if (String.IsNullOrEmpty(comment))
+            {
+                ModelState.AddModelError("Empty Comment", "Please fill the comment field");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    int eventId = int.Parse(Id);
+                    Event currentEvent = db.Events.SingleOrDefault(x => x.Id == eventId);
+                    var user = UserManager.FindById(User.Identity.GetUserId());
+                    Comment commentItem = new Comment();
+                    commentItem.Author = user;
+                    commentItem.DateTimeCreated = DateTime.Now;
+                    commentItem.Event = currentEvent;
+                    commentItem.Text = comment;
+                    db.Comments.Add(commentItem);
+                    db.SaveChanges();
+                    model = db.Comments.Where(x => x.Event.Id == eventId).ToList();
+                    ViewData["Id"] = eventId;
+                    return PartialView("~/Views/Event/_Comments.cshtml", model);
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("Saving failed", "Error. Saving the comment failed");
+                }
+            }
+            return View(model);
+        }
+
+        public ActionResult DeleteComment(int? id, int EventId)
+        {
+            List<Comment> model = null;
+            try
+            {
+                if (id != null)
+                {
+                    Comment comment = db.Comments.SingleOrDefault(x => x.Id == id);
+                    if (comment != null)
+                    {
+                        db.Comments.Remove(comment);
+                        db.SaveChanges();
+                        model = db.Comments.Where(x => x.Event.Id == EventId).ToList();
+                        ViewData["Id"] = EventId;
+                        return PartialView("~/Views/Event/_Comments.cshtml", model);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("Delete failed", "Error. Comment delete failed");
+            }
+            return View(model);
+        }
     }
 }

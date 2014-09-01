@@ -23,6 +23,8 @@ namespace Interext.Models
 
         public string ImageUrl { get; set; }
 
+        public bool isImageFromStock { get; set; }
+
         //the options for the events or groups are only these that u are member of
 
         public string Place { get; set; } // the object Place with all the info .. like previous events .. if not specified then 
@@ -62,6 +64,8 @@ namespace Interext.Models
 
 
         public e_EventStatus? EventStatus { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
     public enum e_EventStatus
     {

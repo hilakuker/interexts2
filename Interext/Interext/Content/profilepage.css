@@ -11,12 +11,14 @@ section.profile .profile-content {
     position: relative;
 }
 
-section.profile .img-wrapper, section.profile .profile-info, section.profile .interests {
+section.profile .img-wrapper, section.profile .profile-info, section.profile .user-interests {
     float: left;
 }
-    section.profile .interests {
-        width:450px;
-    }
+
+section.profile .profile-content .user-interests {
+    width: 450px;
+}
+
 section.profile .img-wrapper {
     position: relative;
 }
@@ -43,7 +45,7 @@ section.profile .img-wrapper .choose-image {
     border-radius: 0;
 }
 
-section.profile .profile-info, section.profile .interests {
+section.profile .profile-info, section.profile .user-interests {
     margin-left: 30px;
 }
 
@@ -70,7 +72,7 @@ section.profile .profile-info table.basic-info .fa-map-marker {
 }
 
 @media only screen and (max-width: 479px) {
-    section.profile .profile-info, section.profile .interests {
+    section.profile .profile-info, section.profile .user-interests {
         margin-left: 0px;
     }
 
@@ -151,3 +153,4 @@ section.events h2 {
     right: 116px;
     bottom: 0;
 }
+

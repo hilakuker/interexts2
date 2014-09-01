@@ -12,20 +12,20 @@
     colorOnHover: "#d5ea80"
 },
 {
-    color: "#ffb347",
-    colorOnHover: "#ffce88"
-},
-{
-    color: "#cbcbcb",
-    colorOnHover: "#e2e0e0"
+    color: "#fea2a2",
+    colorOnHover: "#fdc5c5"
 },
 {
     color: "#78647d",
     colorOnHover: "#a493a8"
 },
 {
-    color: "#fea2a2",
-    colorOnHover: "#fdc5c5"
+    color: "#ffb347",
+    colorOnHover: "#ffce88"
+},
+{
+    color: "#cbcbcb",
+    colorOnHover: "#e2e0e0"
 },
 {
     color: "#779ab2",
@@ -42,6 +42,51 @@
 
 
 ];
+
+//var colors = [
+//{
+//    color: "#f7464a",
+//    colorOnHover: "#f77275"
+//},
+//{
+//    color: "#02bd9b",
+//    colorOnHover: "#2dcfb1"
+//},
+//{
+//    color: "#bdd84d",
+//    colorOnHover: "#d5ea80"
+//},
+//{
+//    color: "#ffb347",
+//    colorOnHover: "#ffce88"
+//},
+//{
+//    color: "#cbcbcb",
+//    colorOnHover: "#e2e0e0"
+//},
+//{
+//    color: "#78647d",
+//    colorOnHover: "#a493a8"
+//},
+//{
+//    color: "#fea2a2",
+//    colorOnHover: "#fdc5c5"
+//},
+//{
+//    color: "#779ab2",
+//    colorOnHover: "#b1c6d4"
+//},
+//{
+//    color: "#949fb1",
+//    colorOnHover: "#bfc8d7"
+//},
+//{
+//    color: "#4d5360",
+//    colorOnHover: "#7d818c"
+//}
+
+
+//];
 
 
 var doughnutDataInterests = [];
@@ -82,25 +127,10 @@ function onReportEventSuccess(response) {
         onDeleteEventFailure(response)
     }
     else {
-        location.href = "/";
+        //location.href = "/";
+        alert("Your report was sent");
     }
 }
-
-function fillStatistics(statistics, container) {
-    var index = 0;
-    $.each(statistics, function () {
-        var number = this.number;
-        var title = this.title;
-        var statisticItem = {
-            value: number,
-            color: colors[index].color,
-            highlight: colors[index].colorOnHover,
-            label: title
-        };
-        container.push(statisticItem);
-        index++;
-    });
-};
 
 function LoadStatisticCanvases() {
     var ctx = document.getElementById("chart-area-interests").getContext("2d");
@@ -111,11 +141,71 @@ function LoadStatisticCanvases() {
     window.myDoughnut3 = new Chart(ctx3).Doughnut(doughnutDataAge, { responsive: true });
 };
 
+function fillStatistics(statistics, container) {
+    var index = 0;
+    $.each(statistics, function () {
+        var number = this.number;
+        var title = this.title;
+        var percentage = this.percentage;
+        var statisticItem = {
+            value: number,
+            color: colors[index].color,
+            highlight: colors[index].colorOnHover,
+            label: title
+            //label: title + ":" + number
+        };
+        container.push(statisticItem);
+        index++;
+    });
+};
+var fontClasses = [
+{
+    fontClass: "big-font"
+},
+{
+    fontClass: "medium-font"
+},
+{
+    fontClass: "small-font"
+}
+];
+
+
+function fillSubInterestsStatistics(statistics)
+{
+    var index = 0;
+    var text = "<table>";
+    $.each(statistics, function () {
+        text += "<tr class=\"main-category-statistics\">";
+        var title = this.categoryTitle;
+        text += "<td><div class=\"sub-category-icon\" style=\"background-color:" + colors[index].color + "\"></div>";
+        text += "<div class=\"title\" style=\"color:" + colors[index].color + "\">" + title + ":</div></td>";
+        var subStatistics = this.subCategories;
+        var textForSubCatTitles = "<td><ul class=\"sub-categories\">";
+        var textForSubCatPrecentage = textForSubCatTitles;
+
+        var index2 = 0;
+        $.each(subStatistics, function () {
+            textForSubCatTitles += "<li class=\"" + fontClasses[index2].fontClass + "\">" + this.title + "</li>";
+            textForSubCatPrecentage += "<li class=\"" + fontClasses[index2].fontClass + "\">" + this.number + "%</li>";
+            index2++;
+        });
+        textForSubCatTitles += "</ul></td>";
+        textForSubCatPrecentage += "</ul></td>";
+        text += textForSubCatTitles + textForSubCatPrecentage + "</tr>";
+        index++;
+    });
+    text += "</table>"
+    $("#sub-categories-statistics").html(text);
+}
+
+
 $(document).ready(function () {
     var statisticValues = jQuery.parseJSON($("#hidStatisticValues").val());
     fillStatistics(statisticValues.Gender, doughnutDataGender);
     fillStatistics(statisticValues.Age, doughnutDataAge);
     fillStatistics(statisticValues.Interests, doughnutDataInterests);
+    fillSubInterestsStatistics(statisticValues.SubCategoriesInterests);
     LoadStatisticCanvases();
 
 
@@ -148,7 +238,9 @@ $(document).ready(function () {
 
 });
 
-
+function onCommentsLoadFailure() {
+    return "Error in loading the events";
+}
 
 //$("#deleteEventForm").onSubmit(function () {
 //    var form = $(this);

@@ -1,0 +1,58 @@
+﻿#main > .container {
+    overflow-x:hidden;
+}
+#main > .container.event-search-container {
+    margin-bottom: -35px !important;
+    display: none;
+}
+
+
+#searchEventsForm {
+    margin: 20px 0 0 20px;
+    position: relative;
+}
+
+#searchEventsForm h2 {
+    margin-bottom: 10px;
+}
+
+#searchEventsForm .input-with-image-wrapper {
+    width: 350px;
+}
+
+#searchEventsForm .input-with-image-wrapper input {
+    width: 100%;
+}
+
+#searchEventsForm .section {
+    float: left;
+    width: 350px;
+    margin-right: 20px;
+}
+
+#searchEventsForm .field-row .label {
+    margin: 15px 0;
+}
+
+#searchEventsForm .medium-field {
+    margin-right: 5px;
+}
+
+#searchEventsForm .close-btn {
+    position: absolute;
+    right: 1px;
+    bottom: 0;
+    padding: 8px 5px 8px 9px;
+    font-size: 24px;
+}
+
+#searchEventsForm .search-btn {
+    position: absolute;
+    right: 43px;
+    bottom: 0;
+    width: 100px;
+}
+
+#searchEventsForm #AgeOfParticipant {
+    margin-left: 27px;
+}

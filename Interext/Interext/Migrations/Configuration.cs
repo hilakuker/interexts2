@@ -27,49 +27,49 @@ namespace Interext.Migrations
                 Title = "Books",
                 ImageUrl = "/Content/images/interests/books.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Books/1.jpg", "/Content/images/interests/Books/2.jpg", "/Content/images/interests/Books/3.jpg", "/Content/images/interests/Books/4.jpg" }
+                ImagesForStock = "/Content/images/interests/Books/1.jpg*/Content/images/interests/Books/2.jpg*/Content/images/interests/Books/3.jpg*/Content/images/interests/Books/4.jpg" 
             };
             Interest sports = new Interest
             {
                 Title = "Sports",
                 ImageUrl = "/Content/images/interests/sports.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Sports/1.jpg" }
+                ImagesForStock = "/Content/images/interests/Sports/1.jpg*/Content/images/interests/Sports/2.jpg*/Content/images/interests/Sports/3.jpg" 
             };
             Interest cooking = new Interest
             {
                 Title = "Cooking",
                 ImageUrl = "/Content/images/interests/cooking.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Cooking/1.jpg" }
+                ImagesForStock = "/Content/images/interests/Cooking/1.jpg" 
             };
             Interest outdoor = new Interest
             {
                 Title = "Outdoor",
                 ImageUrl = "/Content/images/interests/outdoor.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Outdoor/1.jpg" }
+                ImagesForStock = "/Content/images/interests/Outdoor/1.jpg"
             };
             Interest arts = new Interest
             {
                 Title = "Arts",
                 ImageUrl = "/Content/images/interests/Arts.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Arts/1.jpg", "/Content/images/interests/Arts/2.jpg", "/Content/images/interests/Arts/3.jpg", "/Content/images/interests/Arts/4.jpg", "/Content/images/interests/Arts/5.jpg", "/Content/images/interests/Arts/6.jpg", "/Content/images/interests/Arts/7.jpg", "/Content/images/interests/Arts/8.jpg", "/Content/images/interests/Arts/9.jpg", "/Content/images/interests/Arts/10.jpg", "/Content/images/interests/Arts/11.jpg", "/Content/images/interests/Arts/12.jpg" }
+                ImagesForStock = "/Content/images/interests/Arts/1.jpg*/Content/images/interests/Arts/2.jpg*/Content/images/interests/Arts/3.jpg*/Content/images/interests/Arts/4.jpg*/Content/images/interests/Arts/5.jpg*/Content/images/interests/Arts/6.jpg*/Content/images/interests/Arts/7.jpg*/Content/images/interests/Arts/8.jpg*/Content/images/interests/Arts/9.jpg*/Content/images/interests/Arts/10.jpg*/Content/images/interests/Arts/11.jpg*/Content/images/interests/Arts/12.jpg"
             };
             Interest music = new Interest
             {
                 Title = "Music",
                 ImageUrl = "/Content/images/interests/music.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Music/1.jpg" }
+                ImagesForStock = "/Content/images/interests/Music/1.jpg"
             };
-            Interest Pets = new Interest
+            Interest pets = new Interest
             {
                 Title = "Pets",
                 ImageUrl = "/Content/images/interests/pets.jpg",
                 InterestsCategory = null,
-                ImagesForStack = new List<string> { "/Content/images/interests/Pets/1.jpg", "/Content/images/interests/Pets/2.jpg", "/Content/images/interests/Pets/3.jpg", "/Content/images/interests/Pets/4.jpg", "/Content/images/interests/Pets/5.jpg", "/Content/images/interests/Pets/6.jpg", "/Content/images/interests/Pets/7.jpg", "/Content/images/interests/Pets/8.jpg", "/Content/images/interests/Pets/9.jpg", "/Content/images/interests/Pets/10.jpg", "/Content/images/interests/Pets/11.jpg", "/Content/images/interests/Pets/12.jpg", "/Content/images/interests/Pets/13.jpg" }
+                ImagesForStock = "/Content/images/interests/Pets/1.jpg*/Content/images/interests/Pets/2.jpg*/Content/images/interests/Pets/3.jpg*/Content/images/interests/Pets/4.jpg*/Content/images/interests/Pets/5.jpg*/Content/images/interests/Pets/6.jpg*/Content/images/interests/Pets/7.jpg*/Content/images/interests/Pets/8.jpg*/Content/images/interests/Pets/9.jpg*/Content/images/interests/Pets/10.jpg*/Content/images/interests/Pets/11.jpg*/Content/images/interests/Pets/12.jpg*/Content/images/interests/Pets/13.jpg"
             };
 
             mainCategories.Add(music);
@@ -78,7 +78,7 @@ namespace Interext.Migrations
             mainCategories.Add(arts);
             mainCategories.Add(cooking);
             mainCategories.Add(outdoor);
-            mainCategories.Add(Pets);
+            mainCategories.Add(pets);
 
             mainCategories.ForEach(x => context.Interests.AddOrUpdate(y => y.Title, x));
 
@@ -221,7 +221,9 @@ namespace Interext.Migrations
                     Gender = "Female",
                     Age = 26,
                     UserName = GenerateUserName("admin@123.com"),
-                    AccountIsActive = true
+                    AccountIsActive = true,
+                    ImageUrl = "/Content/images/users/admin.png",
+                    HomeAddress = "Tel Aviv, Israel"
                 };
                 UserManager.Create(user, "123456");
                 ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);

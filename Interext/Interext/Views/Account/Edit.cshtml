@@ -59,10 +59,10 @@
             </tr>
         </table>
     </div>
-    <div class="interests">
-        <h2>Interests:</h2>
-        @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
-    </div>
+            <div class="user-interests">
+                <h2>Interests:</h2>
+                @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
+            </div>
     @Html.ValidationSummary(false, "Please fill the required fields")
     <div class="clear"></div>
 </div>

@@ -58,7 +58,7 @@ namespace Interext.Controllers
             profile.ImageUrl = user.ImageUrl;
             profile.BirthDate = getBirthdateAndAge(user.BirthDate.Value);
             profile.Address = user.HomeAddress;
-            profile.InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList());
+            profile.InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(user.Interests.ToList());
 
 
             List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
@@ -134,23 +134,7 @@ namespace Interext.Controllers
             return monthName;
         }
 
-        private string GetInterestsForDisplay(List<Interest> Interests)
-        {
-            string interestsForDisplay = "";
-            foreach (var interest in Interests)
-            {
-                //add sub categories only if their category is not in the interests list
-                if (Interests.Where(x => x.Id == interest.InterestsCategory.Id) == null || interest.InterestsCategory == null)
-                {
-                    interestsForDisplay += interest.Title + ", ";
-                }
-            }
-            if (interestsForDisplay != "")
-            {
-                interestsForDisplay = interestsForDisplay.Remove(interestsForDisplay.Count() - 2, 2);
-            }
-            return interestsForDisplay;
-        }
+        
 
         private string getBirthdateAndAge(DateTime i_BirthDate)
         {
@@ -164,7 +148,25 @@ namespace Interext.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var userFromDb = db.Users.Find(user.Id);
+            userFromDb.UserName = "";
             userFromDb.AccountIsActive = false;
+            List<EventVsAttendingUser> eventVsAttendingUsers = db.EventVsAttendingUsers.Where(x => x.UserId == user.Id).ToList();
+            foreach (var eventVsAttendingUser in eventVsAttendingUsers)
+            {
+                db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
+            }
+            List<Event> userCreatedEvents = db.Events.Where(x => x.CreatorUser.Id == user.Id).ToList();
+            foreach (Event eventCreated in userCreatedEvents)
+            {
+                eventCreated.EventStatus = e_EventStatus.Deleted;
+                db.Entry(eventCreated).State = EntityState.Modified;
+                List<EventVsAttendingUser> eventVsAttendingUsers2 = db.EventVsAttendingUsers.Where(x => x.Event.Id == eventCreated.Id).ToList();
+                foreach (var eventVsAttendingUser2 in eventVsAttendingUsers2)
+                {
+                    db.EventVsAttendingUsers.Remove(eventVsAttendingUser2);
+                }
+            }    
+
             db.SaveChanges();
             return LogOff();
         }
@@ -868,7 +870,7 @@ namespace Interext.Controllers
                 LastName = @user.LastName,
                 ImageUrl = @user.ImageUrl,
                 UserName = @user.UserName,
-                InterestsToDisplay = GetInterestsForDisplay(user.Interests.ToList())
+                InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(user.Interests.ToList())
             };
 
             List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();

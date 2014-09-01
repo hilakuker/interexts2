@@ -3,13 +3,7 @@
         input = input[1];
     return input;
 }
-//function validatenumbers()
-//{
-//    if (
-//    $("#txtNumOfParticipantsFrom").val > $("#txtNumOfParticipantsTo").val)
-//}
-function getTodayDate()
-{
+function getTodayDate() {
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -27,11 +21,10 @@ function getTodayDate()
 function pageInit() {
     $("#DateOfTheEvent").datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
     $("#DateOfTheEvent").val(getTodayDate());
-    
+
     var minutes = $("#MinuteTimeOfTheEvent");
     var hour = $("#HourTimeOfTheEvent");
-    if (!$(".time-set").prop("checked"))
-    {
+    if (!$(".time-set").prop("checked")) {
         $(minutes).attr({ "disabled": "" });
         $(hour).attr({ "disabled": "" });
     }
@@ -41,7 +34,7 @@ function pageInit() {
     if ($(hour).val() == "") {
         $(hour).val("00");
     }
-    var initOpacity = ($("#BackroundColorOpacity").val()*100);
+    var initOpacity = ($("#BackroundColorOpacity").val() * 100);
     $("#slider").slider({
         range: "min",
         value: initOpacity,
@@ -66,31 +59,34 @@ function pageInit() {
     initplacechangecevent(placeSelecter);
 }
 
-$(document).ready(function () {
+function validateOnSubmit() {
     $("#EventForm").submit(function () {
         var isValid = true;
-        if ($("#ImageUrl:not(.from-edit)").val() == "") {
+        if (!$("#ImageUrl").hasClass("from-edit")) {
+            if ($("#ImageUrl").val() == "" && $("#ImageFromStock").val() == "") {
 
-            if ($(".input-validation-error").length == 0) {
+                if ($(".input-validation-error").length == 0) {
 
-                $(".validation-summary-valid").css({ "display": "block" });
-                if ($(".validation-summary-valid ul li.image-upload").length == 0) {
-                    $(".validation-summary-valid ul").append("<li class=\"image-upload\">Please upload event image</li>");
+                    $(".validation-summary-valid").css({ "display": "block" });
+                    if ($(".validation-summary-valid ul li.image-upload").length == 0) {
+                        $(".validation-summary-valid ul").append("<li class=\"image-upload\">Please upload image or choose from stock</li>");
+                    }
                 }
+                else {
+
+                    if ($(".validation-summary-errors ul li.image-upload").length == 0) {
+                        $(".validation-summary-errors ul").append("<li class=\"image-upload\">Please upload image or choose from stock</li>");
+                    }
+                }
+                isValid = false;
             }
             else {
-
-                if ($(".validation-summary-errors ul li.image-upload").length == 0) {
-                    $(".validation-summary-errors ul").append("<li class=\"image-upload\">Please upload event image</li>");
-                }
+                $("li.image-upload").each(function () {
+                    $(this).remove();
+                })
             }
-            isValid = false;
         }
-        else {
-            $("li.image-upload").each(function () {
-                $(this).remove();
-            })
-        }
+
         if ($("#selectedInterests").val() == "") {
             if ($(".input-validation-error").length == 0) {
 
@@ -115,6 +111,9 @@ $(document).ready(function () {
             return isValid;
     });
 
+}
+
+function setTimeEvents() {
     $(".time-set").click(function () {
         var ifIsChecked = $(this).prop("checked");
         if (ifIsChecked == true) {
@@ -123,8 +122,7 @@ $(document).ready(function () {
             $(minutes).removeAttr("disabled");
             $(hours).removeAttr("disabled");
 
-            if ($(minutes).val() == "")
-            {
+            if ($(minutes).val() == "") {
                 $(minutes).val("00");
             }
 
@@ -133,7 +131,7 @@ $(document).ready(function () {
             }
         }
         else {
-            $("#MinuteTimeOfTheEvent").attr({"disabled":""});
+            $("#MinuteTimeOfTheEvent").attr({ "disabled": "" });
             $("#HourTimeOfTheEvent").attr({ "disabled": "" });
 
         }
@@ -144,8 +142,9 @@ $(document).ready(function () {
     $("#HourTimeOfTheEvent").focus(function () {
         $(this).val("");
     });
-    updateDraftGender();
-});
+}
+
+
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
     $(fromElement).on('input', function () {
@@ -165,7 +164,7 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
         }
         else { $(thisElement).val("") }
     }
-     
+
     function setDraft(fromNumber, toNumber) {
         $(rangeToShowContainer).css("display", "block");
         if (toNumber == "") {
@@ -237,6 +236,7 @@ function updateImageDraft(input) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $(".event-box-innerwrap").css("background-image", "url('" + e.target.result + "')");
+                $("#isImageFromStock").val("false");
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -312,27 +312,29 @@ function initEvents() {
     $('#dpdGender').on('change', function () {
         updateDraftGender();
     });
+
+    setTimeEvents();
 }
 
-    function updateDateTime() {
-        var minute = $('#MinuteTimeOfTheEvent').val();
-        var hour = $('#HourTimeOfTheEvent').val();
-        var date = $('#DateOfTheEvent').val();
-        if (date != '') {
-            var h = "00";
-            var m = "00";
-            if (minute != '') {
-                m = minute;
-            }
-            if (hour != '') {
-                h = hour;
-            }
-            $('#DateTimeOfTheEvent').val(date + " " + h + ":" + m + ":" + "00")
+function updateDateTime() {
+    var minute = $('#MinuteTimeOfTheEvent').val();
+    var hour = $('#HourTimeOfTheEvent').val();
+    var date = $('#DateOfTheEvent').val();
+    if (date != '') {
+        var h = "00";
+        var m = "00";
+        if (minute != '') {
+            m = minute;
         }
-        else {
-            $('#DateTimeOfTheEvent').val("");
+        if (hour != '') {
+            h = hour;
         }
+        $('#DateTimeOfTheEvent').val(date + " " + h + ":" + m + ":" + "00")
     }
+    else {
+        $('#DateTimeOfTheEvent').val("");
+    }
+}
 
 $(document).ready(function () {
     pageInit();
@@ -342,156 +344,21 @@ $(document).ready(function () {
     updateSideOfTheTextDraft();
     updateDraftGender();
     updateDateTime();
+    validateOnSubmit();
+
+
     $("#DateOfTheEvent").val(getTodayDate());
 
 
-
-
-$(".open-stack-popup").each(function () {
-
-    //init
-    var dataForPopupElement = $(this).parent().find(".data-for-popup");
-    var dataForPopup = dataForPopupElement.html();
-    var popupContentElement = $(".popup-content-for-stock");
-    $(popupContentElement).html(dataForPopup);
-    $(dataForPopupElement).html("");
-    //init();
-    //end init
-
-    //function init()
-    //{
-    //    updateSelectedInterests();
-    //    $(".interests-list li").each(function () {
-
-    //        var numberOfCheckedInCategory = $(this).find("ul li input[type='checkbox']:checked").length;
-    //        if (numberOfCheckedInCategory > 0)
-    //        {
-    //            $(this).find("ul").slideDown();
-    //        }
-    //    });
-    //}
-
-    //function updateSelectedInterests() {
-    //    var allIds = "";
-    //    $(popupContentElement).find("input[type='checkbox']").each(function () {
-    //        var ifIsChecked = $(this).prop("checked");
-    //        if (ifIsChecked == true) {
-    //            var id = $(this).attr("data-id");
-    //            allIds += id + ",";
-    //        }
-    //    });
-    //    $("#selectedInterests").val(allIds);
-
-    //}
+    $('.popup-content-for-stock').slimscroll({
+        color: '#333',
+        size: '10px',
+        width: '560px',
+        height: '350px',
+        opacity: '1',
+        alwaysVisible: true
+    });
 
 
 
-
-
-
-
-
-    $(this).on("click", function () {
-
-        var hiddenSection = $('section.hidden-popup-container-for-stock');
-        hiddenSection.fadeIn()
-            // unhide section.hidden
-            .css({ 'display': 'block' })
-            // set to full screen
-            .css({ width: $(window).width() + 'px', height: $(window).height() + 'px' })
-            .css({
-                top: ($(window).height() - hiddenSection.height()) / 2 + 'px',
-                left: ($(window).width() - hiddenSection.width()) / 2 + 'px'
-            })
-            // greyed out background
-            .css({ 'background-color': 'rgba(0,0,0,0.5)' })
-            .appendTo('body');
-        $(".popup").click(function () { return false; });
-
-
-        $('span.close').off("click").on("click", function () {
-            $(hiddenSection).fadeOut();
-            //updateSelectedInterests();
-        });
-        $(".hidden-popup-container-for-stock").off("click").on("click", function () {
-            $(hiddenSection).fadeOut();
-            //updateSelectedInterests();
-        });
-
-
-
-
-
-        //$(".main-category").each(function () {
-        //    $(this).off("click").on("click", function (event) {
-        //        event.stopPropagation();
-        //        var mainCategory = $(this);
-        //        var allCatInterests = $(mainCategory).find("input.allCategoryInterests");
-        //        var ifIsChecked = $(allCatInterests).prop("checked");
-        //        if (ifIsChecked == false) {
-        //            $(allCatInterests).prop("checked", true);
-        //            checkAll(allCatInterests);
-        //            $(mainCategory).parent().find("ul").slideDown();
-        //        }
-        //        else if (ifIsChecked == true) {
-        //            $(allCatInterests).prop("checked", false);
-        //            checkAll(allCatInterests);
-        //        }
-        //    });
-        //});
-
-        //function checkAll(allCatInterests) {
-        //    var ifIsChecked = $(allCatInterests).prop("checked");
-        //    if (ifIsChecked == true) {
-        //        $(allCatInterests).parent().parent().find("input.sub-category").each(function () {
-        //            $(this).prop("checked", true);
-        //        });
-        //    }
-        //    else if (ifIsChecked == false) {
-        //        $(allCatInterests).parent().parent().find("input.sub-category").each(function () {
-        //            $(this).prop("checked", false);
-        //        });
-        //    }
-        //};
-
-        //$("input.allCategoryInterests").each(function () {
-        //    $(this).off("click").on("click", function (event) {
-        //        event.stopPropagation();
-        //        var allCatInterests = $(this);
-        //        checkAll(allCatInterests);
-        //        $(allCatInterests).parent().parent().find("ul").slideDown();
-        //    });
-        //});
-
-        //$(".interests-list li ul li").each(function () {
-        //    $(this).off("click").on("click", function (event) {
-        //        event.stopPropagation();
-        //        var subCategory = $(this).find(".sub-category");
-        //        var ifIsChecked = $(subCategory).prop("checked");
-        //        if (ifIsChecked == true) {
-        //            $(subCategory).prop("checked", false);
-        //            $(this).parent().parent().find("input.allCategoryInterests").each(function () {
-        //                $(this).prop("checked", false);
-        //            });
-        //        }
-        //        else {
-        //            $(subCategory).prop("checked", true);
-        //        }
-        //    });
-        //});
-
-        //$(".interests-list li ul li input.sub-category").each(function () {
-        //    $(this).off("click").on("click", function (event) {
-        //        event.stopPropagation();
-        //        var ifIsChecked = $(this).prop("checked");
-        //        if (ifIsChecked == false) {
-        //            $(this).parent().parent().parent().find("input.allCategoryInterests").each(function () {
-        //                $(this).prop("checked", false);
-        //            });
-        //        }
-        //    });
-        //});
-
-   });
-});
 });

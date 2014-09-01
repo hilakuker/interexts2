@@ -13,10 +13,10 @@ namespace Interext.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
-        public Interest InterestsCategory { get; set; }
+        public virtual Interest InterestsCategory { get; set; }
         public string ImageUrl { get; set; }
 
-        public virtual ICollection<string> ImagesForStack { get; set; }
+        public string ImagesForStock { get; set; }
 
         public virtual ICollection<Event> Events { get; set; }
 
@@ -33,7 +33,7 @@ namespace Interext.Models
         public string Title { get; set; }
         public string ImageUrl { get; set; }
         public virtual ICollection<InterestViewModel> SubInterests { get; set; }
-        public virtual ICollection<string> ImagesForStack { get; set; }
+        public virtual ICollection<string> ImagesForStock { get; set; }
         public bool IsSelected { get; set; }
     }
 }

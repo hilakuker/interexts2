@@ -51,9 +51,41 @@
                             @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl", @class = "from-edit" })
                         </span>
                         or
-                        <span class="btn btn-disabled fileinput-button choose-from-stock">
-                            <span class="fa fa-picture-o"></span>
-                            <span>Choose from stock</span>
+                        <span class="open-popup-container">
+                            <span class="btn btn-dark fileinput-button open-stock-popup choose-from-stock ">
+                                <span class="fa fa-picture-o"></span>
+                                <span>Choose from stock</span>
+                            </span>
+                            <div class="data-for-popup">
+                                <ul class="picture-list">
+                                    @foreach (var category in Model.AllInterests)
+                                    {
+                                        <li>
+                                            <div class="title">@category.Title</div>
+                                            <ul>
+
+                                                @foreach (var image in category.ImagesForStock)
+                                                {
+                                                    <li class="stock-img-wrapper">
+                                                        @if (Model.ImageFromStock == image)
+                                                        {
+                                                            <input type="radio" name="radioChooseFromStack" class="radioChooseFromStack" value="@image" checked="checked" /> 
+                                                        }
+                                                        else
+                                                        { 
+                                                            <input type="radio" name="radioChooseFromStack" class="radioChooseFromStack" value="@image" />
+                                                        }
+                                                        <div class="stock-img" style="background-image:url('@image');"></div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            @Html.HiddenFor(m => m.ImageFromStock)
+                            @Html.HiddenFor(m => m.isImageFromStock)
                         </span>
                         <br />
 

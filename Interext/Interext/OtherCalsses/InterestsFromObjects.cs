@@ -30,15 +30,17 @@ namespace Interext.OtherCalsses
         public static List<InterestViewModel> InitAllInterests(ApplicationDbContext db)
         {
             List<InterestViewModel> allInterests = new List<InterestViewModel>();
-            List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
+            List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).OrderBy(x=>x.Title).ToList();
             foreach (var item in categories)
             {
-                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), ImagesForStack = new List<string>(), IsSelected = false };
-                foreach (string image in item.ImagesForStack)
+                InterestViewModel category = new InterestViewModel { Id = item.Id, ImageUrl = item.ImageUrl, Title = item.Title, SubInterests = new List<InterestViewModel>(), ImagesForStock = new List<string>(), IsSelected = false };
+                List<string> images = item.ImagesForStock.Split(new char[1] { '*' }).ToList();
+                foreach (string image in images)
                 {
-                    category.ImagesForStack.Add(image);
+                    category.ImagesForStock.Add(image);
                 }
-                foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
+                List<Interest> subInterests = db.Interests.Where(x => x.InterestsCategory.Id == category.Id).OrderBy(x=>x.Title).ToList();
+                foreach (var subitem in subInterests)
                 {
                     InterestViewModel subcategory = new InterestViewModel { Id = subitem.Id, ImageUrl = subitem.ImageUrl, Title = subitem.Title, SubInterests = null, IsSelected = false };
                     category.SubInterests.Add(subcategory);
@@ -94,60 +96,22 @@ namespace Interext.OtherCalsses
         }
 
 
-
-        //internal static void LoadAllInterestsFromEventView(List<Interest> InterestList, ApplicationDbContext db, EventViewModel model)
-        //{
-        //    model.AllInterests = InitAllInterests(db);
-        //    foreach (Interest interestsDB in InterestList)
-        //}
-
-        internal static void LoadAllInterestsFromEventView(string selectedInterests, EventViewModel model, ApplicationDbContext db)
+        public static string GetInterestsForDisplay(List<Interest> Interests)
         {
-            List<Interest> interestsList = GetSelectedInterests(selectedInterests, db);
-            model.AllInterests = new List<InterestViewModel>();
-            List<Interest> categories = db.Interests.Where(x => x.InterestsCategory == null).ToList();
-            foreach (var item in categories)
+            string interestsForDisplay = "";
+            foreach (var interest in Interests)
             {
-                InterestViewModel category =
-                        new InterestViewModel
-                        {
-                            Id = item.Id,
-                            ImageUrl = item.ImageUrl,
-                            Title = item.Title,
-                            SubInterests = new List<InterestViewModel>(),
-                             ImagesForStack = new List<string>()
-                        };
-                if (interestsList.Where(x => x.Id == item.Id) == null)
+                //add sub categories only if their category is not in the interests list
+                if (interest.InterestsCategory == null || Interests.SingleOrDefault(x => x.Id == interest.InterestsCategory.Id) == null)
                 {
-                    category.IsSelected = false;
+                    interestsForDisplay += interest.Title + ", ";
                 }
-                else
-                {
-                    category.IsSelected = true;
-                }
-                foreach (string imageFromStack in item.ImagesForStack)
-                {
-                    category.ImagesForStack.Add(imageFromStack);
-                }
-                foreach (var subitem in db.Interests.Where(x => x.InterestsCategory.Id == category.Id))
-                {
-                    InterestViewModel subcategory = 
-                        new InterestViewModel { Id = subitem.Id, 
-                            ImageUrl = subitem.ImageUrl,
-                            Title = subitem.Title,
-                            SubInterests = null};
-                    if (interestsList.Where(x => x.Id == subitem.Id) == null)
-                    {
-                        subcategory.IsSelected = false;
-                    }
-                    else
-                    {
-                        subcategory.IsSelected = true;
-                    }
-                    category.SubInterests.Add(subcategory);
-                }
-                model.AllInterests.Add(category);
             }
+            if (interestsForDisplay != "")
+            {
+                interestsForDisplay = interestsForDisplay.Remove(interestsForDisplay.Count() - 2, 2);
+            }
+            return interestsForDisplay;
         }
     }
 }

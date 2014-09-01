@@ -12,13 +12,24 @@ namespace Interext.Models
         public List<StatisticItem> Age { get; set; }
 
         public List<StatisticItem> Interests { get; set; }
+
+        public List<SubCategoriesStatistics> SubCategoriesInterests { get; set; }
     }
 
     public class StatisticItem
     {
         public int number { get; set; }
         public string title { get; set; }
-
         public int categoryId { get; set; }
+    }
+
+    public class SubCategoriesStatistics
+    {
+        public string categoryTitle { get; set; }
+        public int categoryId { get; set; }
+        public List<StatisticItem> subCategories { get; set; }
+        
+
+
     }
 }

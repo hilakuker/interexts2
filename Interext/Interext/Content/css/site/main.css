@@ -385,10 +385,10 @@ a.symbol-twitter:hover > span {
 /**
 * Comment form
 */
-/*
-form {
+
+/*form {
     margin-bottom: 1.5em;
-}
+}*/
 
 #commentform,
 #comments-form form {
@@ -402,12 +402,12 @@ form {
     width: 100% !important;
 }
 
-textarea,
+/*textarea,
 input:not([type=submit]) {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-}
+}*/
 
 #commentform textarea,
 #commentform input:not([type=submit]),
@@ -417,9 +417,9 @@ input:not([type=submit]) {
     width: 100%;
 }
 
-input[type=submit] {
+/*input[type=submit] {
     margin: 0;
-}
+}*/
 
 #commentform p,
 #comments-form form p {
@@ -461,11 +461,11 @@ input[type=submit] {
 #commentform .required,
 #comments-form form .required {
     color: #F00;
-}*/
+}
 /**
 * Comments
 */
-/*
+
 #comments li.comment ul,
 #comments li.comment ol {
     padding-left: 24px;
@@ -529,7 +529,7 @@ input[type=submit] {
 
 .post-content .more-link {
     font-weight: bold;
-}*/
+}
 
 
 /**
@@ -826,8 +826,8 @@ dd {
     -moz-transform: rotate(0);
     display: inline-block;
     float: left;
-    width: 104px;
-    height: 104px;
+    width: 50px;
+    height: 50px;
     overflow: hidden;
     background-repeat: no-repeat;
     position: relative;
@@ -1359,65 +1359,12 @@ dd {
     width: 130px !important;
 }
 
-#main > .container.event-search-container {
-    margin-bottom: -35px !important;
-    display: none;
-}
 
-
-#searchEventsForm {
-    margin: 20px 0 0 20px;
-    position: relative;
-}
-
-#searchEventsForm h2 {
-    margin-bottom: 10px;
-}
-
-#searchEventsForm .input-with-image-wrapper {
-    width: 350px;
-}
-
-#searchEventsForm .input-with-image-wrapper input {
-    width: 100%;
-}
 
 .input-with-image-wrapper input {
     padding-right: 32px;
 }
 
-#searchEventsForm .section {
-    float: left;
-    width: 350px;
-    margin-right: 20px;
-}
-
-#searchEventsForm .field-row .label {
-    margin: 15px 0;
-}
-
-#searchEventsForm .medium-field {
-    margin-right: 5px;
-}
-
-#searchEventsForm .close-btn {
-    position: absolute;
-    right: 1px;
-    bottom: 0;
-    padding: 8px 5px 8px 9px;
-    font-size: 24px;
-}
-
-#searchEventsForm .search-btn {
-    position: absolute;
-    right: 43px;
-    bottom: 0;
-    width: 100px;
-}
-
-#searchEventsForm #AgeOfParticipant {
-    margin-left: 27px;
-}
 
 /*   Popup    */
 .open-popup-container .data-for-popup {
@@ -1443,8 +1390,8 @@ section article.popup {
 }
 
 section.hidden-popup-container-for-stock article.popup {
-     width: 680px;
-    height: 500px;
+     width: 600px;
+    height: 350px;
 }
 
 section article.popup .close {
@@ -1566,6 +1513,13 @@ div.mousescroll:hover {
 
 .admin-table td {
     border: 1px solid black;
-    vertical-align: bottom;
+    vertical-align: top;
     padding: 15px;
+}
+.no-reports {
+    width:220px;
+    margin:auto;
+}
+.event-boxes-container {
+    background-color:#fff;
 }

@@ -21,6 +21,10 @@ namespace Interext.Models
         //[Display(Name = "Image Url")]
         //[Required(ErrorMessage = "Please upload profile image")]
         public string ImageUrl { get; set; }
+
+        public bool isImageFromStock { get; set; }
+
+        public string ImageFromStock { get; set; }
         public ApplicationUser CreatorUser { get; set; }
 
         [Required(ErrorMessage = " ")]
@@ -78,6 +82,8 @@ namespace Interext.Models
         public virtual ICollection<InterestViewModel> AllInterests { get; set; }
 
         public string InterestsToDisplay { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 
 
