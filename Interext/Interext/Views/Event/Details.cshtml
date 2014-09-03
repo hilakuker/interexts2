@@ -9,7 +9,8 @@
 }
 
 
-@*<div id="single-page">*@
+@*<div id="single-page">
+*@
 <div>
     <div id="content" class="right-sidebar">
         <div class="event-page-content">
@@ -82,29 +83,93 @@
                     </div>
                 </div>
                 <div class="event-desc">
-                    <p>@Html.Raw(Model.Description.Replace(Environment.NewLine, "<br/>"))</p>
+                    @if (!String.IsNullOrEmpty(Model.Description))
+                    {
+                        <p>@Html.Raw(Model.Description.Replace(Environment.NewLine, "<br />"))</p>
+                    }
                 </div>
             </article>
         </div>
         <div id="ozy-share-div" class="ozy-share-div-blog"><span>Share This:&nbsp;</span><a href="http://www.facebook.com/share.php?u=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-facebook" style="display: inline-block;"><span class="symbol"></span></a><a href="https://twitter.com/share?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;text=Contrast%20is%20Your%20Next%20Level%20Theme" title="" class="tooltip pop share-icon share-icon-twitter" style="display: inline-block;"><span class="symbol"></span></a><a href="https://plusone.google.com/_/+1/confirm?hl=en&amp;url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-googleplus" style="display: inline-block;"><span class="symbol"></span></a><a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;media=&amp;description=  Contrast is Your Next Level ThemeWordPress Photography Theme" title="" class="tooltip pop share-icon share-icon-pinterest" style="display: inline-block;"><span class="symbol"></span></a></div>
 
-        <h3 class="attenders-title">ATTENDERS:</h3>
+        <h3 class="attenders-title">ATTENDERS</h3>
         <div class="ozy-latest-posts">
             @foreach (var item in Model.UsersAttending)
             {
-                <a href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
+                <div class="user-waiting-approval-wrapper">
+                    <a class="image-link" href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
+                    @if (Model.CurrentUserIsCreator)
+                    {
+                        <div class="options">
+                            @using (Ajax.BeginForm("UnjoinUserFromEvent", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-remove-from-waiting-form" }))
+                            {
+                                <div class="accept-user-btn"></div>
+                                <div class="fa fa-times remove-from-waiting-user-btn"></div>
+                            }
+                        </div>
+                    }
+                </div>
             }
         </div>
+        @if (Model.UsersWaitingApproval.Count() > 0)
+        {
+
+            <h3 class="attenders-title">WAITING FOR APPROVAL</h3>
+        }
+        <div class="ozy-latest-posts">
+            @foreach (var item in Model.UsersWaitingApproval)
+            {
+                <div class="user-waiting-approval-wrapper">
+                    <a class="image-link" href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
+                    @if (Model.CurrentUserIsCreator)
+                    {
+                        <div class="options">
+                            @using (Ajax.BeginForm("AcceptUser", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-accept-form" }))
+                            {
+
+                                <div class="fa fa-check accept-user-btn"></div>
+                            }
+                            @using (Ajax.BeginForm("UnjoinUserFromEvent", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-remove-from-waiting-form" }))
+                            {
+
+                                <div class="fa fa-times remove-from-waiting-user-btn"></div>
+                            }
+                        </div>
+                        <div class="clear"></div>
+                    }
+                </div>
+            }
+
+
+        </div>
         <div id="comments">
-            <h3 class="title">COMMENTS:</h3>
+            <h3 class="title">COMMENTS</h3>
             <div class="no-comments">No comments.</div>
             <div id="comments-items">
                 @Html.Partial("~/Views/Event/_Comments.cshtml", Model.Comments)
             </div>
             <div id="comments-form">
-                <img src="@Html.Action("GetImageUrl","Account")" class="current-person-img" />
+                <img src="@Html.Action("GetImageUrl", "Account")" class="current-person-img" />
                 <div id="respond" class="comment-respond">
-                    @using (Ajax.BeginForm("SaveComment", "Event", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comments-items", OnFailure = "onCommentsLoadFailure" }, new { id = "commentform", @class = "comment-form" }))
+                    @using (Ajax.BeginForm("SaveComment", "Event", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comments-items", OnFailure = "onCommentsLoadFailure", OnSuccess = "onCommentsLoadSuccess" }, new { id = "commentform", @class = "comment-form" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -113,6 +178,23 @@
                         <input type="submit" class="btn btn-dark send-button" value="Send" />
 
                     }
+                    @if (!Model.CurrentUserIsCreator)
+                    {
+                        using (Ajax.BeginForm("Report", "Home", new { Id = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "target",
+                            OnFailure = "onReportEventFailure",
+                            OnSuccess = "onReportEventSuccess"
+                        }, new { id = "report-spam-form" }))
+                        {
+                            <input type="submit" class="report-spam" value="Report spam" />
+                            <span class="report-spam-sent">Your report was sent</span>
+                        }
+                    }
+
                 </div>
             </div>
 
@@ -127,8 +209,11 @@
             <li>
                 @if (Model.CurrentUserIsCreator)
                 {
-                    @Html.ActionLink("Edit the Event", "Edit", new { Id = ViewData["Id"], model = Model }, new { @class = "side-bar-button btn btn-dark" })
-
+                    @Html.ActionLink("Edit the Event", "Edit", new { Id = ViewData["Id"], model = Model }, new { @class = "side-bar-button btn btn-dark edit-event-btn" })
+                    using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
+                    {
+                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel Event" />
+                    }
                 }
                 else
                 {
@@ -152,7 +237,7 @@
             </li>
             <li class="widget">
                 <h3>ATTENDERS STATISTICS:</h3>
-                <input type="hidden" id="hidStatisticValues" value="@ViewData["statistics"]" />
+                <input type="hidden" id="hidStatisticValues" value="@ViewData["Statistics"]" />
                 <div id="canvas-holder-gender">
                     <h4>Gender:</h4>
                     <canvas id="chart-area-gender" width="300" height="300" />
@@ -169,29 +254,8 @@
                 <div id="sub-categories-statistics">
                 </div>
             </li>
-            @if (Model.CurrentUserIsCreator)
-            {
-                <li>
-                    @using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
-                    {
-                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel Event" />
-                    }
-                </li>
-            }
-            <li>
-                @using (Ajax.BeginForm("Report", "Home", new { Id = ViewData["Id"] },
-                    new AjaxOptions
-                    {
-                        HttpMethod = "Get",
-                        InsertionMode = InsertionMode.Replace,
-                        UpdateTargetId = "target",
-                        OnFailure = "onReportEventFailure",
-                        OnSuccess = "onReportEventSuccess"
-                    }))
-                {
-                    <input type="submit" class="side-bar-button btn btn-dark" value="Report Event" />
-                }
-            </li>
+
+
         </ul>
     </div>
     <!--sidebar-->
@@ -202,6 +266,18 @@
 
 <div id="dialog-confirm" title="Cancel the event?">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The event will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="dialog-delete-comment-confirm" title="Remove the comment?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The comment will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="dialog-report-spam-confirm" title="Report spam?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to report a spam?</p>
+</div>
+
+<div id="dialog-remove-from-waiting-confirm" title="Remove user?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to remove this user from waiting approval list?</p>
 </div>
 
 @section Scripts {

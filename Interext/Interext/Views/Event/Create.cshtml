@@ -43,6 +43,13 @@
                             @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
+
+                        <div class="event-privacy-text"><span class="fa fa-eye"></span> Event privacy:</div>
+                        <select id="dpdPrivacy" name="PrivacyType">
+                            <option value="Public" selected="selected">Attenders join freely</option>
+                            <option value="RequiresApproval">Attenders require approval</option>
+                        </select>
+
                     </div>
                     <div class="create-more-info">
 
@@ -53,11 +60,6 @@
                             @Html.TextBoxFor(m => m.ImageUrl, new { @type = "file", @id = "ImageUrl" })
                         </span>
                         or
-                        @*<span class="btn btn-disabled fileinput-button choose-from-stock ">
-                                <span class="fa fa-picture-o"></span>
-                                <span>Choose from stock</span>
-                            </span>*@
-
                         <span class="open-popup-container">
                             <span class="btn btn-dark fileinput-button open-stock-popup choose-from-stock ">
                                 <span class="fa fa-picture-o"></span>

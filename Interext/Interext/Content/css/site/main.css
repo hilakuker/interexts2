@@ -819,7 +819,7 @@ dd {
     clear: both;
 }
 
-.ozy-latest-posts > a {
+.ozy-latest-posts a.image-link {
     -webkit-backface-visibility: hidden; /* prevent move on hover which caused by opacity on Chrome and FireFox */
     transform: rotate(0);
     -webkit-transform: rotate(0);
@@ -845,7 +845,7 @@ dd {
     -moz-transition: all .4s;
 }
 
-.ozy-latest-posts > a:hover {
+.ozy-latest-posts a.image-link:hover {
     opacity: .5;
     -moz-opacity: .5;
     -webkit-opacity: .5;
@@ -853,7 +853,7 @@ dd {
     filter: alpha(opacity=50);
 }
 
-#sidr .ozy-latest-posts > a {
+#sidr .ozy-latest-posts a.image-link {
     width: 61px;
     height: 61px;
 }
@@ -1224,7 +1224,7 @@ dd {
     padding: 27px 11px 0 0;
 }*/
 
-#topMenuForm img {
+#topMenuForm img.profile {
     height: 60px;
     width: 60px;
 }
@@ -1522,4 +1522,16 @@ div.mousescroll:hover {
 }
 .event-boxes-container {
     background-color:#fff;
+}
+
+.log-in-profile-image-wrapper {
+    position:relative;
+}
+.log-in-profile-image-wrapper .red-dot {
+    position:absolute;
+    top:0;
+    left:0;
+    color:#e22029;
+    height:20px;
+    width:20px;
 }

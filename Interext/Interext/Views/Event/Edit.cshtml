@@ -42,6 +42,30 @@
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
+                        <div class="event-privacy-text"><span class="fa fa-eye"></span> Event privacy:</div>
+                        <select id="dpdPrivacy" name="PrivacyType">
+                            @foreach (var item in Model.PrivacyTypeOptions)
+                            {
+                                var type = typeof(Interext.Models.e_PrivacyType);
+                                var memInfo = type.GetMember(item.Key.ToString());
+                                var attributes = memInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
+                                var description = ((System.ComponentModel.DescriptionAttribute)attributes[0]).Description;
+                                
+                                if (@item.Value == true)
+                                {
+                                    <option value="@item.Key.ToString()" selected="selected">@description</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Key.ToString()">@description</option>
+                                }
+                            }
+
+                        </select>
+                       
+                        
+
+
                     </div>
                     <div class="create-more-info">
                         @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", Model.AllInterests)

@@ -16,9 +16,8 @@
             new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteAccountFailure", OnSuccess = "onDeleteAccountSuccess" },
             new { id = "deleteAccountForm" }))
         {
-            <input type="submit" class="btn btn-dark delete-profile-btn" value="Delete Profile" />
+            <input type="submit" class="delete-profile-btn" value="Delete Profile" />
         }
-        @*@Html.ActionLink("Delete Profile", "DeleteUser", "Account", new { @class = "btn btn-dark delete-profile-btn" }))*@
         <div class="img-wrapper">
             <img src="@Model.ImageUrl" />
         </div>
@@ -50,7 +49,7 @@
             @Model.InterestsToDisplay
         </div>
         <div class="clear"></div>
-        
+
     </div>
 </section>
 <div class="month-events-wrapper">
@@ -59,28 +58,71 @@
         @foreach (Interext.Models.EventsByMonth eventsByMonth in (List<Interext.Models.EventsByMonth>)ViewData["EventsByMonth"])
         {
 
-        <h3 class="month-title">@eventsByMonth.Month</h3>
+            <h3 class="month-title">@eventsByMonth.Month</h3>
+            <div id="content" class="no-sidebar">
+                <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+                    @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
+
+                </div>
+                <div class="bottom-spacer clear"></div>
+            </div>
+            <div class="clear"></div>
+        }
+        @if (((List<Interext.Models.EventsByMonth>)ViewData["EventsByMonth"]).Count() == 0)
+        {
+            <div class="no-events">There are no attending events</div>
+        }
+    </div>
+    <h2 class="months-main-title">PAST EVENTS</h2>
+    <div class="month-events">
         <div id="content" class="no-sidebar">
             <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
-                @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
+                @Html.Partial("~/Views/Event/_EventsWall.cshtml", (List<Interext.Models.Event>)ViewData["PastEvents"]);
 
             </div>
             <div class="bottom-spacer clear"></div>
         </div>
-
+        @if (((List<Interext.Models.Event>)ViewData["PastEvents"]).Count() == 0)
+        {
+            <div class="no-events">There are no past events</div>
         }
     </div>
-
 </div>
-<div class="places-wrapper">
-    <h2 class="places-main-title">SUBSCRIBED PLACES</h2>
-    <div class="places">
+<div class="created-events-wrapper">
+    @*<h2 class="created-events-main-title">NOTIFICATIONS</h2>
+    <div class="created-events">
+        @if (((List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"]).Count() == 0)
+        {
+            <div class="no-events">There are no new notifications</div>
+        }
+    </div>*@
+    <h2 class="created-events-main-title">CREATED EVENTS</h2>
+    <div class="created-events">
+        @foreach (Interext.Models.EventsByMonth eventsByMonth in (List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"])
+        {
+
+            <h3 class="created-event-title">@eventsByMonth.Month</h3>
+            <div id="content" class="no-sidebar">
+                <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+                    @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
+
+                </div>
+                <div class="bottom-spacer clear"></div>
+            </div>
+
+        }
+        @if (((List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"]).Count() == 0)
+        {
+            <div class="no-events">There are no created events</div>
+        }
     </div>
 </div>
 
 <div id="dialog-confirm" title="Delete this account?">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
-        </span>The account will be permanently deleted and cannot be recovered. Are you sure?</p>
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+        </span>The account will be permanently deleted and cannot be recovered. Are you sure?
+    </p>
 </div>
 
 @section Scripts {

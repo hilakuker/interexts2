@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -55,6 +56,8 @@ namespace Interext.Models
         public DateTime DateTimeCreated { get; set; }
 
         public virtual ICollection<EventVsAttendingUser> EventVsAttendingUsers { get; set; }
+
+        public virtual ICollection<EventVsWaitingApprovalUser> EventVsWaitingApprovalUsers { get; set; }
         //public virtual ICollection<UserProfile> UsersAwatingApproval { get; set; }
         //public ICollection<UserProfile> UsersAwatingApproval { get; set; }
         //public ICollection<UserProfile> UsersApprovedAttendance { get; set; }
@@ -66,11 +69,24 @@ namespace Interext.Models
         public e_EventStatus? EventStatus { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public e_PrivacyType? PrivacyType { get; set; }
     }
     public enum e_EventStatus
     {
         Active,
         Deleted,
         Finished
+    }
+
+    public enum e_PrivacyType
+    {
+        //[Display(Name = "Attenders join freely")]
+        [Description("Attenders join freely")]
+        Public,
+        //[Display(Name = "Attenders require approval")]
+        [Description("Attenders require approval")]
+        RequiresApproval
+        //Private
     }
 }

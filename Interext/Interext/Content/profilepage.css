@@ -93,7 +93,7 @@ section.events h2 {
     color: #fff;
 }
 
-.month-events-wrapper, .places-wrapper {
+.month-events-wrapper, .created-events-wrapper {
     width: 50%;
     float: left;
 }
@@ -107,19 +107,20 @@ section.events h2 {
     padding-left: 30px;
 }
 
-.month-events {
+.month-events, .created-events {
     width: 100%;
     padding-left: 30px;
     box-sizing: border-box;
+    margin-bottom:30px;
 }
 
-.month-events .month-title {
+.month-events .month-title, .created-events .created-event-title {
     font-size: 30px;
     font-weight: 200;
     margin-bottom: 10px;
 }
 
-.places-wrapper .places-main-title {
+.created-events-wrapper .created-events-main-title {
     background-color: #bfbfbf;
     color: #000;
     font-size: 40px;
@@ -128,11 +129,7 @@ section.events h2 {
     padding-left: 30px;
 }
 
-.places {
-    width: 50%;
-    padding-right: 30px;
-    box-sizing: border-box;
-}
+
 
 .save-profile-btn {
     position: absolute;
@@ -144,6 +141,11 @@ section.events h2 {
     position: absolute;
     bottom: 0;
     right: 8%;
+    background-color: transparent;
+margin: 0;
+padding: 0;
+text-decoration: underline;
+margin-bottom: 2px;
 }
 
 .validation-summary-errors, .validation-summary-valid {

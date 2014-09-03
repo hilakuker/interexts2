@@ -24,6 +24,7 @@ namespace Interext.Models
         public string ImageUrl { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public virtual ICollection<EventVsAttendingUser> EventVsAttentingUsers { get; set; }
+        public virtual ICollection<EventVsWaitingApprovalUser> EventVsWaitingApprovalUsers { get; set; }
         public string HomeAddress { get; set; }
        [Required]
         public bool AccountIsActive { get; set; }
@@ -43,6 +44,8 @@ namespace Interext.Models
         public DbSet<Interest> Interests { get; set; }
         public DbSet<PlaceRatingUser> PlaceRatingUsers { get; set; }
         public DbSet<EventVsAttendingUser> EventVsAttendingUsers { get; set; }
+        public DbSet<EventVsWaitingApprovalUser> EventVsWaitingApprovalUsers { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ReportLinks> ReportedUrl { get; set; }
     }

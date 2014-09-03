@@ -56,7 +56,10 @@ namespace Interext.OtherCalsses
                 }
 
                 object otherPropertyValue = otherPropertyInfo.GetValue(validationContext.ObjectInstance, null);
-
+                if (otherPropertyValue == null)
+                {
+                    return null;
+                }
                 decimal decValue;
                 decimal decOtherPropertyValue;
 

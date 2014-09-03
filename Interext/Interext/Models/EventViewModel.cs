@@ -46,7 +46,7 @@ namespace Interext.Models
         public string DateOfTheEventNoYear { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public ICollection<ApplicationUser> UsersAttending { get; set; }
-        public ICollection<ApplicationUser> UsersInvited { get; set; }
+        public ICollection<ApplicationUser> UsersWaitingApproval { get; set; }
         public virtual ICollection<Interest> Interests { get; set; }
         public string BackroundColor { get; set; }
         public bool CurrentUserIsCreator { get; set; }
@@ -84,6 +84,9 @@ namespace Interext.Models
         public string InterestsToDisplay { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public e_PrivacyType? PrivacyType { get; set; }
+        public Dictionary<e_PrivacyType, bool> PrivacyTypeOptions { get; set; }
     }
 
 

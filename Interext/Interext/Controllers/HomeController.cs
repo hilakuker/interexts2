@@ -32,7 +32,8 @@ namespace Interext.Controllers
                 List<Event> model = GetEventForUser(user, searchword, advanced);
                 ViewBag.CurrentUser = user;
                 ViewBag.SearchWord = searchword;
-                ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, _db);
+                //ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, _db);
+                ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(_db);
                 return View(model);
             }
             else return RedirectToAction("Login", "Account");
@@ -159,8 +160,8 @@ namespace Interext.Controllers
                     && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius) : true)
                     && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
                     && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
-                    && (isParticipantAge ? (x.AgeOfParticipantsMin <= participantAge) : true)
-                    && (isParticipantAge ? (x.AgeOfParticipantsMax.HasValue ? x.AgeOfParticipantsMax >= participantAge : true) : true)
+                    && (isParticipantAge ?(((x.AgeOfParticipantsMin <= participantAge) && (x.AgeOfParticipantsMax.HasValue ? x.AgeOfParticipantsMax >= participantAge : true))
+                    ||  (!x.AgeOfParticipantsMax.HasValue && !x.AgeOfParticipantsMin.HasValue)) : true)
                     && (isGenderNotBoth ? x.GenderParticipant == Gender : true)
                     && (isInterests ? x.Interests.Intersect(interests).Count() > 0 : true)
                     ).ToList(); // temp

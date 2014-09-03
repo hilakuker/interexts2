@@ -81,19 +81,13 @@ namespace Interext.Controllers
             List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
                 (e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).Where(e => e.AccountIsActive).ToList();
             eventToShow.UsersAttending = attendingUsers;
-            eventToShow.Comments = new List<Comment>();
-            foreach (Comment item in @event.Comments)
-            {
-                if (user.Id == item.Author.Id || user.Id == eventToShow.CreatorUser.Id || User.IsInRole("Admin"))
-                {
-                    item.ShowDeleteButton = true;
-                }
-                else
-                {
-                    item.ShowDeleteButton = false;
-                }
-                eventToShow.Comments.Add(item);
-            }
+
+            List<ApplicationUser> usersWaitingApproval = db.EventVsWaitingApprovalUsers.Where
+                (e => e.EventId == eventToShow.Id).Select(e => e.WaitingApprovalUser).Where(e => e.AccountIsActive).ToList();
+            eventToShow.UsersWaitingApproval = usersWaitingApproval;
+
+            eventToShow.Comments = SetDeleteButtonsForComments(@event.Comments.ToList(), (ApplicationUser)user, eventToShow.CreatorUser);
+           
 
             if (user.Id == eventToShow.CreatorUser.Id)
             {
@@ -109,11 +103,32 @@ namespace Interext.Controllers
                 {
                     ViewData["UserAlreadyAttending"] = true;
                 }
+                if (eventToShow.UsersWaitingApproval.SingleOrDefault(x => x.Id == user.Id) != null)
+                {
+                    ViewData["UserAlreadyAttending"] = true;
+                }
             }
             Statistics Statistics = LoadStatistics(attendingUsers);
             var json = new JavaScriptSerializer().Serialize(Statistics);
             ViewData["Statistics"] = json;
             return View(eventToShow);
+        }
+        private List<Comment> SetDeleteButtonsForComments(List<Comment> eventComments, ApplicationUser thisUser, ApplicationUser eventCreator)
+        {
+            List<Comment> comments = new List<Comment>();
+            foreach (Comment item in eventComments)
+            {
+                if (thisUser.Id == item.Author.Id || thisUser.Id == eventCreator.Id || User.IsInRole("Admin"))
+                {
+                    item.ShowDeleteButton = true;
+                }
+                else
+                {
+                    item.ShowDeleteButton = false;
+                }
+                comments.Add(item);
+            }
+            return comments;
         }
         private List<StatisticItem> LoadGenderStatistics(List<ApplicationUser> attenders)
         {
@@ -402,7 +417,8 @@ namespace Interext.Controllers
                     PlaceLongitude = model.PlaceLongitude,
                     Interests = GetSelectedInterests(selectedInterests),
                     EventStatus = e_EventStatus.Active,
-                    isImageFromStock = model.isImageFromStock
+                    isImageFromStock = model.isImageFromStock,
+                    PrivacyType = model.PrivacyType
                 };
                 if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
                 {
@@ -514,9 +530,16 @@ namespace Interext.Controllers
                 {
                     return false;
                 }
-                EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId = @event.Id, UserId = user.Id, Event = @event, AttendingUser = user };
-                db.EventVsAttendingUsers.Add(eventVsAttendingUser);
-                // @event.UsersAttending.Add(user);
+                if (@event.PrivacyType == e_PrivacyType.Public)
+                {
+                    EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId = @event.Id, UserId = user.Id, Event = @event, AttendingUser = user };
+                    db.EventVsAttendingUsers.Add(eventVsAttendingUser);
+                }
+                else
+                {
+                    EventVsWaitingApprovalUser eventVsWaitingApprovalUser = new EventVsWaitingApprovalUser { EventId = @event.Id, UserId = user.Id, Event = @event, WaitingApprovalUser = user };
+                    db.EventVsWaitingApprovalUsers.Add(eventVsWaitingApprovalUser);
+                }
                 db.SaveChanges();
                 return true;
             }
@@ -528,17 +551,69 @@ namespace Interext.Controllers
 
         public bool UnjoinEvent(int? id)
         {
+            return UnjoinUserFromEvent(User.Identity.GetUserId(), id);
+        }
+
+        public bool AcceptUser(string UserId, int? EventId)
+        {
             try
             {
-                if (id == null)
+                if (UserId == "" || EventId == null)
                 {
                     return false;
                 }
-                var user = UserManager.FindById(User.Identity.GetUserId());
-                Event @event = db.Events.Find(id);
+
+                EventVsWaitingApprovalUser eventVsWaitingApprovalUser = db.EventVsWaitingApprovalUsers.SingleOrDefault(x => x.Event.Id == EventId && x.WaitingApprovalUser.Id == UserId);
+                if (eventVsWaitingApprovalUser != null)
+                {
+                    Event @event = db.Events.SingleOrDefault(x => x.Id == EventId);
+                    if (@event == null)
+                    {
+                        return false;
+                    }
+                    ApplicationUser user = db.Users.SingleOrDefault(x => x.Id == UserId);
+                    if (user == null)
+                    {
+                        return false;
+                    }
+
+                    EventVsAttendingUser eventVsAttendingUser = new EventVsAttendingUser { EventId = @event.Id, UserId = user.Id, Event = @event, AttendingUser = user };
+                    db.EventVsAttendingUsers.Add(eventVsAttendingUser);
+
+                    db.EventVsWaitingApprovalUsers.Remove(eventVsWaitingApprovalUser);
+                    db.SaveChanges();
+
+                }
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UnjoinUserFromEvent(string UserId, int? EventId)
+        {
+            try
+            {
+                if (EventId == null)
+                {
+                    return false;
+                }
+                var user = UserManager.FindById(UserId);
+                Event @event = db.Events.Find(EventId);
                 if (@event == null)
                 {
                     return false;
+                }
+
+                EventVsWaitingApprovalUser eventVsWaitingApprovalUser = db.EventVsWaitingApprovalUsers.SingleOrDefault(x => x.Event.Id == @event.Id && x.WaitingApprovalUser.Id == user.Id);
+                if (eventVsWaitingApprovalUser != null)
+                {
+                    db.EventVsWaitingApprovalUsers.Remove(eventVsWaitingApprovalUser);
+                    db.SaveChanges();
                 }
 
                 EventVsAttendingUser eventVsAttendingUser = db.EventVsAttendingUsers.SingleOrDefault(x => x.Event.Id == @event.Id && x.AttendingUser.Id == user.Id);
@@ -548,13 +623,6 @@ namespace Interext.Controllers
                     db.SaveChanges();
                 }
 
-                //ApplicationUser userAttending = @event.UsersAttending.SingleOrDefault(x => x.Id == user.Id);
-                //if (userAttending != null)
-                //{
-                //    //ViewBag["UserAlreadyAttending"] = false;
-                //    @event.UsersAttending.Remove(userAttending);
-                //    db.SaveChanges();
-                //}
 
                 return true;
             }
@@ -610,7 +678,8 @@ namespace Interext.Controllers
                 PlaceLatitude = @event.PlaceLatitude,
                 TimeSet = @event.TimeSet,
                 AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(@event.Interests, db),
-                InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(@event.Interests.ToList())
+                InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(@event.Interests.ToList()),
+                PrivacyType = @event.PrivacyType
             };
             if (@event.isImageFromStock)
             {
@@ -620,6 +689,7 @@ namespace Interext.Controllers
             // setAllInterests(@event, model);
             setSideOfText(@event.SideOfText, model);
             setGenderOptions(@event.GenderParticipant, model);
+            setPrivacyTypeOptions((e_PrivacyType)@event.PrivacyType, model);
             return View(model);
         }
 
@@ -677,6 +747,7 @@ namespace Interext.Controllers
                 @event.Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db);
                 @event.NumOfParticipantsSet = true;
                 @event.AgeOfParticipantsSet = true;
+                @event.PrivacyType = model.PrivacyType;
                 if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
                 {
                     @event.NumOfParticipantsSet = false;
@@ -688,6 +759,7 @@ namespace Interext.Controllers
                 @event.TimeSet = model.TimeSet;
                 setSideOfText(@event.SideOfText, model);
                 setGenderOptions(@event.GenderParticipant, model);
+                setPrivacyTypeOptions((e_PrivacyType)@event.PrivacyType, model);
                 db.Entry(@event).State = EntityState.Modified;
                 try
                 {
@@ -707,6 +779,7 @@ namespace Interext.Controllers
             {
                 setSideOfText(model.SideOfText, model);
                 setGenderOptions(model.GenderParticipant, model);
+                setPrivacyTypeOptions((e_PrivacyType)model.PrivacyType, model);
                 if (selectedInterests != "")
                 {
                     List<Interest> interests = GetSelectedInterests(selectedInterests);
@@ -757,6 +830,13 @@ namespace Interext.Controllers
             model.GenderParticipantOptions.Add("Male", String.Equals("Male", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
             model.GenderParticipantOptions.Add("Both", String.Equals("Both", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
+
+        private void setPrivacyTypeOptions(e_PrivacyType PrivacyType, EventViewModel model)
+        {
+            model.PrivacyTypeOptions = new Dictionary<e_PrivacyType, bool>();
+            model.PrivacyTypeOptions.Add(e_PrivacyType.Public, PrivacyType == e_PrivacyType.Public);
+            model.PrivacyTypeOptions.Add(e_PrivacyType.RequiresApproval, PrivacyType == e_PrivacyType.RequiresApproval);
+        }
         public bool Delete(int? id)
         {
             try
@@ -777,6 +857,18 @@ namespace Interext.Controllers
                 foreach (var eventVsAttendingUser in eventVsAttendingUsers)
                 {
                     db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
+                }
+
+                List<EventVsWaitingApprovalUser> eventVsWaitingApprovalUsers = db.EventVsWaitingApprovalUsers.Where(x => x.Event.Id == @event.Id).ToList();
+                foreach (var eventVsWaitingApprovalUser in eventVsWaitingApprovalUsers)
+                {
+                    db.EventVsWaitingApprovalUsers.Remove(eventVsWaitingApprovalUser);
+                }
+
+                List<Comment> comments = db.Comments.Where(x => x.Event.Id == @event.Id).ToList();
+                foreach (var comment in comments)
+                {
+                    db.Comments.Remove(comment);
                 }
 
                 db.SaveChanges();
@@ -848,6 +940,7 @@ namespace Interext.Controllers
                     db.Comments.Add(commentItem);
                     db.SaveChanges();
                     model = db.Comments.Where(x => x.Event.Id == eventId).ToList();
+                    model = SetDeleteButtonsForComments(model, (ApplicationUser)user, currentEvent.CreatorUser);
                     ViewData["Id"] = eventId;
                     return PartialView("~/Views/Event/_Comments.cshtml", model);
                 }
@@ -872,6 +965,10 @@ namespace Interext.Controllers
                         db.Comments.Remove(comment);
                         db.SaveChanges();
                         model = db.Comments.Where(x => x.Event.Id == EventId).ToList();
+                        Event currentEvent = db.Events.SingleOrDefault(x => x.Id == EventId);
+                        var user = UserManager.FindById(User.Identity.GetUserId());
+                        model = SetDeleteButtonsForComments(model.ToList(), (ApplicationUser)user, currentEvent.CreatorUser);
+           
                         ViewData["Id"] = EventId;
                         return PartialView("~/Views/Event/_Comments.cshtml", model);
                     }

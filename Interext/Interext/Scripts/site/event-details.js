@@ -127,8 +127,8 @@ function onReportEventSuccess(response) {
         onDeleteEventFailure(response)
     }
     else {
-        //location.href = "/";
-        alert("Your report was sent");
+        $(".report-spam").css("display", "none");
+        $(".report-spam-sent").css("display", "block");
     }
 }
 
@@ -171,8 +171,7 @@ var fontClasses = [
 ];
 
 
-function fillSubInterestsStatistics(statistics)
-{
+function fillSubInterestsStatistics(statistics) {
     var index = 0;
     var text = "<table>";
     $.each(statistics, function () {
@@ -200,6 +199,22 @@ function fillSubInterestsStatistics(statistics)
 }
 
 
+function onDeleteCommentFailure() {
+    return "Error in deleting the comment";
+}
+function onDeleteCommentSuccess() {
+
+}
+
+
+
+function onCommentsLoadFailure() {
+    return "Error in loading the events";
+}
+function onCommentsLoadSuccess() {
+    $("#comment").val("");
+}
+
 $(document).ready(function () {
     var statisticValues = jQuery.parseJSON($("#hidStatisticValues").val());
     fillStatistics(statisticValues.Gender, doughnutDataGender);
@@ -212,7 +227,7 @@ $(document).ready(function () {
     var confirmDeleteDialog = $("#dialog-confirm").dialog({
         autoOpen: false,
         resizable: false,
-        height: 140,
+        height: 200,
         modal: true,
         buttons: {
             "Continue": function () {
@@ -236,17 +251,100 @@ $(document).ready(function () {
         }
     });
 
+
+    var confirmReportSpamDialog = $("#dialog-report-spam-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 200,
+        modal: true,
+        buttons: {
+            "Continue": function () {
+                finalReportSpamSubmit = true;
+                var form = $("#report-spam-form");
+                $(form).submit();
+                $(this).dialog("close");
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    var finalReportSpamSubmit = false;
+
+    $("#report-spam-form").submit(function () {
+        if (!finalReportSpamSubmit) {
+            confirmReportSpamDialog.dialog("open");
+            return false;
+        }
+    });
+
+   
+    
+
+    var confirmCommentDeleteDialog = $("#dialog-delete-comment-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 200,
+        modal: true,
+        buttons: {
+            "Continue": function () {
+                finalCommentDeleteSubmit = true;
+                var form = $(formCommentDeleteForSubmit);
+                if (form != null) {
+                    $(form).submit();
+                }
+                $(this).dialog("close");
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    var startDeleteCommentDialog = function () {
+            formCommentDeleteForSubmit = $(this).parent().parent();
+            confirmCommentDeleteDialog.dialog("open");
+    };
+    var formCommentDeleteForSubmit = null;
+
+    $(document).off("click", ".submit-button", startDeleteCommentDialog).on("click", ".submit-button", startDeleteCommentDialog);
+
+    var confirmRemoveUserFromWaitingDialog = $("#dialog-remove-from-waiting-confirm").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 200,
+        modal: true,
+        buttons: {
+            "Continue": function () {
+                var form = $(formRemoveUserFromWaitingForSubmit);
+                if (form != null) {
+                    $(form).submit();
+                }
+                $(this).dialog("close");
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    var startRemoveUserFromWaitingDialog = function () {
+        formRemoveUserFromWaitingForSubmit = $(this).parent();
+        confirmRemoveUserFromWaitingDialog.dialog("open");
+    };
+    var formRemoveUserFromWaitingForSubmit = null;
+
+    $(document).off("click", ".remove-from-waiting-user-btn", startRemoveUserFromWaitingDialog).on("click", ".remove-from-waiting-user-btn", startRemoveUserFromWaitingDialog);
+
+
+    var startApproveUserSubmit = function () {
+        $(this).parent().submit();
+    };
+    $(document).off("click", ".accept-user-btn", startApproveUserSubmit).on("click", ".accept-user-btn", startApproveUserSubmit);
+   
 });
 
-function onCommentsLoadFailure() {
-    return "Error in loading the events";
-}
 
-//$("#deleteEventForm").onSubmit(function () {
-//    var form = $(this);
-//    var result = confirm("Want to delete?");
-//    if (result == true) {
-//        //Logic to delete the item
-//        $(form).submit();
-//    }
-//});
+
+

@@ -60,15 +60,25 @@ namespace Interext.Controllers
             profile.Address = user.HomeAddress;
             profile.InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(user.Interests.ToList());
 
-
-            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
+            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).Where(x => x.DateTimeOfTheEvent >= DateTime.Today).ToList();
             int thisMonth = DateTime.Today.Month;
             List<EventsByMonth> eventsByMonth = new List<EventsByMonth>();
 
             getMonthEvents(thisMonth, 12, attendingEvents, eventsByMonth);
             getMonthEvents(1, thisMonth - 1, attendingEvents, eventsByMonth);
 
+            List<Event> createdEvents = db.Events.Where(e => e.CreatorUser.Id == user.Id && e.EventStatus == e_EventStatus.Active).OrderByDescending(x => x.DateTimeOfTheEvent).ToList();
+            List<EventsByMonth> createdEventsByMonth = new List<EventsByMonth>();
+
+            getMonthEvents(thisMonth, 12, createdEvents, createdEventsByMonth);
+            getMonthEvents(1, thisMonth - 1, createdEvents, createdEventsByMonth);
+
+
+            List<Event> pastEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).Where(x => x.DateTimeOfTheEvent < DateTime.Today).OrderByDescending(x => x.DateTimeOfTheEvent).ToList();
+
             ViewData["EventsByMonth"] = eventsByMonth;
+            ViewData["CreatedEventsByMonth"] = createdEventsByMonth;
+            ViewData["PastEvents"] = pastEvents;
 
             //profile.Events = attendingEvents;
             return View(profile);
@@ -155,6 +165,11 @@ namespace Interext.Controllers
             {
                 db.EventVsAttendingUsers.Remove(eventVsAttendingUser);
             }
+            List<EventVsWaitingApprovalUser> eventVsWaitingApprovalUsers = db.EventVsWaitingApprovalUsers.Where(x => x.UserId == user.Id).ToList();
+            foreach (var eventVsWaitingApprovalUser in eventVsWaitingApprovalUsers)
+            {
+                db.EventVsWaitingApprovalUsers.Remove(eventVsWaitingApprovalUser);
+            }
             List<Event> userCreatedEvents = db.Events.Where(x => x.CreatorUser.Id == user.Id).ToList();
             foreach (Event eventCreated in userCreatedEvents)
             {
@@ -164,6 +179,18 @@ namespace Interext.Controllers
                 foreach (var eventVsAttendingUser2 in eventVsAttendingUsers2)
                 {
                     db.EventVsAttendingUsers.Remove(eventVsAttendingUser2);
+                }
+
+                List<EventVsWaitingApprovalUser> eventVsWaitingApprovalUsers2 = db.EventVsWaitingApprovalUsers.Where(x => x.Event.Id == eventCreated.Id).ToList();
+                foreach (var eventVsWaitingApprovalUser2 in eventVsWaitingApprovalUsers2)
+                {
+                    db.EventVsWaitingApprovalUsers.Remove(eventVsWaitingApprovalUser2);
+                }
+
+                List<Comment> comments = db.Comments.Where(x => x.Event.Id == eventCreated.Id).ToList();
+                foreach (var comment in comments)
+                {
+                    db.Comments.Remove(comment);
                 }
             }    
 
@@ -873,14 +900,25 @@ namespace Interext.Controllers
                 InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(user.Interests.ToList())
             };
 
-            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).ToList();
+            List<Event> attendingEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).Where(x=>x.DateTimeOfTheEvent >= DateTime.Today).ToList();
             int thisMonth = DateTime.Today.Month;
             List<EventsByMonth> eventsByMonth = new List<EventsByMonth>();
 
             getMonthEvents(thisMonth, 12, attendingEvents, eventsByMonth);
             getMonthEvents(1, thisMonth - 1, attendingEvents, eventsByMonth);
 
+            List<Event> createdEvents = db.Events.Where(e => e.CreatorUser.Id == user.Id && e.EventStatus == e_EventStatus.Active).OrderByDescending(x => x.DateTimeOfTheEvent).ToList();
+            List<EventsByMonth> createdEventsByMonth = new List<EventsByMonth>();
+
+            getMonthEvents(thisMonth, 12, createdEvents, createdEventsByMonth);
+            getMonthEvents(1, thisMonth - 1, createdEvents, createdEventsByMonth);
+
+
+            List<Event> pastEvents = db.EventVsAttendingUsers.Where(e => e.UserId == user.Id).Select(e => e.Event).Where(x => x.DateTimeOfTheEvent < DateTime.Today).OrderByDescending(x=>x.DateTimeOfTheEvent).ToList();
+
             ViewData["EventsByMonth"] = eventsByMonth;
+            ViewData["CreatedEventsByMonth"] = createdEventsByMonth;
+            ViewData["PastEvents"] = pastEvents;
             return View(profileToShow);
         }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)

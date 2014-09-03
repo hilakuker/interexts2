@@ -94,7 +94,7 @@ namespace Interext.Migrations
 
             var subCategories = new List<Interest>();
             Interest jogging = new Interest { Title = "Jogging", ImageUrl = "", InterestsCategory = sports2 };
-            Interest bicycle = new Interest { Title = "Bicycling", ImageUrl = "", InterestsCategory = sports2 };
+            Interest bicycle = new Interest { Title = "Cycling", ImageUrl = "", InterestsCategory = sports2 };
             Interest basketball = new Interest { Title = "Basketball", ImageUrl = "", InterestsCategory = sports2 };
             Interest tennis = new Interest { Title = "Tennis", ImageUrl = "", InterestsCategory = sports2 };
             Interest football = new Interest { Title = "Football", ImageUrl = "", InterestsCategory = sports2 };

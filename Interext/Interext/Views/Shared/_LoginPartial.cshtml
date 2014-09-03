@@ -7,7 +7,10 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <img src="@Html.Action("GetImageUrl","Account")" />
+                <div class="log-in-profile-image-wrapper">
+                    <img class="profile" src="@Html.Action("GetImageUrl","Account")" />
+                    @*<img class="red-dot" src="/Content/images/example-images/red-dot.png" />*@
+                </div>
                 @*@if (Model != null)
                     {
                         <a href="~/Account/ShowProfile"><img src="@Model.ImageUrl" /></a>
