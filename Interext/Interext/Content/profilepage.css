@@ -21,6 +21,8 @@ section.profile .profile-content .user-interests {
 
 section.profile .img-wrapper {
     position: relative;
+    height: 200px;
+    width: 160px;
 }
 
 section.profile .img-wrapper img {
@@ -95,7 +97,7 @@ section.events h2 {
 
 .month-events-wrapper, .created-events-wrapper {
     width: 50%;
-    float: left;
+    float: right;
 }
 
 .month-events-wrapper .months-main-title {
@@ -129,23 +131,28 @@ section.events h2 {
     padding-left: 30px;
 }
 
-
+.edit-profile-btn {
+    position: absolute;
+top: 160px;
+left: 0;
+padding: 12px 5px;
+font-size: 12px;
+}
 
 .save-profile-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    float:right;
 }
 
 .delete-profile-btn {
-    position: absolute;
-    bottom: 0;
-    right: 8%;
-    background-color: transparent;
+   position: absolute;
+top: 188px;
+left: 80px;
+background-color: transparent;
 margin: 0;
 padding: 0;
 text-decoration: underline;
 margin-bottom: 2px;
+font-size: 12px;
 }
 
 .validation-summary-errors, .validation-summary-valid {

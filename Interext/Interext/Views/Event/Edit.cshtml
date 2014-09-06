@@ -38,7 +38,7 @@
                         <div class="input-with-image-wrapper">
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
                             @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
-                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
+                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLongitude", @value = "0" })
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
@@ -50,7 +50,7 @@
                                 var memInfo = type.GetMember(item.Key.ToString());
                                 var attributes = memInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
                                 var description = ((System.ComponentModel.DescriptionAttribute)attributes[0]).Description;
-                                
+
                                 if (@item.Value == true)
                                 {
                                     <option value="@item.Key.ToString()" selected="selected">@description</option>
@@ -62,8 +62,8 @@
                             }
 
                         </select>
-                       
-                        
+
+
 
 
                     </div>
@@ -93,10 +93,10 @@
                                                     <li class="stock-img-wrapper">
                                                         @if (Model.ImageFromStock == image)
                                                         {
-                                                            <input type="radio" name="radioChooseFromStack" class="radioChooseFromStack" value="@image" checked="checked" /> 
+                                                            <input type="radio" name="radioChooseFromStack" class="radioChooseFromStack" value="@image" checked="checked" />
                                                         }
                                                         else
-                                                        { 
+                                                        {
                                                             <input type="radio" name="radioChooseFromStack" class="radioChooseFromStack" value="@image" />
                                                         }
                                                         <div class="stock-img" style="background-image:url('@image');"></div>
@@ -144,10 +144,6 @@
                             }
                         </select>
                         <br />
-                        Number of participants:
-                        @Html.TextBoxFor(m => m.NumOfParticipantsMin, new { @id = "txtNumOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
-                        @Html.TextBoxFor(m => m.NumOfParticipantsMax, new { @id = "txtNumOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
-                        <br />
                         Age of the participants:
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMin, new { @id = "txtAgeOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
@@ -171,7 +167,7 @@
                     </div>
                     <div class="clear"></div>
                 </div>
-                
+
             }
         </article>
     </div>
@@ -184,16 +180,50 @@
             <div class="event-box" data-src="@Model.ImageUrl" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url('@Model.ImageUrl') 50% 49% / cover no-repeat;">
                     <div>
-                        <a href="/Event/Details?Id=1" class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
+                        <a class="event-box-content @Model.SideOfText" style="background-color:rgb(@Model.BackroundColor);background-color:rgba(@Model.BackroundColor,@Model.BackroundColorOpacity);">
                             <div class="event-date" id="draftDate">@Model.DateTimeOfTheEvent.Day.@Model.DateTimeOfTheEvent.Month</div>
                             <div class="event-title" id="draftTitle">@Model.Title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>@Model.Place</div>
-                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">@Model.NumOfParticipantsMin@if(Model.NumOfParticipantsMax != null){<span>-</span>@Model.NumOfParticipantsMax}else{<span>+</span>}</span></div>
-                            <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">@Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null){<span>-</span>@Model.AgeOfParticipantsMax}else{<span>+</span>}</span></div>
-                            
-                            <div class="event-gender-container">Gender: <span id="draftGender">@Model.GenderParticipant</span></div>
-                            
-                            <div class="event-by-person">Created by <img src="@Model.CreatorUser.ImageUrl" /></div>
+                            <table>
+
+                                <tr class="event-age-of-participants-container" @if (!Model.AgeOfParticipantsSet) { @("style=display:none;"); }>
+                                    <td>
+                                        Age
+                                    </td>
+                                    <td id="draftAgeOfParticipants">
+                                        @if (Model.AgeOfParticipantsMin != null && Model.AgeOfParticipantsMax != null)
+                                        {
+                                            @Model.AgeOfParticipantsMin<span>-</span>@Model.AgeOfParticipantsMax
+                                        }
+                                        @if (Model.AgeOfParticipantsMin != null && Model.AgeOfParticipantsMax == null)
+                                        {
+                                            @Model.AgeOfParticipantsMin<span>+</span>
+                                        }
+                                        @if (Model.AgeOfParticipantsMin == null && Model.AgeOfParticipantsMax != null)
+                                        {
+                                            <span>under</span>
+                                            @Model.AgeOfParticipantsMax
+                                        }
+                                    </td>
+                                </tr>
+
+                                <tr class="event-gender-container" @if (Model.GenderParticipant == "Both") { @("style='display:none;'")  ; }><td>Gender</td><td id="draftGender">@Model.GenderParticipant</td></tr>
+
+                                @if (Model.UsersAttending.Count() > 0)
+                                {
+                                    <tr class="event-num-of-participants-container">
+                                        <td>Attenders</td>
+                                        <td>@Model.UsersAttending.Count()</td>
+                                    </tr>
+                                }
+
+                                <tr class="event-by-person"><td>Created by</td><td><img src="@Model.CreatorUser.ImageUrl" /></td></tr>
+
+
+                            </table>
+
+
+
                         </a>
                     </div>
                 </div>
@@ -201,8 +231,6 @@
         </li>
     </ul>
 </div>
-
-
 @section Scripts {
     @Scripts.Render("~/bundles/eventPageJs")
     @Scripts.Render("~/bundles/colorPickerJs")

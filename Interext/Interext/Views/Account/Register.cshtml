@@ -23,6 +23,8 @@
                 @Html.DropDownListFor(m => m.BirthDateMonth, new SelectList(ViewBag.Months), new { @class = "form-control birth-month" })
                 @Html.DropDownListFor(m => m.BirthDateYear, new SelectList(ViewBag.Years), new { @class = "form-control birth-year" })
                 @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Where do you live?", @type = "text", @id = "locationSearchTextField" })
+                @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
+                @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLongitude", @value = "0" })
                 <div class="Gender">
                     Gender:
                     @Html.RadioButtonFor(m => m.Gender, "M", new { @checked = "checked" })

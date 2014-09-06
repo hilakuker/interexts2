@@ -19,7 +19,9 @@ namespace Interext
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/shared-js").Include(
-                 "~/Scripts/shared/scroller/scroller.js"
+                 "~/Scripts/shared/scroller/scroller.js",
+                 "~/Scripts/shared/main.js"
+                 
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/googlemaps").Include(
@@ -51,13 +53,17 @@ namespace Interext
                       "~/Scripts/site/chart.js"
                       ));
 
+            bundles.Add(new ScriptBundle("~/bundles/homePageJs").Include(
+                        "~/Scripts/site/home-index.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/eventDetailsJs").Include(
                         "~/Scripts/site/event-details.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/eventPageJs").Include(
-                        "~/Scripts/event-create.js",
+                        "~/Scripts/site/event-create.js",
                         "~/Scripts/shared/number-validation.js",
-                        "~/Scripts/stack-popup.js"));
+                        "~/Scripts/site/stock-popup.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/placeJs").Include(
             "~/Scripts/place.js"));
@@ -102,7 +108,10 @@ namespace Interext
             bundles.Add(new StyleBundle("~/Content/eventsPageCss").Include(
                 "~/Content/contrast/eventspage.css"
                      ));
-
+            bundles.Add(new StyleBundle("~/Content/homePageCss").Include(
+                "~/Content/css/site/homepage.css"
+                     ));
+            
             bundles.Add(new StyleBundle("~/Content/profilePageCss").Include(
                 "~/Content/profilepage.css"
                      ));

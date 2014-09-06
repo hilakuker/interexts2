@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "topMenuForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <div class="log-in-profile-image-wrapper">
+                    <img class="profile" src="@Html.Action("GetImageUrl","Account")" />
+                    @*<img class="red-dot" src="/Content/images/example-images/red-dot.png" />*@
+                </div>
+                @*@if (Model != null)
+                    {
+                        <a href="~/Account/ShowProfile"><img src="@Model.ImageUrl" /></a>
+                    }*@
+                <!--test-->
+                @*<img src="/Content/images/example-images/profile-pic.jpg" />*@
+                <div class="top-sub-menu">
+                    <div class="arrow"></div>
+                    <ul>
+                        <li><a href="~/Account/ShowProfile">View profile</a></li>
+                        <li><a href="~/Account/Edit">Edit profile</a></li>
+                        <li><hr /></li>
+                        @if (HttpContext.Current.User.IsInRole("Admin"))
+                        {
+                            <li><a href="~/Admin/Index">Users spam reports</a></li>
+                        }
+                        <li><a href="~/Event/Create">Create an event</a></li>
+                        <li><hr /></li>
+                        <li>
+                            <a href="javascript:document.getElementById('topMenuForm').submit()">Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class="search-txt-container input-with-image-wrapper">
+                    <input type="text" placeholder="Search for event" value="@ViewBag.SearchWord" />
+                    <div class="fa fa-search insert-image-button">&nbsp;</div>
+                    <div class="fa fa-reorder insert-image-button">&nbsp;</div>
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    @*<ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Register", "ChooseRegisterProvider", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>*@
+}

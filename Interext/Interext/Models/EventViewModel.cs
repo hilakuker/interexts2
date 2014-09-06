@@ -54,17 +54,6 @@ namespace Interext.Models
         public string SideOfText { get; set; }
         public Dictionary<string, bool> SideOfTextOptions { get; set; }
 
-
-        public bool NumOfParticipantsSet { get; set; }
-
-        [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
-        [Range(1, 100)]
-        public int? NumOfParticipantsMin { get; set; }
-
-        [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]
-        [MinMaxValidation("NumOfParticipantsMin", AllowEquality = true)]
-        public int? NumOfParticipantsMax { get; set; }
-
         public bool AgeOfParticipantsSet { get; set; }
 
         [RegularExpression(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])", ErrorMessage = "Input must be a number")]

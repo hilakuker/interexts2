@@ -44,6 +44,9 @@ namespace Interext.Models
         [Required(ErrorMessage = " ")]
         [Display(Name = "Address")]
         public string Address { get; set; }
+
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
     }
 
     public class ManageUserViewModel
@@ -129,6 +132,9 @@ namespace Interext.Models
         //[Required(ErrorMessage = "Address field is required.")]
         [Required(ErrorMessage = " ")]
         public string Address { get; set; }
+
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
     }
 
     public class ProfileViewModel
@@ -199,5 +205,8 @@ namespace Interext.Models
 
         [Required(ErrorMessage = " ")]
         public string Address { get; set; }
+
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
     }
 }

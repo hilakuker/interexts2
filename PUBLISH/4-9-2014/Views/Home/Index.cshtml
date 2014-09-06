@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Interext.Models.Event>
+
+@if (!Request.IsAuthenticated)
+{
+    Response.Redirect("~/Account/Login?returnUrl="
+        + Request.Url.LocalPath);
+}
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventsPageCss")
+    @Styles.Render("~/Content/homePageCss")
+}
+@section SectionBeforeTheMainContent
+{
+    <div class="container event-search-container">
+
+        @using (Ajax.BeginForm("Index", "Home", new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "eventsWall", OnFailure = "onEventsLoadFailure", OnSuccess = "onEventsLoadSuccess" }, new { id = "searchEventsForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="submit" class="btn btn-special search-btn" value="Search" />
+            <div class="btn btn-dark close-btn fa fa-times">&nbsp;</div>
+            <h2>Search for event</h2>
+            <div class="section">
+                <div class="input-with-image-wrapper">
+                    <input type="text" class="form-control full-control" id="FreeText" name="FreeText" placeholder="Free text" value="@ViewBag.SearchWord " />
+                    <span class="fa fa-pencil insert-image-button"></span>
+                </div>
+                <div class="input-with-image-wrapper">
+                    <input type="text" class="form-control full-control" id="locationSearchTextField" name="locationSearchTextField" placeholder="Location" @*value="@ViewBag.CurrentUser.HomeAddress"*@ />
+                    <span class="fa fa-map-marker insert-image-button"></span>
+                </div>
+                <input type="hidden" id="PlaceLongitude" name="PlaceLongitude" value="0" />
+                <input type="hidden" id="PlaceLatitude" name="PlaceLatitude" value="0" />
+                <div class="field-row">
+                    <div class="left label">
+                        Radius around the location
+                    </div>
+                    <select class="right" id="radiusOfTheLocation" name="radiusOfTheLocation">
+                        <option>
+                            The exact location
+                        </option>
+                        <option>2 km</option>
+                        <option>5 km</option>
+                        <option>10 km</option>
+                        <option>15 km</option>
+                        <option>20 km</option>
+                        <option>50 km</option>
+                        <option>100 km</option>
+                        <option>200 km</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="section field-row">
+                @Html.Partial("~/Views/Interests/_SelectInterestsPopup.cshtml", (IEnumerable<Interext.Models.InterestViewModel>)ViewBag.AllInterests)
+                
+                <div class="label">
+                    Date of the event:
+                </div>
+                <div class="input-with-image-wrapper medium-field left">
+                    <input type="text" class="form-control full-control" id="DateOfTheEventFrom" name="DateOfTheEventFrom" placeholder="From" />
+                    <span class="fa fa-calendar insert-image-button"></span>
+                </div>
+                <div class="input-with-image-wrapper medium-field left">
+                    <input type="text" class="form-control full-control" id="DateOfTheEventTo" name="DateOfTheEventTo" placeholder="To" />
+                    <span class="fa fa-calendar insert-image-button"></span>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+            <div class="section">
+                Age of the participant:
+                <input id="AgeOfParticipant" name="AgeOfParticipant" type="text" class="short-field" placeholder="" @*value="@ViewBag.CurrentUser.Age"*@ />
+                <br />
+                Gender of the participants:
+                <select id="Gender" name="Gender">
+                    <option value="Both">Both</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="clear"></div>
+        }
+    </div>
+
+}
+
+@*@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);*@
+
+<div id="content" class="no-sidebar">
+    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+        @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
+
+    </div>
+    <div class="bottom-spacer clear"></div>
+</div>

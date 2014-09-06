@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interexts - @ViewBag.Title</title>
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,100,300,700" type="text/css">
+
+    @Styles.Render("~/Content/jquery-ui-style")
+    @Styles.Render("~/Content/shared-css")
+    @Styles.Render("~/Content/signinPageCss")
+
+    @Scripts.Render("~/bundles/jquery-main")
+    @*<script type="text/javascript">
+        jQuery.validator.unobtrusive.adapters.add(
+            'atleastonerequired', ['properties'], function (options) {
+                options.rules['atleastonerequired'] = options.params;
+                options.messages['atleastonerequired'] = options.message;
+            }
+        );
+
+        jQuery.validator.addMethod('atleastonerequired', function (value, element, params) {
+            var properties = params.properties.split(',');
+            var values = $.map(properties, function (property, index) {
+                var val = $('#' + property).val();
+                return val != '' ? val : null;
+            });
+            return values.length > 0;
+        }, '');
+    </script>*@
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    @Scripts.Render("~/bundles/googlemaps")
+    @RenderSection("Scripts", required: false)
+    @RenderSection("CssStyles", required: false)
+    @Scripts.Render("~/bundles/shared-js")
+</head>
+<body>
+    <div class="container">
+        @RenderBody()
+    </div>
+    
+</body>
+</html>

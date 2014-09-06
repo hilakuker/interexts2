@@ -59,7 +59,7 @@
 }
 
 .event-box-content .event-location span {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 #content .event-box-content .event-by-person img, #sidebar .event-box-content .event-by-person img {
@@ -204,6 +204,10 @@
     border-radius: 0px;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
+}
+
+.event-box table tr td:first-child{
+    padding-right:3px
 }
 
 

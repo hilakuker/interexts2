@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interexts - @ViewBag.Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,100,300,700" type="text/css">
+
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+
+    @Styles.Render("~/Content/jquery-ui-style")
+    @Styles.Render("~/Content/shared-css")
+    @Styles.Render("~/Content/site-css")
+
+    @Scripts.Render("~/bundles/jquery-main")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+
+    @Scripts.Render("~/bundles/googlemaps")
+
+    @RenderSection("scripts", required: false)
+    @RenderSection("CssStyles", required: false)
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <header>
+                <div class="container">
+                    <div id="logo" class="flipping-hover-area">
+                        <a href="~/">INTERE</a><a href="~/" class="flipping-text"><span data-title="X">X</span></a><a href="~/">TS</a>
+                    </div>
+                    @*<div id="event-sear"></div>*@
+                    @*<div id="slide-menu"><a title="Side Menu" id="sidr-menu" href="#sidr"><span class="fa fa-reorder">&nbsp;</span></a></div>*@<!--#side-menu-->
+                    @Html.Partial("_LoginPartial")
+                    <div class="clear"></div>
+                </div>
+            </header>
+        </div>
+        @RenderSection("SectionBeforeTheMainContent", required: false)
+        <div class="container">
+            @*<div id="event-search"><a title="Event Search" id="event-search-menu" href="#event-search"><span class="fa fa-search">&nbsp;</span></a></div>*@
+            @RenderBody()
+
+            <div class="clear">
+            </div>
+        </div>
+        <!--.container-->
+        <div id="footer-spacer" class="clear">
+        </div>
+        <!--#footer-spacer-->
+
+    </div>
+    <div id="footer">
+        <footer>
+            <div class="container">
+                <div id="footer-text">
+                    <div>Interexts - Copyright © 2014</div>
+                </div>
+                <div id="social-icons">
+                    <a href="http://www.facebook.com/ozy.themes" target="_blank" class="symbol-facebook">
+                        <span class="symbol" title=""></span>
+                    </a>
+                    <a href="http://www.twitter.com/ozythemes" target="_blank" class="symbol-twitter">
+                        <span class="symbol" title=""></span>
+                    </a>
+                    <a href="http://plus.google.com/#" target="_blank" class="symbol-googleplus">
+                        <span class="symbol" title=""></span>
+                    </a>
+                    <a href="mailto:#" target="_blank" class="symbol-email">
+                        <span class="symbol" title=""></span>
+                    </a>
+                </div>
+            </div><!--.container-->
+        </footer>
+    </div>
+
+
+    <section class="hidden-popup-container">
+        <article class="popup">
+            <span class="close fa fa-times">&nbsp;</span>
+            <form name="popup-form">
+                <div class="popup-content mousescroll">
+
+
+
+
+                </div>
+            </form>
+
+        </article>
+    </section>
+
+    <section class="hidden-popup-container-for-stock">
+        <article class="popup">
+            <span class="close fa fa-times">&nbsp;</span>
+            <form name="popup-form">
+                <div class="popup-content-for-stock mousescroll">
+
+
+
+
+                </div>
+            </form>
+
+        </article>
+    </section>
+
+
+    <!--#footer-->
+    <div id="sidr" class="sidr right">
+        <h5>
+            SIDE MENU
+        </h5>
+        <div class="sidr-desktop">
+            <div class="widget-area">
+                <ul>
+                    <form action="http://contrast.freevision.me/" method="get" class="wp-search-form">
+                        <i class="fa fa-search"></i>
+                        <input x-webkit-speech="" speech="" type="text" name="s" id="search" placeholder="Type and hit Enter">
+                    </form>
+                </ul>
+            </div>
+            <div class="widget-area">
+                <ul>
+                    <h4>
+                        CUSTOM MENU
+                    </h4>
+                    <div class="menu-sidebar-menu-container">
+                        <ul id="menu-sidebar-menu" class="menu">
+                            <li id="menu-item-1173" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1173">
+                                <a href="http://contrast.freevision.me/pages/about/">About</a>
+                            </li>
+                            <li id="menu-item-1169" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1169">
+                                <a href="http://contrast.freevision.me/page-blogs/metro-style/">Metro Style</a>
+                            </li>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
+            <div class="widget-area">
+                <ul>
+                    <h4>
+                        FROM BLOG
+                    </h4>
+                    <div class="ozy-latest-posts">
+                        <a href="http://contrast.freevision.me/blog/2013/12/10/2014-envato-world-photography-awards/"
+                           title="2014 Envato World Photography Awards" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/shopping-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/10/07/hello-world-2/" title="A Shadowy Flight Into The Dangerous World!"
+                               style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/rosebuzz-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/11/27/audio/" title="A Sound Cloud Object"
+                               style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/1-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/12/10/amazon-prime-air-drone-hunt/"
+                               title="Amazon Prime Air Drone Hunt" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/17-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/11/27/an-interview-with-andy-clarke/"
+                               title="An Interview With Andy Clarke" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/52-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/12/10/building-a-better-responsive-website/"
+                               title="Building A Better Responsive Website" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/12/after-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/12/10/choose-to-live-healthy/"
+                               title="Choose To Live Healthy" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/bateau-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/11/27/choosing-a-responsive-image-solution/"
+                               title="Choosing A Responsive Image Solution" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/cyclo-150x150.jpg)">
+                        </a><a href="http://contrast.freevision.me/blog/2013/11/27/contrast-is-your-next-level-theme/"
+                               title="Contrast is Your Next Level Theme" style="background-image: url(http://contrast.freevision.me/wp-content/uploads/2013/11/12-150x150.jpg)">
+                        </a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="sidr-mobile">
+            <div class="widget-area">
+                <ul>
+                    <form action="http://contrast.freevision.me/" method="get" class="wp-search-form">
+                        <i class="fa fa-search"></i>
+                        <input x-webkit-speech="" speech="" type="text" name="s" id="search" placeholder="Type and hit Enter">
+                    </form>
+                </ul>
+            </div>
+            <div class="widget-area">
+                <ul>
+                    <div class="menu-primary-menu-container">
+                        <ul id="menu-primary-menu-1" class="menu">
+                            <li id="menu-item-195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-195">
+                                <a href="http://contrast.freevision.me/portfolio-page/">PORTFOLIO</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1475" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1475">
+                                        <a href="#">PORTFOLIO TYPES</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-194" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-194">
+                                                <a href="http://contrast.freevision.me/">HORIZONTAL GRID WITH FILTER</a>
+                                            </li>
+                                            <li id="menu-item-415" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-415">
+                                                <a href="http://contrast.freevision.me/portfolio-page/horizontal-grid-no-filtering/">
+                                                    HORIZONTAL GRID NO FILTERING
+                                                </a>
+                                            </li>
+                                            <li id="menu-item-414" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-414">
+                                                <a href="http://contrast.freevision.me/portfolio-page/horizontal-grid-with-scrollbar/">
+                                                    H. GRID WITH SCROLLBAR
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-1476" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1476">
+                                        <a href="#">PROJECT TYPES</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-1491" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1491">
+                                                <a href="http://contrast.freevision.me/portfolio/spyderprint/">PROJECT- STANDART PAGE</a>
+                                            </li>
+                                            <li id="menu-item-1490" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1490">
+                                                <a href="http://contrast.freevision.me/portfolio/incredible-realism/">
+                                                    PROJECT- STANDART
+                                                    SLIDER
+                                                </a>
+                                            </li>
+                                            <li id="menu-item-1474" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1474">
+                                                <a href="http://contrast.freevision.me/portfolio/lado-avesso/">PROJECT- FULL SLIDESHOW</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-277" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-277">
+                                <a href="http://contrast.freevision.me/pages/">PAGES</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1079" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1079">
+                                        <a href="http://contrast.freevision.me/pages/about/">ABOUT</a>
+                                    </li>
+                                    <li id="menu-item-1572" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1572">
+                                        <a href="http://contrast.freevision.me/corporate/">CORPORATE</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-259" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-259">
+                                <a href="http://contrast.freevision.me/features/">FEATURES</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1331" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1331">
+                                        <a href="#">ELEMENTS</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-265" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-265">
+                                                <a href="http://contrast.freevision.me/features/styled-elements/">STYLED ELEMENTS</a>
+                                            </li>
+                                            <li id="menu-item-264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-264">
+                                                <a href="http://contrast.freevision.me/features/typography/">TYPOGRAPHY</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-1347" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1347">
+                                        <a href="#">STYLING</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-261" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-261">
+                                                <a href="http://contrast.freevision.me/features/fonts-management/">FONTS MANAGEMENT</a>
+                                            </li>
+                                            <li id="menu-item-1403" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1403">
+                                                <a href="http://contrast.freevision.me/features/header-options/">HEADER OPTIONS</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-1334" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1334">
+                                        <a href="#">BACKGROUND</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-1205" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1205">
+                                                <a href="http://contrast.freevision.me/features/fullscreen-bg-slideshow/">
+                                                    FULLSCREEN
+                                                    BG SLIDESHOW
+                                                </a>
+                                            </li>
+                                            <li id="menu-item-260" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-260">
+                                                <a href="http://contrast.freevision.me/features/background-image/">BACKGROUND IMAGE</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-852" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-852">
+                                <a href="http://contrast.freevision.me/sliders/">SLIDERS</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1333" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1333">
+                                        <a href="#">CUSTOM SLIDERS</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-853" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-853">
+                                                <a href="http://contrast.freevision.me/sliders/video-showcase/">VIDEO SHOWCASE</a>
+                                            </li>
+                                            <li id="menu-item-867" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-867">
+                                                <a href="http://contrast.freevision.me/sliders/slider-in-content/">SLIDER IN CONTENT</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-1336" class="ozy-mega-menu-title menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1336">
+                                        <a href="#">CUSTOM SLIDERS 2</a>
+                                        <ul class="sub-menu" style="display: none;">
+                                            <li id="menu-item-854" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-854">
+                                                <a href="http://contrast.freevision.me/sliders/revolution-slider/">REVOLUTION SLIDER</a>
+                                            </li>
+                                            <li id="menu-item-1373" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1373">
+                                                <a href="http://contrast.freevision.me/sliders/accordion-slider/">ACCORDION SLIDER</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-266" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-266">
+                                <a href="http://contrast.freevision.me/galleries/">GALLERIES</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1249" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1249">
+                                        <a href="http://contrast.freevision.me/galleries/drag-horizontal-gallery/">
+                                            HORIZONTAL
+                                            GALLERY
+                                        </a>
+                                    </li>
+                                    <li id="menu-item-1973" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1973">
+                                        <a href="http://contrast.freevision.me/galleries/categorized-gallery/">CATEGORIZED GALLERY</a>
+                                    </li>
+                                    <li id="menu-item-1441" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1441">
+                                        <a href="http://contrast.freevision.me/galleries/fullscreen-horizontal-slideshow/">
+                                            FULLSCREEN
+                                            SLIDESHOW
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-168" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-168">
+                                <a href="http://contrast.freevision.me/page-blogs/">BLOG</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-169" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-169">
+                                        <a href="http://contrast.freevision.me/page-blogs/regular/">REGULAR</a>
+                                    </li>
+                                    <li id="menu-item-179" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-111 current_page_item menu-item-179">
+                                        <a href="http://contrast.freevision.me/page-blogs/wall-style-2/">WALL STYLE</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-186" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-186">
+                                <a href="http://contrast.freevision.me/contact/">CONTACT</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-188" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-188">
+                                        <a href="http://contrast.freevision.me/contact/contact-fixed/">CONTACT FIXED</a>
+                                    </li>
+                                    <li id="menu-item-1159" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1159">
+                                        <a href="http://contrast.freevision.me/contact/contact-full-width/">CONTACT FULL-WIDTH</a>
+                                    </li>
+                                    <li id="menu-item-187" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-187">
+                                        <a href="http://contrast.freevision.me/contact/fullscreen-map/">FULLSCREEN MAP</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-1726" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1726">
+                                <a href="http://contrast.freevision.me/shop/">SHOP</a>
+                                <ul class="sub-menu" style="display: none;">
+                                    <li id="menu-item-1729" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1729">
+                                        <a href="http://contrast.freevision.me/cart/">CART</a>
+                                    </li>
+                                    <li id="menu-item-1728" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1728">
+                                        <a href="http://contrast.freevision.me/checkout/pay/">CHECKOUT</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--#sidr-->
+    <a href="#top" id="to-top-button" title="Return to Top" style="display: none;">
+        <span class="fa fa-chevron-up"></span>
+    </a>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var ozyMegafolioOptions = { "layoutarray": "11", "filterChangeAnimation": "pagetop", "padding": "1" };
+        /* ]]> */
+    </script>
+    
+    @Scripts.Render("~/bundles/shared-js")
+    @Scripts.Render("~/bundles/contrastJs")
+</body>
+</html>

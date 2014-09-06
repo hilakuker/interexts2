@@ -1,10 +1,5 @@
 ﻿@model IEnumerable<Interext.Models.Event>
 
-@if (!Request.IsAuthenticated)
-{
-    Response.Redirect("~/Account/Login?returnUrl="
-        + Request.Url.LocalPath);
-}
 @{
     ViewBag.Title = "Home Page";
 }
@@ -40,17 +35,17 @@
                         Radius around the location
                     </div>
                     <select class="right" id="radiusOfTheLocation" name="radiusOfTheLocation">
-                        <option>
+                        <option value="0">
                             The exact location
                         </option>
-                        <option>2 km</option>
-                        <option>5 km</option>
-                        <option>10 km</option>
-                        <option>15 km</option>
-                        <option>20 km</option>
-                        <option>50 km</option>
-                        <option>100 km</option>
-                        <option>200 km</option>
+                        <option value="2">2 km</option>
+                        <option value="5">5 km</option>
+                        <option value="10">10 km</option>
+                        <option value="15">15 km</option>
+                        <option value="20">20 km</option>
+                        <option value="50">50 km</option>
+                        <option value="100">100 km</option>
+                        <option value="200">200 km</option>
                     </select>
                     <div class="clear"></div>
                 </div>
@@ -87,14 +82,27 @@
         }
     </div>
 
+    @using (Ajax.BeginForm("GetEventsForUser", "Home", new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "eventsWall", OnFailure = "onEventsLoadFailure", OnSuccess = "onUserEventsLoadSuccess" }, new { id = "loadUserEvents" }))
+{
+    <input type="hidden" id="myLocationLatitude" name="myLocationLatitude" />
+    <input type="hidden" id="myLocationLongitude" name="myLocationLongitude" />
+    <input type="hidden" id="searchword" name="searchword" />
+    <input type="hidden" id="advanced" name="advanced" />
+}
+
 }
 
 @*@Html.Partial("~/Views/Event/_EventsWallWithTempData.cshtml", Model);*@
-
 <div id="content" class="no-sidebar">
-    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+    <img id="loader" src="/Content/images/ajax-loader.gif" />
+    <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries" style="display:none;" >
         @Html.Partial("~/Views/Event/_EventsWall.cshtml", Model);
 
     </div>
     <div class="bottom-spacer clear"></div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/homePageJs")
+}
+

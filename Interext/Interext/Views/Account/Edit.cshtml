@@ -12,7 +12,6 @@
 {
     <section class="profile">
         <div class="profile-content">
-            <input type="submit" class="btn btn-special save-profile-btn" value="Save profile" />
             <div class="img-wrapper">
                 <div class="image-preview" style="background-image: url('@Model.ImageUrl')"></div>
                 <div class="btn btn-special fileinput-button choose-image">
@@ -55,6 +54,8 @@
                     </td>
                     <td>
                         @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @type = "text", @id = "locationSearchTextField" })
+                        @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
+                        @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLongitude", @value = "0" })
                 </td>
             </tr>
         </table>
@@ -65,6 +66,7 @@
             </div>
     @Html.ValidationSummary(false, "Please fill the required fields")
     <div class="clear"></div>
+            <input type="submit" class="btn btn-special save-profile-btn" value="Save profile" />
 </div>
 </section>
 

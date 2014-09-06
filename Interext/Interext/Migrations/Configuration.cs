@@ -223,7 +223,9 @@ namespace Interext.Migrations
                     UserName = GenerateUserName("admin@123.com"),
                     AccountIsActive = true,
                     ImageUrl = "/Content/images/users/admin.png",
-                    HomeAddress = "Tel Aviv, Israel"
+                    HomeAddress = "Tel Aviv, Israel",
+                    PlaceLatitude = 32.0852999,
+                    PlaceLongitude = 34.781767599999966
                 };
                 UserManager.Create(user, "123456");
                 ApplicationUser newUser = db.Users.SingleOrDefault(x => x.UserName == user.UserName);

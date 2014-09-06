@@ -105,3 +105,9 @@ function onEventsLoadFailure()
 {
     return "Error in loading the events";
 }
+
+function onUserEventsLoadSuccess() {
+    setEventBoxesDesign();
+    $("#eventsWall").css("display", "block");
+    $("#loader").css("display", "none");
+}

@@ -24,7 +24,7 @@
 		#footer-slider-spacer{height:40px;}
 			.folio-filter-box{top:80px;}
 		@media only screen and (max-width: 479px) {
-			#footer{height:80px;}			
+			/*#footer{height:80px;}*/			
 			#footer-spacer{height:80px;}
 			#main>.container{margin-top:60px;}
 		}
@@ -108,7 +108,7 @@
 		/*-----------------------------------------------------------------------------------*/
 				
 		.page-content,.post-content{padding:0 !important;margin:0 !important;}
-		#main>.container{width:100% !important;padding:0 !important;margin:60px 0 40px 0 !important;background-color:transparent !important;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+		#main>.container{width:100% !important;padding:0 !important;margin:60px 0 40px 0 !important;background-color:transparent !important;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none; overflow: hidden; }
 		#main>.container>#content.template-clean-page{padding:0 !important;}
 		#main>.container>#content{width:100% !important;}
 		#main>.container>#content>div>article>.page-content{margin:0 !important;}

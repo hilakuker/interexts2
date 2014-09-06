@@ -40,7 +40,7 @@
                         <div class="input-with-image-wrapper">
                             @Html.TextBoxFor(m => m.Place, new { @class = "form-control full-control", @placeholder = "Location of the event", @id = "locationSearchTextField" })
                             @Html.HiddenFor(m => m.PlaceLatitude, new { @id = "PlaceLatitude", @value = "0" })
-                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLatitude", @value = "0" })
+                            @Html.HiddenFor(m => m.PlaceLongitude, new { @id = "PlaceLongitude", @value = "0" })
                             <span class="fa fa-map-marker insert-image-button"></span>
                         </div>
 
@@ -124,10 +124,6 @@
                             <option value="left">Left</option>
                         </select>
                         <br />
-                        Number of participants:
-                        @Html.TextBoxFor(m => m.NumOfParticipantsMin, new { @id = "txtNumOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
-                        @Html.TextBoxFor(m => m.NumOfParticipantsMax, new { @id = "txtNumOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
-                        <br />
                         Age of the participants:
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMin, new { @id = "txtAgeOfParticipantsFrom", @class = "short-field", @placeholder = "Min" })
                         @Html.TextBoxFor(m => m.AgeOfParticipantsMax, new { @id = "txtAgeOfParticipantsTo", @class = "short-field", @placeholder = "Max" })
@@ -158,14 +154,24 @@
             <div class="event-box" data-src="@ViewBag.DraftImage" data-width="1144" data-height="791" style="opacity: 1; visibility: visible; width: 312px; height: 312px; padding-bottom: 1px; padding-right: 1px; -webkit-transform: scale(1, 1) roate(0deg); z- ndex: 1; po ition:sta tic;">
                 <div class="event-box-innerwrap pagetop" style="-webkit-transform: scale(1, 1) perspective(10000px) rotateX(0deg); opacity: 1; background: url(@ViewBag.DraftImage) 50% 49% / cover no-repeat;">
                     <div>
-                        <a href="/Event/Details?Id=1" class="event-box-content right" style="background-color: rgb(104,217,153); background-color: rgba(104,217,153,0.8); ">
+                        <a class="event-box-content right" style="background-color: rgb(104,217,153); background-color: rgba(104,217,153,0.8); ">
                             <div class="event-date" id="draftDate">@DateTime.Today.Day.@DateTime.Today.Month</div>
                             <div class="event-title" id="draftTitle">Your event title</div>
                             <div class="event-location" id="draftLocation"><span class="fa fa-map-marker"></span>Event location</div>
-                            <div class="event-num-of-participants-container">Number of participants: <span id="draftNumOfParticipants">2+</span></div>
-                            <div class="event-age-of-participants-container">Age: <span id="draftAgeOfParticipants">20-30</span></div>
-                            <div class="event-gender-container" style="display:none;">Gender: <span id="draftGender"></span></div>
-                            <div class="event-by-person">Created by <img src="@Html.Action("GetImageUrl","Account")"></div>
+                            <table>
+                                <tr class="event-age-of-participants-container" style="display:none;">
+                                    <td>
+                                        Age
+                                    </td>
+                                    <td id="draftAgeOfParticipants"></td>
+                                </tr>
+                                <tr class="event-gender-container" style="display:none;"><td>Gender</td><td id="draftGender"></td></tr>
+                                <tr class="event-num-of-participants-container">
+                                    <td>Attenders</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr class="event-by-person"><td>Created by</td><td><img src="@Html.Action("GetImageUrl", "Account")" /></td></tr>
+                            </table>
                         </a>
                     </div>
                 </div>

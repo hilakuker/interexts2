@@ -27,7 +27,16 @@
                     <td>
                         Gender
                     </td>
-                    <td> @Html.Action("GetGender", "Account")</td>
+                    <td> 
+                    @if (Model.Gender == "F")
+                    {
+                        @("Female");
+                    }
+                    else
+                    { 
+                    @("Male");
+                    }
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -44,6 +53,29 @@
         <div class="clear"></div>
     </div>
 </section>
+<div class="created-events-wrapper">
+    <h2 class="created-events-main-title">CREATED EVENTS</h2>
+    <div class="created-events">
+        @foreach (Interext.Models.EventsByMonth eventsByMonth in (List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"])
+        {
+
+            <h3 class="created-event-title">@eventsByMonth.Month</h3>
+            <div id="content" class="no-sidebar">
+                <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
+                    @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
+
+                </div>
+                <div class="bottom-spacer clear"></div>
+            </div>
+
+        }
+        @if (((List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"]).Count() == 0)
+        {
+            <div class="no-events">There are no created events</div>
+        }
+        <div class="clear"></div>
+    </div>
+</div>
 <div class="month-events-wrapper">
     <h2 class="months-main-title">FUTURE EVENTS</h2>
     <div class="month-events">
@@ -65,6 +97,7 @@
             <div class="no-events">There are no attending events</div>
         }
     </div>
+    <div class="clear"></div>
     <h2 class="months-main-title">PAST EVENTS</h2>
     <div class="month-events">
         <div id="content" class="no-sidebar">
@@ -74,34 +107,13 @@
             </div>
             <div class="bottom-spacer clear"></div>
         </div>
-        @if (((List<Interext.Models.Event>)ViewData["PastEvents"]).Count() == 0)
-        {
-            <div class="no-events">There are no past events</div>
-        }
+        @*@if (((List<Interext.Models.Event>)ViewData["PastEvents"]).Count() == 0)
+    {
+        <div class="no-events">There are no past events</div>
+    }*@
     </div>
 </div>
-<div class="created-events-wrapper">
-    <h2 class="created-events-main-title">CREATED EVENTS</h2>
-    <div class="created-events">
-        @foreach (Interext.Models.EventsByMonth eventsByMonth in (List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"])
-        {
 
-            <h3 class="created-event-title">@eventsByMonth.Month</h3>
-            <div id="content" class="no-sidebar">
-                <div id="eventsWall" class="event-boxes-container noborder norounded light-bg-entries">
-                    @Html.Partial("~/Views/Event/_EventsWall.cshtml", eventsByMonth.MonthEvents);
-
-                </div>
-                <div class="bottom-spacer clear"></div>
-            </div>
-
-        }
-        @if (((List<Interext.Models.EventsByMonth>)ViewData["CreatedEventsByMonth"]).Count() == 0)
-        {
-            <div class="no-events">There are no created events</div>
-        }
-    </div>
-</div>
 
 
 

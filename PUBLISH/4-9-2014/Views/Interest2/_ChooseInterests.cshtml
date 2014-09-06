@@ -1,0 +1,6 @@
+﻿
+    @foreach (Interext.Models.Interest item in ViewBag.Interests)
+{
+    <input type="checkbox" name="@ViewBag.FieldName" value="@item.Id">@Html.DisplayFor(modelItem => item.Title)<br>
+        
+    }

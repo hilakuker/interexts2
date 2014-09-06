@@ -4,6 +4,11 @@
 			#content.left-sidebar,#content.right-sidebar,#content{width:792px;}
 			#sidebar{width:312px;}
 		}	
+        @media only screen and (max-width: 1211px) and (min-width: 1024px) {
+			.container{padding:0 36px;width:952px;}
+			#content.left-sidebar,#content.right-sidebar,#content{width:604px;}
+			#sidebar{width:312px;}
+		}
 		
 		/* Body Background Styling
 		/*-----------------------------------------------------------------------------------*/

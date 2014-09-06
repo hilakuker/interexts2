@@ -22,21 +22,24 @@ namespace Interext.Controllers
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this._db));
 
         }
-        
+
         public ActionResult Index(string searchword, string advanced)
         {
             if (User.Identity.IsAuthenticated)
             {
                 string userId = User.Identity.GetUserId();
                 var user = UserManager.FindById(userId);
-                List<Event> model = GetEventForUser(user, searchword, advanced);
+                //List<Event> model = GetEventForUser(searchword, advanced);
                 ViewBag.CurrentUser = user;
-                ViewBag.SearchWord = searchword;
-                //ViewBag.AllInterests = InterestsFromObjects.LoadInterestViewModelsFromInterests(user.Interests, _db);
-                ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(_db);
-                return View(model);
+                //ViewBag.SearchWord = searchword;
+                //ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(_db);
+                //return View(model);
             }
-            else return RedirectToAction("Login", "Account");
+            ViewBag.SearchWord = searchword;
+            ViewBag.AllInterests = InterestsFromObjects.InitAllInterests(_db);
+            List<Event> model = new List<Event>();
+            return View(model);
+            //else return RedirectToAction("Login", "Account");
         }
 
         public bool Report()
@@ -57,19 +60,150 @@ namespace Interext.Controllers
             }
             return true;
         }
-        private List<Event> GetEventForUser(ApplicationUser user, string searchword, string advanced)
+        //private ActionResult GetEventsForUser(string searchword, string advanced)
+        public ActionResult GetEventsForUser(string searchword, string advanced, string myLocationLatitude, string myLocationLongitude)
         {
+
+
+
             bool isSearchWord = true;
+            List<Event> model = null;
             if (String.IsNullOrEmpty(searchword) || advanced == "1")
             {
                 isSearchWord = false;
             }
+            if (isSearchWord)
+            {
+                model = _db.Events.Where(x => (x.EventStatus == e_EventStatus.Active)
+                        && (isSearchWord ? (x.Title.ToLower().Contains(searchword.ToLower()) ||
+                            x.Description.ToLower().Contains(searchword.ToLower())) : true)).ToList();
+            }
+            else
+            {
+                bool googleCoordinatesRecieved = true;
+                double longitude = 0;
+                double latitude = 0;
+                if (!double.TryParse(myLocationLatitude, out latitude) || !double.TryParse(myLocationLongitude, out longitude))
+                {
+                    googleCoordinatesRecieved = false;
+                }
 
-            return _db.Events.Where(x => (x.EventStatus != e_EventStatus.Deleted)
-                    && (isSearchWord ? (x.Title.ToLower().Contains(searchword.ToLower()) ||
-                        x.Description.ToLower().Contains(searchword.ToLower())) : true)).ToList();
+                if (User.Identity.IsAuthenticated)
+                {
+                    string userId = User.Identity.GetUserId();
+                    ApplicationUser user = UserManager.FindById(userId);
+                    if (!googleCoordinatesRecieved)
+                    {
+                        longitude = user.PlaceLongitude;
+                        latitude = user.PlaceLatitude;
+                    }
+                    model = GetEventsForLoggedInUser(model, longitude, latitude, user);
+                }
+                else
+                {
+                    if (googleCoordinatesRecieved)
+                    {
+                        GetEventsForUserOnlyByLocation(ref model, longitude, latitude, "Location");
+                    }
+                    else
+                    {
+                        model = _db.Events.Where(x => x.EventStatus == e_EventStatus.Active).Take(8).ToList();
+                    }
+                }
+                return PartialView("~/Views/Event/_EventsWall.cshtml", model);
+            }
+            return View(model);
         }
 
+        private List<Event> GetEventsForLoggedInUser(List<Event> model, double longitude, double latitude, ApplicationUser user)
+        {
+            var numberOfAllEvents = _db.Events.Where(x => x.EventStatus == e_EventStatus.Active).Count();
+            int[] radiuses = new int[] { 2, 5, 10, 15, 20, 50, 100, 200 };
+
+            bool stopSearch = false;
+            bool searchAgain = false;
+            int radiusIndex = 0;
+            int radius;
+            while (!stopSearch)
+            {
+                radius = radiuses[radiusIndex];
+                radius = radius * 1000;
+                radius += 500;// adding 500 meters to the radius
+                model = SearchForEvents("", user.HomeAddress, "", true, false, true, true, false, true, true, false, radius, longitude, latitude, user.Interests.ToList(), DateTime.Today, DateTime.Today, calculateAge((DateTime)user.BirthDate));
+                radiusIndex++;
+                if (model.Count() >= 8)
+                {
+                    stopSearch = true;
+                }
+                if (radiusIndex == radiuses.Count())
+                {
+                    stopSearch = true;
+                    searchAgain = true;
+                }
+            }
+            if (searchAgain)
+            {
+                stopSearch = false;
+                searchAgain = false;
+                radiusIndex = 0;
+                while (!stopSearch)
+                {
+                    radius = radiuses[radiusIndex];
+                    radius = radius * 1000;
+                    radius += 500;// adding 500 meters to the radius
+                    model = SearchForEvents("", user.HomeAddress, "", true, false, true, true, false, true, false, false, radiuses[radiusIndex], longitude, latitude, null, DateTime.Today, DateTime.Today, calculateAge((DateTime)user.BirthDate));
+                    radiusIndex++;
+                    if (model.Count() >= 8)
+                    {
+                        stopSearch = true;
+                    }
+                    if (radiusIndex == radiuses.Count())
+                    {
+                        stopSearch = true;
+                        searchAgain = true;
+                    }
+                }
+            }
+            if (searchAgain)
+            {
+                GetEventsForUserOnlyByLocation(ref model, longitude, latitude, user.HomeAddress);
+            }
+            return model;
+        }
+
+        private void GetEventsForUserOnlyByLocation(ref List<Event> model, double longitude, double latitude, string location)
+        {
+            var numberOfAllEvents = _db.Events.Where(x => x.EventStatus == e_EventStatus.Active).Count();
+            int[] radiuses = new int[] { 2, 5, 10, 15, 20, 50, 100, 200 };
+            int radius;
+            bool stopSearch = false;
+            int radiusIndex = 0;
+            while (!stopSearch)
+            {
+                radius = radiuses[radiusIndex];
+                radius = radius * 1000;
+                radius += 500;// adding 500 meters to the radius
+                model = SearchForEvents("", location, "", true, false, true, true, false, false, false, false, radiuses[radiusIndex], longitude, latitude, null, DateTime.Today, DateTime.Today, 1);
+                radiusIndex++;
+                if (model.Count() >= 8)
+                {
+                    stopSearch = true;
+                }
+                if (radiusIndex == radiuses.Count())
+                {
+                    stopSearch = true;
+                    model = _db.Events.Where(x => x.EventStatus == e_EventStatus.Active).Take(8).ToList();
+                }
+            }
+        }
+        private int calculateAge(DateTime birthdate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthdate.Year;
+            if (birthdate > today.AddYears(-age))
+            { age--; }
+            return age;
+        }
         private List<Interest> GetSelectedInterests(string selectedInterests)
         {
             List<Interest> interests = new List<Interest>();
@@ -96,9 +230,12 @@ namespace Interext.Controllers
             string AgeOfParticipant, string Gender
              )
         {
+
+
+
             List<Event> model = null;
             bool searchAccordingToRadius = false;
-            bool isFreeText = !String.IsNullOrEmpty(FreeText);
+            bool isFreeText = !String.IsNullOrEmpty(FreeText.Trim());
             bool isLocation = !String.IsNullOrEmpty(locationSearchTextField);
             bool isFromDate = false;
             bool isToDate = false;
@@ -115,11 +252,9 @@ namespace Interext.Controllers
                 isInterests = true;
             }
 
-            if (radiusOfTheLocation != "The exact location")
+            if (radiusOfTheLocation != "0" && locationSearchTextField != "")
             {
-
-                string temp = radiusOfTheLocation.Replace("km", "");
-                if (double.TryParse(temp, out radius) && double.TryParse(PlaceLongitude, out longitude) && double.TryParse(PlaceLatitude, out latitude))
+                if (double.TryParse(radiusOfTheLocation, out radius) && double.TryParse(PlaceLongitude, out longitude) && double.TryParse(PlaceLatitude, out latitude))
                 {
                     searchAccordingToRadius = true;
                     radius = radius * 1000;
@@ -149,26 +284,40 @@ namespace Interext.Controllers
                 isGenderNotBoth = true;
             }
 
-            if (ModelState.IsValid)
+            if (!isFreeText && !isLocation && !isFromDate && !isToDate && !isParticipantAge && !isGenderNotBoth && !isInterests)
             {
-                List<Event> eventList = _db.Events.ToList();
-                model = eventList.Where(
-                    x => (x.EventStatus != e_EventStatus.Deleted)
-                    && (isFreeText ? (x.Title.ToLower().Contains(FreeText.ToLower()) ||
-                        x.Description.ToLower().Contains(FreeText.ToLower())) : true)
-                    && (isLocation && !searchAccordingToRadius ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
-                    && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius) : true)
-                    && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
-                    && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
-                    && (isParticipantAge ?(((x.AgeOfParticipantsMin <= participantAge) && (x.AgeOfParticipantsMax.HasValue ? x.AgeOfParticipantsMax >= participantAge : true))
-                    ||  (!x.AgeOfParticipantsMax.HasValue && !x.AgeOfParticipantsMin.HasValue)) : true)
-                    && (isGenderNotBoth ? x.GenderParticipant == Gender : true)
-                    && (isInterests ? x.Interests.Intersect(interests).Count() > 0 : true)
-                    ).ToList(); // temp
+                Response.Redirect("/");
+            }
+            else if (ModelState.IsValid)
+            {
+
+                model = SearchForEvents(FreeText, locationSearchTextField, Gender, searchAccordingToRadius, isFreeText, isLocation, isFromDate, isToDate, isParticipantAge, isInterests, isGenderNotBoth, radius, longitude, latitude, interests, DateFrom, DateTo, participantAge);
                 return PartialView("~/Views/Event/_EventsWall.cshtml", model);
                 //}   
             }
             return View(model);
+        }
+
+        private List<Event> SearchForEvents(string FreeText, string locationSearchTextField, string Gender, bool searchAccordingToRadius, bool isFreeText, bool isLocation, bool isFromDate, bool isToDate, bool isParticipantAge, bool isInterests, bool isGenderNotBoth, double radius, double longitude, double latitude, List<Interest> interests, DateTime DateFrom, DateTime DateTo, int participantAge)
+        {
+            List<Event> eventList = _db.Events.ToList();
+            List<Event> model = eventList.Where(
+                x => (x.EventStatus != e_EventStatus.Deleted)
+                && (isFreeText ? (x.Title.ToLower().Contains(FreeText.Trim().ToLower()) ||
+                (!String.IsNullOrEmpty(x.Description) ? x.Description.ToLower().Contains(FreeText.Trim().ToLower()) : false)) : true)
+                && (isLocation && !searchAccordingToRadius ? (x.Place.ToLower() == locationSearchTextField.ToLower()) : true)
+                && (isLocation && searchAccordingToRadius ? (calulateDistance(x, latitude, longitude) <= radius) : true)
+                && (isFromDate ? (x.DateTimeOfTheEvent.Date >= DateFrom) : true)
+                && (isToDate ? (x.DateTimeOfTheEvent.Date <= DateTo) : true)
+                && (isParticipantAge ?
+                    ((x.AgeOfParticipantsMin.HasValue && x.AgeOfParticipantsMax.HasValue) ? (x.AgeOfParticipantsMin <= participantAge && participantAge <= x.AgeOfParticipantsMax) :
+                    ((x.AgeOfParticipantsMin.HasValue && !x.AgeOfParticipantsMax.HasValue) ? (x.AgeOfParticipantsMin <= participantAge) :
+                    (!x.AgeOfParticipantsMin.HasValue && x.AgeOfParticipantsMax.HasValue ? (participantAge <= x.AgeOfParticipantsMax) : true
+                    ))) : true)
+                && (isGenderNotBoth ? x.GenderParticipant == Gender : true)
+                && (isInterests ? x.Interests.Intersect(interests).Count() > 0 : true)
+                ).OrderBy(x => x.DateTimeOfTheEvent).ToList(); // temp
+            return model;
         }
 
         private double calulateDistance(Event x, double PlaceLatitude, double PlaceLongitude)

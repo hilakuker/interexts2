@@ -15,33 +15,46 @@
             <div class="event-date">@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Day).@Html.DisplayFor(modelItem => item.DateTimeOfTheEvent.Date.Month)</div>
             <div class="event-title">@Html.DisplayFor(modelItem => item.Title)</div>
             <div class="event-location"><span class="fa fa-map-marker"></span>@Html.DisplayFor(modelItem => item.Place)</div>
-            @if (item.NumOfParticipantsSet)
-            {
-                <div class="event-num-of-participants-container">
-                    Number of participants: <span>
-                        @Html.DisplayFor(modelItem => item.NumOfParticipantsMin)@if (item.NumOfParticipantsMax != null)
-                        {<span>-</span>@Html.DisplayFor(modelItem => item.NumOfParticipantsMax)}
-                        else
-                        {<span>+</span>}
-                    </span>
-                </div>
-            }
-            @if (item.AgeOfParticipantsSet)
-            {
-                <div class="event-age-of-participants-container">
-                    Age: <span>
-                        @Html.DisplayFor(modelItem => item.AgeOfParticipantsMin)@if (item.AgeOfParticipantsMax != null)
-                        {<span>-</span>@Html.DisplayFor(modelItem => item.AgeOfParticipantsMax)}
-                        else
-                        {<span>+</span>}
-                    </span>
-                </div>
-            }
-            @if (item.GenderParticipant != "Both")
-            {
-                <div class="event-gender-container">Gender: <span>@Html.DisplayFor(modelItem => item.GenderParticipant)</span></div>
-            }
-            <div class="event-by-person">Created by <img src="@Html.DisplayFor(modelItem => item.CreatorUser.ImageUrl)" /></div>
+            <table>
+
+                @if (item.AgeOfParticipantsSet)
+                {
+                    <tr class="event-age-of-participants-container">
+                        <td>
+                            Age
+                        </td>
+                        <td>
+                            @if (item.AgeOfParticipantsMin != null && item.AgeOfParticipantsMax != null)
+                            {
+                                @item.AgeOfParticipantsMin<span>-</span>@item.AgeOfParticipantsMax
+                            }
+                            @if (item.AgeOfParticipantsMin != null && item.AgeOfParticipantsMax == null)
+                            {
+                                @item.AgeOfParticipantsMin<span>+</span>
+                            }
+                            @if (item.AgeOfParticipantsMin == null && item.AgeOfParticipantsMax != null)
+                            {
+                                <span>under</span>
+                                @item.AgeOfParticipantsMax
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (item.GenderParticipant != "Both")
+                {
+                    <tr class="event-gender-container"><td>Gender</td><td>@Html.DisplayFor(modelItem => item.GenderParticipant)</td></tr>
+                }
+                @if (item.EventVsAttendingUsers.Count() > 0)
+                {
+                    <tr class="event-num-of-participants-container">
+                        <td>Attenders</td>
+                        <td>@item.EventVsAttendingUsers.Count()</td>
+                    </tr>
+                }
+
+                <tr class="event-by-person"><td>Created by</td><td><img src="@Html.DisplayFor(modelItem => item.CreatorUser.ImageUrl)" /></td></tr>
+
+            </table>
         </a>
     </div>
 }

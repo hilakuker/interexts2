@@ -148,6 +148,7 @@ function setTimeEvents() {
 
 function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToShowContainer) {
     $(fromElement).on('input', function () {
+        $(this).val($(this).val().replace(" ", ""));
         validateFromToInput($(this), fromElement, toElement);
     });
     $(toElement).on('input', function () {
@@ -156,7 +157,6 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
     });
 
     function validateFromToInput(thisElement, fromElement, toElement) {
-        $(thisElement).val($(thisElement).val().replace(" ", ""));
         var fromNumber = $(fromElement).val();
         var toNumber = $(toElement).val();
         if (validateNumbers(fromElement, toElement)) {
@@ -166,23 +166,19 @@ function RangeInputEvents(fromElement, toElement, rangeToShowElement, rangeToSho
     }
 
     function setDraft(fromNumber, toNumber) {
-        $(rangeToShowContainer).css("display", "block");
-        if (toNumber == "") {
-            if (fromNumber == "") {
-                $(rangeToShowContainer).css("display", "none");
-            }
-            else {
-                $(rangeToShowElement).text(fromNumber + "+")
-            }
+        if (fromNumber == "" && toNumber == "") {
+            $(rangeToShowContainer).css("display", "none");
         }
         else {
-            if (isPositiveInteger(toNumber)) {
-                if (fromNumber == "") {
-                    $(rangeToShowElement).text("1-" + toNumber);
-                }
-                else {
-                    $(rangeToShowElement).text(fromNumber + "-" + toNumber);
-                }
+            $(rangeToShowContainer).css("display", "");
+            if (fromNumber != "" && toNumber != "") {
+                $(rangeToShowElement).text(fromNumber + "-" + toNumber);
+            }
+            else if (fromNumber != "" && toNumber == "") {
+                $(rangeToShowElement).text(fromNumber + "+");
+            }
+            else if (fromNumber == "" && toNumber != "") {
+                $(rangeToShowElement).text("under " + toNumber);
             }
         }
     }
@@ -202,10 +198,12 @@ function validateNumbers(minNumElementID, maxNumElementID) {
     var validNum = true;
     var minNumber = $(minNumElementID).val();
     var maxNumber = $(maxNumElementID).val();
-    if (minNumber != "" && isPositiveInteger(minNumber) == false)
+    if (minNumber != "" && !isPositiveInteger(minNumber))
     { validNum = false; }
-    else if (maxNumber != "" && isPositiveInteger(maxNumber) == false)
+    else if (maxNumber != "" && !isPositiveInteger(maxNumber))
     { validNum = false; }
+    //if (minNumber != "" && maxNumber != "" && parseInt(minNumber) > parseInt(maxNumber))
+    //{ validNum = false; }
     return validNum;
 }
 function updateDraftTitle() {
@@ -259,7 +257,7 @@ function updateDraftGender() {
             $(".event-gender-container").css("display", "none");
         }
         else {
-            $(".event-gender-container").css("display", "block");
+            $(".event-gender-container").css("display", "");
             $("#draftGender").text(gender);
         }
     }
@@ -305,8 +303,6 @@ function initEvents() {
             updateEventDateDraft();
         }
     });
-    RangeInputEvents("#txtNumOfParticipantsFrom", "#txtNumOfParticipantsTo", "#draftNumOfParticipants",
-        ".event-num-of-participants-container");
     RangeInputEvents("#txtAgeOfParticipantsFrom", "#txtAgeOfParticipantsTo", "#draftAgeOfParticipants",
         ".event-age-of-participants-container");
     $('#dpdGender').on('change', function () {

@@ -26,6 +26,9 @@ namespace Interext.Models
         public virtual ICollection<EventVsAttendingUser> EventVsAttentingUsers { get; set; }
         public virtual ICollection<EventVsWaitingApprovalUser> EventVsWaitingApprovalUsers { get; set; }
         public string HomeAddress { get; set; }
+        public double PlaceLongitude { get; set; }
+        public double PlaceLatitude { get; set; }
+
        [Required]
         public bool AccountIsActive { get; set; }
     }

@@ -1,0 +1,285 @@
+﻿@model Interext.Models.EventViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section CssStyles{
+    @Styles.Render("~/Content/eventPageCss")
+}
+
+
+@*<div id="single-page">
+*@
+<div>
+    <div id="content" class="right-sidebar">
+        <div class="event-page-content">
+            <article>
+                <div class="event-intro-wrapper" style="background-image: url('@Model.ImageUrl');">
+                    <div class="event-intro">
+                        <h1 class="event-title">
+                            @Model.Title
+                        </h1>
+                        <div class="event-date">
+                            <div>
+                                @Model.DateOfTheEventNoYear
+                            </div>
+                            @if (Model.TimeSet)
+                            {
+                                <div class="event-time">
+                                    <span class="fa fa-clock-o"></span> @Model.DateTimeOfTheEvent.ToString("H:mm")
+                                </div>
+                            }
+                            <div class="event-location">
+                                <span class="fa fa-map-marker"></span>&nbsp;@Model.Place<br />
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="event-details">
+
+                            <a href="/Account/Details?id=@Model.CreatorUser.Id">
+                                <div class="createdby">Created by</div> <img src="@Model.CreatorUser.ImageUrl" />
+                                <div class="creator-name">@Model.CreatorUser.FirstName @Model.CreatorUser.LastName</div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                        <table class="event-restrictions">
+                            @if (Model.AgeOfParticipantsSet)
+                            {
+                                <tr>
+                                    <td>Ages</td>
+                                    <td>
+                                        @Model.AgeOfParticipantsMin@if (Model.AgeOfParticipantsMax != null)
+                                        {<span>-</span>@Model.AgeOfParticipantsMax}
+                                        else
+                                        {<span>+</span>}
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.NumOfParticipantsSet)
+                            {
+                                <tr>
+                                    <td>Number Of Participants</td>
+                                    <td>
+                                        @Model.NumOfParticipantsMin@if (Model.NumOfParticipantsMax != null)
+                                        {<span>-</span>@Model.NumOfParticipantsMax}
+                                        else
+                                        {<span>+</span>}
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.GenderParticipant != "Both")
+                            {
+                                <tr><td>Gender</td><td>@Model.GenderParticipant</td></tr>
+                            }
+                            <tr>
+                                <td>Interests</td>
+                                <td>
+                                    @Model.InterestsToDisplay
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    @if (!String.IsNullOrEmpty(Model.Description))
+                    {
+                        <p>@Html.Raw(Model.Description.Replace(Environment.NewLine, "<br />"))</p>
+                    }
+                </div>
+            </article>
+        </div>
+        <div id="ozy-share-div" class="ozy-share-div-blog"><span>Share This:&nbsp;</span><a href="http://www.facebook.com/share.php?u=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-facebook" style="display: inline-block;"><span class="symbol"></span></a><a href="https://twitter.com/share?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;text=Contrast%20is%20Your%20Next%20Level%20Theme" title="" class="tooltip pop share-icon share-icon-twitter" style="display: inline-block;"><span class="symbol"></span></a><a href="https://plusone.google.com/_/+1/confirm?hl=en&amp;url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F" title="" class="tooltip pop share-icon share-icon-googleplus" style="display: inline-block;"><span class="symbol"></span></a><a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fcontrast.freevision.me%2Fblog%2F2013%2F11%2F27%2Fcontrast-is-your-next-level-theme%2F&amp;media=&amp;description=  Contrast is Your Next Level ThemeWordPress Photography Theme" title="" class="tooltip pop share-icon share-icon-pinterest" style="display: inline-block;"><span class="symbol"></span></a></div>
+
+        <h3 class="attenders-title">ATTENDERS</h3>
+        <div class="ozy-latest-posts">
+            @foreach (var item in Model.UsersAttending)
+            {
+                <div class="user-waiting-approval-wrapper">
+                    <a class="image-link" href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
+                    @if (Model.CurrentUserIsCreator)
+                    {
+                        <div class="options">
+                            @using (Ajax.BeginForm("UnjoinUserFromEvent", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-remove-from-waiting-form" }))
+                            {
+                                <div class="accept-user-btn"></div>
+                                <div class="fa fa-times remove-from-waiting-user-btn"></div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        @if (Model.UsersWaitingApproval.Count() > 0)
+        {
+
+            <h3 class="attenders-title">WAITING FOR APPROVAL</h3>
+        }
+        <div class="ozy-latest-posts">
+            @foreach (var item in Model.UsersWaitingApproval)
+            {
+                <div class="user-waiting-approval-wrapper">
+                    <a class="image-link" href="/Account/Details?id=@item.Id" title="@item.FirstName @item.LastName" style="background-image:url('@item.ImageUrl')"></a>
+                    @if (Model.CurrentUserIsCreator)
+                    {
+                        <div class="options">
+                            @using (Ajax.BeginForm("AcceptUser", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-accept-form" }))
+                            {
+
+                                <div class="fa fa-check accept-user-btn"></div>
+                            }
+                            @using (Ajax.BeginForm("UnjoinUserFromEvent", "Event", new { UserId = item.Id, EventId = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            OnFailure = "onJoinEventFailure",
+                            OnSuccess = "onJoinEventSuccess"
+                        }, new { @class = "user-remove-from-waiting-form" }))
+                            {
+
+                                <div class="fa fa-times remove-from-waiting-user-btn"></div>
+                            }
+                        </div>
+                        <div class="clear"></div>
+                    }
+                </div>
+            }
+
+
+        </div>
+        <div id="comments">
+            <h3 class="title">COMMENTS</h3>
+            <div class="no-comments">No comments.</div>
+            <div id="comments-items">
+                @Html.Partial("~/Views/Event/_Comments.cshtml", Model.Comments)
+            </div>
+            <div id="comments-form">
+                <img src="@Html.Action("GetImageUrl", "Account")" class="current-person-img" />
+                <div id="respond" class="comment-respond">
+                    @using (Ajax.BeginForm("SaveComment", "Event", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comments-items", OnFailure = "onCommentsLoadFailure", OnSuccess = "onCommentsLoadSuccess" }, new { id = "commentform", @class = "comment-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <textarea name="comment" id="comment" cols="110" placeholder="Comment" rows="4" tabindex="4" required></textarea>
+                        <div class="clear"></div>
+                        <input type="submit" class="btn btn-dark send-button" value="Send" />
+
+                    }
+                    @if (!Model.CurrentUserIsCreator)
+                    {
+                        using (Ajax.BeginForm("Report", "Home", new { Id = ViewData["Id"] },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Get",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "target",
+                            OnFailure = "onReportEventFailure",
+                            OnSuccess = "onReportEventSuccess"
+                        }, new { id = "report-spam-form" }))
+                        {
+                            <input type="submit" class="report-spam" value="Report spam" />
+                            <span class="report-spam-sent">Your report was sent</span>
+                        }
+                    }
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="clear"></div>
+
+    </div><!--#content-->
+
+    <div id="sidebar" class="right-sidebar">
+        <ul>
+            <li>
+                @if (Model.CurrentUserIsCreator)
+                {
+                    @Html.ActionLink("Edit the Event", "Edit", new { Id = ViewData["Id"], model = Model }, new { @class = "side-bar-button btn btn-dark edit-event-btn" })
+                    using (Ajax.BeginForm("Delete", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onDeleteEventFailure", OnSuccess = "onDeleteEventSuccess" }, new { id = "deleteEventForm" }))
+                    {
+                        <input type="submit" class="side-bar-button btn btn-dark" value="Cancel Event" />
+                    }
+                }
+                else
+                {
+                    if (bool.Parse(ViewData["UserAlreadyAttending"].ToString()))
+                    {
+                        using (Ajax.BeginForm("UnjoinEvent", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onJoinEventFailure", OnSuccess = "onJoinEventSuccess" }, new { id = "unjoinEventForm" }))
+                        {
+                            @*@Html.ActionLink("+Join the Event", "JoinEvent", new { Id = ViewData["Id"] }, new { @class = "side-bar-button btn btn-dark" })*@
+                            <input type="submit" class="side-bar-button btn btn-dark" value="Leave event" />
+                        }
+                    }
+                    else
+                    {
+                        using (Ajax.BeginForm("JoinEvent", new { Id = ViewData["Id"] }, new AjaxOptions { HttpMethod = "Get", OnFailure = "onJoinEventFailure", OnSuccess = "onJoinEventSuccess" }, new { id = "joinEventForm" }))
+                        {
+                            <input type="submit" class="side-bar-button btn btn-dark" value="+Join event" />
+                        }
+                    }
+                }
+
+            </li>
+            <li class="widget">
+                <h3>ATTENDERS STATISTICS:</h3>
+                <input type="hidden" id="hidStatisticValues" value="@ViewData["Statistics"]" />
+                <div id="canvas-holder-gender">
+                    <h4>Gender:</h4>
+                    <canvas id="chart-area-gender" width="300" height="300" />
+                </div>
+                <div id="canvas-holder-age">
+                    <h4>Age:</h4>
+                    <canvas id="chart-area-age" width="300" height="300" />
+                </div>
+                <div class="clear"></div>
+                <div id="canvas-holder-interests">
+                    <h4>Interests:</h4>
+                    <canvas id="chart-area-interests" width="300" height="300" />
+                </div>
+                <div id="sub-categories-statistics">
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+    <!--sidebar-->
+    <div class="clear"></div>
+
+
+</div>
+
+<div id="dialog-confirm" title="Cancel the event?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The event will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="dialog-delete-comment-confirm" title="Remove the comment?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The comment will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="dialog-report-spam-confirm" title="Report spam?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to report a spam?</p>
+</div>
+
+<div id="dialog-remove-from-waiting-confirm" title="Remove user?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to remove this user from waiting approval list?</p>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/eventDetailsJs")
+}

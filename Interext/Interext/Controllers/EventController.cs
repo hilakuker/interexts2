@@ -38,6 +38,7 @@ namespace Interext.Controllers
 
         public ActionResult Details(int? id)
         {
+
             ViewData["Id"] = id;
             ViewData["UserAlreadyAttending"] = false;
             if (id == null)
@@ -45,14 +46,13 @@ namespace Interext.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Event @event = db.Events.Find(id);
-            if (@event.EventStatus == e_EventStatus.Deleted)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var user = UserManager.FindById(User.Identity.GetUserId());
             if (@event == null)
             {
                 return HttpNotFound();
+            }
+            if (@event.EventStatus == e_EventStatus.Deleted)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             EventViewModel eventToShow = new EventViewModel()
@@ -60,8 +60,6 @@ namespace Interext.Controllers
                 CreatorUser = @event.CreatorUser,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
-                NumOfParticipantsMax = @event.NumOfParticipantsMax,
-                NumOfParticipantsMin = @event.NumOfParticipantsMin,
                 ImageUrl = @event.ImageUrl,
                 GenderParticipant = @event.GenderParticipant,
                 BackroundColor = @event.BackroundColor,
@@ -74,9 +72,7 @@ namespace Interext.Controllers
                 Id = @event.Id,
                 TimeSet = @event.TimeSet,
                 AgeOfParticipantsSet = @event.AgeOfParticipantsSet,
-                NumOfParticipantsSet = @event.NumOfParticipantsSet,
                 InterestsToDisplay = InterestsFromObjects.GetInterestsForDisplay(@event.Interests.ToList())
-                //UsersAttending = @event.UsersAttending
             };
             List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
                 (e => e.EventId == eventToShow.Id).Select(e => e.AttendingUser).Where(e => e.AccountIsActive).ToList();
@@ -86,27 +82,37 @@ namespace Interext.Controllers
                 (e => e.EventId == eventToShow.Id).Select(e => e.WaitingApprovalUser).Where(e => e.AccountIsActive).ToList();
             eventToShow.UsersWaitingApproval = usersWaitingApproval;
 
-            eventToShow.Comments = SetDeleteButtonsForComments(@event.Comments.ToList(), (ApplicationUser)user, eventToShow.CreatorUser);
-           
 
-            if (user.Id == eventToShow.CreatorUser.Id)
+
+            if (User.Identity.IsAuthenticated)
             {
-                eventToShow.CurrentUserIsCreator = true;
-                ViewData["UserAlreadyAttending"] = false;
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                eventToShow.Comments = SetDeleteButtonsForComments(@event.Comments.ToList(), (ApplicationUser)user, eventToShow.CreatorUser);
+                if (user.Id == eventToShow.CreatorUser.Id)
+                {
+                    eventToShow.CurrentUserIsCreator = true;
+                    ViewData["UserAlreadyAttending"] = false;
+                }
+                else if (User.IsInRole("Admin"))
+                { eventToShow.CurrentUserIsCreator = true; }
+                else
+                {
+                    eventToShow.CurrentUserIsCreator = false;
+                    if (eventToShow.UsersAttending.SingleOrDefault(x => x.Id == user.Id) != null)
+                    {
+                        ViewData["UserAlreadyAttending"] = true;
+                    }
+                    if (eventToShow.UsersWaitingApproval.SingleOrDefault(x => x.Id == user.Id) != null)
+                    {
+                        ViewData["UserAlreadyAttending"] = true;
+                    }
+                }
             }
-            else if (User.IsInRole("Admin"))
-            { eventToShow.CurrentUserIsCreator = true; }
             else
             {
                 eventToShow.CurrentUserIsCreator = false;
-                if (eventToShow.UsersAttending.SingleOrDefault(x => x.Id == user.Id) != null)
-                {
-                    ViewData["UserAlreadyAttending"] = true;
-                }
-                if (eventToShow.UsersWaitingApproval.SingleOrDefault(x => x.Id == user.Id) != null)
-                {
-                    ViewData["UserAlreadyAttending"] = true;
-                }
+                eventToShow.Comments = SetDeleteButtonsForComments(@event.Comments.ToList(), null, eventToShow.CreatorUser);
+                ViewData["UserAlreadyAttending"] = false;
             }
             Statistics Statistics = LoadStatistics(attendingUsers);
             var json = new JavaScriptSerializer().Serialize(Statistics);
@@ -118,13 +124,20 @@ namespace Interext.Controllers
             List<Comment> comments = new List<Comment>();
             foreach (Comment item in eventComments)
             {
-                if (thisUser.Id == item.Author.Id || thisUser.Id == eventCreator.Id || User.IsInRole("Admin"))
+                if (thisUser == null)
                 {
-                    item.ShowDeleteButton = true;
+                    item.ShowDeleteButton = false;
                 }
                 else
                 {
-                    item.ShowDeleteButton = false;
+                    if (thisUser.Id == item.Author.Id || thisUser.Id == eventCreator.Id || User.IsInRole("Admin"))
+                    {
+                        item.ShowDeleteButton = true;
+                    }
+                    else
+                    {
+                        item.ShowDeleteButton = false;
+                    }
                 }
                 comments.Add(item);
             }
@@ -344,6 +357,8 @@ namespace Interext.Controllers
             return interests;
         }
         private string defaultDraftImage = "/Content/images/example-images/draft-image.jpg";
+
+        [Authorize]
         public ActionResult Create()
         {
             EventViewModel model = new EventViewModel();
@@ -351,6 +366,7 @@ namespace Interext.Controllers
             ViewBag.DraftImage = defaultDraftImage;
             return View(model);
         }
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
@@ -400,9 +416,6 @@ namespace Interext.Controllers
                     AgeOfParticipantsMax = model.AgeOfParticipantsMax,
                     AgeOfParticipantsMin = model.AgeOfParticipantsMin,
                     AgeOfParticipantsSet = true,
-                    NumOfParticipantsMax = model.NumOfParticipantsMax,
-                    NumOfParticipantsMin = model.NumOfParticipantsMin,
-                    NumOfParticipantsSet = true,
                     GenderParticipant = model.GenderParticipant,
                     BackroundColor = model.BackroundColor,
                     BackroundColorOpacity = model.BackroundColorOpacity,
@@ -420,10 +433,6 @@ namespace Interext.Controllers
                     isImageFromStock = model.isImageFromStock,
                     PrivacyType = model.PrivacyType
                 };
-                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
-                {
-                    eventToCreate.NumOfParticipantsSet = false;
-                }
                 if (model.AgeOfParticipantsMax == null && model.AgeOfParticipantsMin == null)
                 {
                     eventToCreate.AgeOfParticipantsSet = false;
@@ -632,6 +641,7 @@ namespace Interext.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -656,6 +666,7 @@ namespace Interext.Controllers
                 Id = @event.Id,
                 AgeOfParticipantsMax = @event.AgeOfParticipantsMax,
                 AgeOfParticipantsMin = @event.AgeOfParticipantsMin,
+                AgeOfParticipantsSet = @event.AgeOfParticipantsSet,
                 BackroundColor = @event.BackroundColor,
                 BackroundColorOpacity = @event.BackroundColorOpacity,
                 DateOfTheEvent = @event.DateTimeOfTheEvent.ToShortDateString(),
@@ -669,8 +680,6 @@ namespace Interext.Controllers
                 Description = @event.Description,
                 GenderParticipant = @event.GenderParticipant,
                 ImageUrl = @event.ImageUrl,
-                NumOfParticipantsMax = @event.NumOfParticipantsMax,
-                NumOfParticipantsMin = @event.NumOfParticipantsMin,
                 Place = @event.Place,
                 SideOfText = @event.Place,
                 Title = @event.Title,
@@ -686,14 +695,17 @@ namespace Interext.Controllers
                 model.ImageFromStock = @event.ImageUrl;
                 model.isImageFromStock = true;
             }
-            // setAllInterests(@event, model);
+            List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
+                 (e => e.EventId == @event.Id).Select(e => e.AttendingUser).Where(e => e.AccountIsActive).ToList();
+            model.UsersAttending = attendingUsers;
+
             setSideOfText(@event.SideOfText, model);
             setGenderOptions(@event.GenderParticipant, model);
             setPrivacyTypeOptions((e_PrivacyType)@event.PrivacyType, model);
             return View(model);
         }
 
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EventViewModel model, HttpPostedFileBase ImageUrl, string selectedInterests)
@@ -731,8 +743,6 @@ namespace Interext.Controllers
                         @event.ImageUrl = model.ImageFromStock;
                     }
                 }
-                @event.NumOfParticipantsMax = model.NumOfParticipantsMax;
-                @event.NumOfParticipantsMin = model.NumOfParticipantsMin;
                 @event.AgeOfParticipantsMax = model.AgeOfParticipantsMax;
                 @event.AgeOfParticipantsMin = model.AgeOfParticipantsMin;
                 @event.BackroundColor = model.BackroundColor.Replace("rgb(", "");
@@ -745,13 +755,8 @@ namespace Interext.Controllers
                 @event.PlaceLongitude = model.PlaceLongitude;
                 @event.Interests.Clear();
                 @event.Interests = InterestsFromObjects.GetSelectedInterests(selectedInterests, db);
-                @event.NumOfParticipantsSet = true;
                 @event.AgeOfParticipantsSet = true;
                 @event.PrivacyType = model.PrivacyType;
-                if (model.NumOfParticipantsMax == null && model.NumOfParticipantsMin == null)
-                {
-                    @event.NumOfParticipantsSet = false;
-                }
                 if (model.AgeOfParticipantsMax == null && model.AgeOfParticipantsMin == null)
                 {
                     @event.AgeOfParticipantsSet = false;
@@ -777,6 +782,9 @@ namespace Interext.Controllers
             }
             else
             {
+                List<ApplicationUser> attendingUsers = db.EventVsAttendingUsers.Where
+                 (e => e.EventId == @event.Id).Select(e => e.AttendingUser).Where(e => e.AccountIsActive).ToList();
+                model.UsersAttending = attendingUsers;
                 setSideOfText(model.SideOfText, model);
                 setGenderOptions(model.GenderParticipant, model);
                 setPrivacyTypeOptions((e_PrivacyType)model.PrivacyType, model);
@@ -819,16 +827,13 @@ namespace Interext.Controllers
         private void setGenderOptions(string GenderParticipant, EventViewModel model)
         {
             model.GenderParticipantOptions = new Dictionary<string, bool>();
-            model.GenderParticipantOptions.Add("Female", String.Equals("Female", GenderParticipant, StringComparison.OrdinalIgnoreCase));
-            model.GenderParticipantOptions.Add("Male", String.Equals("Male", GenderParticipant, StringComparison.OrdinalIgnoreCase));
             model.GenderParticipantOptions.Add("Both", String.Equals("Both", GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Male", String.Equals("Male", GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            model.GenderParticipantOptions.Add("Female", String.Equals("Female", GenderParticipant, StringComparison.OrdinalIgnoreCase));
         }
         private void setGenderOptions(EventViewModel model)
         {
-            model.GenderParticipantOptions = new Dictionary<string, bool>();
-            model.GenderParticipantOptions.Add("Female", String.Equals("Female", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
-            model.GenderParticipantOptions.Add("Male", String.Equals("Male", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
-            model.GenderParticipantOptions.Add("Both", String.Equals("Both", model.GenderParticipant, StringComparison.OrdinalIgnoreCase));
+            setGenderOptions(model.GenderParticipant, model);
         }
 
         private void setPrivacyTypeOptions(e_PrivacyType PrivacyType, EventViewModel model)
@@ -968,7 +973,7 @@ namespace Interext.Controllers
                         Event currentEvent = db.Events.SingleOrDefault(x => x.Id == EventId);
                         var user = UserManager.FindById(User.Identity.GetUserId());
                         model = SetDeleteButtonsForComments(model.ToList(), (ApplicationUser)user, currentEvent.CreatorUser);
-           
+
                         ViewData["Id"] = EventId;
                         return PartialView("~/Views/Event/_Comments.cshtml", model);
                     }
